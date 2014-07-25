@@ -2,6 +2,3 @@
 *.xCodeSupport*
 *Build/*
 *.xcodeproj*
-*AppKit*
-*Objective-J*
-*Foundation*
