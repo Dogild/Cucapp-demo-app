@@ -41,3 +41,21 @@
 }
 
 @end
+
+function load_cucapp_CLI(path)
+{
+    if (!path)
+        path = "../Cucapp/lib/Cucumber.j"
+
+    try {
+        objj_importFile(path, true, function() {
+            [Cucumber stopCucumber];
+            CPLog.debug("Cucapp CLI has been well loaded");
+            _addition_cpapplication_send_event_method();
+        });
+    }
+    catch(e)
+    {
+        [CPException raise:CPInvalidArgumentException reason:@"Invalid path for the lib Cucumber"];
+    }
+}
