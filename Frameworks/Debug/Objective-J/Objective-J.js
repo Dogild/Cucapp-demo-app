@@ -42,7 +42,7 @@ if (!Object.create)
 
 if (!Object.keys)
 {
-    Object.keys = (function ()
+    Object.keys = (function()
     {
         var hasOwnProperty = Object.prototype.hasOwnProperty,
             hasDontEnumBug = !({toString: null}).propertyIsEnumerable('toString'),
@@ -123,7 +123,7 @@ if (!Array.prototype.indexOf)
 if (!this.JSON) {
     JSON = {};
 }
-(function () {
+(function() {
 
     function f(n) {
 
@@ -1110,6 +1110,9 @@ CFHTTPRequest = function()
     this._eventDispatcher = new EventDispatcher(this);
     this._nativeRequest = new NativeRequest();
 
+
+    this._nativeRequest.withCredentials = false;
+
     var self = this;
     this._stateChangeHandler = function()
     {
@@ -1286,7 +1289,7 @@ CFHTTPRequest.prototype.setWithCredentials = function( willSendWithCredentials)
     this._nativeRequest.withCredentials = willSendWithCredentials;
 };
 
-CFHTTPRequest.prototype.getWithCredentials = function()
+CFHTTPRequest.prototype.withCredentials = function()
 {
     return this._nativeRequest.withCredentials;
 };
@@ -2214,6 +2217,173 @@ CFMutableDictionary.prototype.setValueForKey = function( aKey, aValue)
 };
 
 CFMutableDictionary.prototype.setValueForKey.displayName = "CFMutableDictionary.prototype.setValueForKey";
+kCFErrorLocalizedDescriptionKey = "CPLocalizedDescription";
+kCFErrorLocalizedFailureReasonKey = "CPLocalizedFailureReason";
+kCFErrorLocalizedRecoverySuggestionKey = "CPLocalizedRecoverySuggestion";
+kCFErrorDescriptionKey = "CPDescription";
+kCFErrorUnderlyingErrorKey = "CPUnderlyingError";
+
+kCFErrorURLKey = "CPURL";
+kCFErrorFilePathKey = "CPFilePath";
+
+
+
+
+kCFErrorDomainCappuccino = "CPCappuccinoErrorDomain";
+kCFErrorDomainCocoa = kCFErrorDomainCappuccino;
+
+
+CFError = function( domain, code, userInfo)
+{
+    this._domain = domain || NULL;
+    this._code = code || 0;
+    this._userInfo = userInfo || new CFDictionary();
+    this._UID = objj_generateObjectUID();
+};
+
+CFError.prototype.domain = function()
+{
+    return this._domain;
+};
+
+CFError.prototype.domain.displayName = "CFError.prototype.domain";
+
+CFError.prototype.code = function()
+{
+    return this._code;
+};
+
+CFError.prototype.code.displayName = "CFError.prototype.code";
+
+
+
+
+CFError.prototype.description = function()
+{
+    var localizedDesc = this._userInfo.valueForKey(kCFErrorLocalizedDescriptionKey);
+    if (localizedDesc)
+        return localizedDesc;
+
+    var reason = this._userInfo.valueForKey(kCFErrorLocalizedFailureReasonKey);
+    if (reason)
+    {
+        var operationFailedStr = "The operation couldn\u2019t be completed. " + reason;
+        return operationFailedStr;
+    }
+
+
+    var result = "",
+        desc = this._userInfo.valueForKey(kCFErrorDescriptionKey);
+    if (desc)
+    {
+
+        var result = "The operation couldn\u2019t be completed. (error " + this._code + " - " + desc + ")";
+    }
+    else
+    {
+
+        var result = "The operation couldn\u2019t be completed. (error " + this._code + ")";
+    }
+
+    return result;
+};
+
+CFError.prototype.description.displayName = "CFError.prototype.description";
+
+CFError.prototype.failureReason = function()
+{
+    return this._userInfo.valueForKey(kCFErrorLocalizedFailureReasonKey);
+};
+
+CFError.prototype.failureReason.displayName = "CFError.prototype.failureReason";
+
+CFError.prototype.recoverySuggestion = function()
+{
+    return this._userInfo.valueForKey(kCFErrorLocalizedRecoverySuggestionKey);
+};
+
+CFError.prototype.recoverySuggestion.displayName = "CFError.prototype.recoverySuggestion";
+
+CFError.prototype.userInfo = function ()
+{
+    return this._userInfo;
+};
+
+CFError.prototype.userInfo.displayName = "CFError.prototype.userInfo";
+
+
+
+
+
+
+CFErrorCreate = function( domain, code, userInfo)
+{
+    return new CFError(domain, code, userInfo);
+};
+
+CFErrorCreateWithUserInfoKeysAndValues = function( domain, code, userInfoKeys, userInfoValues, numUserInfoValues)
+{
+    var userInfo = new CFMutableDictionary();
+    while (numUserInfoValues--)
+        userInfo.setValueForKey(userInfoKeys[numUserInfoValues], userInfoValues[numUserInfoValues]);
+
+    return new CFError(domain, code, userInfo);
+};
+
+CFErrorGetCode = function( err)
+{
+    return err.code();
+};
+
+CFErrorGetDomain = function( err)
+{
+    return err.domain();
+};
+
+CFErrorCopyDescription = function( err)
+{
+    return err.description();
+};
+
+CFErrorCopyUserInfo = function( err)
+{
+    return err.userInfo();
+};
+
+CFErrorCopyFailureReason = function( err)
+{
+    return err.failureReason();
+};
+
+CFErrorCopyRecoverySuggestion = function( err)
+{
+    return err.recoverySuggestion();
+};
+kCFURLErrorUnknown = -998;
+kCFURLErrorCancelled = -999;
+kCFURLErrorBadURL = -1000;
+kCFURLErrorTimedOut = -1001;
+kCFURLErrorUnsupportedURL = -1002;
+kCFURLErrorCannotFindHost = -1003;
+kCFURLErrorCannotConnectToHost = -1004;
+kCFURLErrorNetworkConnectionLost = -1005;
+kCFURLErrorDNSLookupFailed = -1006;
+kCFURLErrorHTTPTooManyRedirects = -1007;
+kCFURLErrorResourceUnavailable = -1008;
+kCFURLErrorNotConnectedToInternet = -1009;
+kCFURLErrorRedirectToNonExistentLocation = -1010;
+kCFURLErrorBadServerResponse = -1011;
+kCFURLErrorUserCancelledAuthentication = -1012;
+kCFURLErrorUserAuthenticationRequired = -1013;
+kCFURLErrorZeroByteResource = -1014;
+kCFURLErrorCannotDecodeRawData = -1015;
+kCFURLErrorCannotDecodeContentData = -1016;
+kCFURLErrorCannotParseResponse = -1017;
+kCFURLErrorRequestBodyStreamExhausted = -1021;
+kCFURLErrorFileDoesNotExist = -1100;
+kCFURLErrorFileIsDirectory = -1101;
+kCFURLErrorNoPermissionsToReadFile = -1102;
+kCFURLErrorDataLengthExceedsMaximum = -1103;
 CFData = function()
 {
     this._rawString = NULL;
@@ -5588,12 +5758,15 @@ if (typeof exports != "undefined" && !exports.acorn) {
   var _ref = {keyword: "ref"}, _deref = {keyword: "deref"};
   var _protocol = {keyword: "protocol"}, _optional = {keyword: "optional"}, _required = {keyword: "required"};
   var _interface = {keyword: "interface"};
+  var _typedef = {keyword: "typedef"};
 
 
 
   var _filename = {keyword: "filename"}, _unsigned = {keyword: "unsigned", okAsIdent: true}, _signed = {keyword: "signed", okAsIdent: true};
   var _byte = {keyword: "byte", okAsIdent: true}, _char = {keyword: "char", okAsIdent: true}, _short = {keyword: "short", okAsIdent: true};
   var _int = {keyword: "int", okAsIdent: true}, _long = {keyword: "long", okAsIdent: true}, _id = {keyword: "id", okAsIdent: true};
+  var _boolean = {keyword: "BOOL", okAsIdent: true}, _SEL = {keyword: "SEL", okAsIdent: true}, _float = {keyword: "float", okAsIdent: true};
+  var _double = {keyword: "double", okAsIdent: true};
   var _preprocess = {keyword: "#"};
 
 
@@ -5628,14 +5801,15 @@ if (typeof exports != "undefined" && !exports.acorn) {
 
 
   var keywordTypesObjJ = {"IBAction": _action, "IBOutlet": _outlet, "unsigned": _unsigned, "signed": _signed, "byte": _byte, "char": _char,
-                          "short": _short, "int": _int, "long": _long, "id": _id };
+                          "short": _short, "int": _int, "long": _long, "id": _id, "float": _float, "BOOL": _boolean, "SEL": _SEL,
+                          "double": _double};
 
 
 
   var objJAtKeywordTypes = {"implementation": _implementation, "outlet": _outlet, "accessors": _accessors, "end": _end,
                             "import": _import, "action": _action, "selector": _selector, "class": _class, "global": _global,
                             "ref": _ref, "deref": _deref, "protocol": _protocol, "optional": _optional, "required": _required,
-                            "interface": _interface};
+                            "interface": _interface, "typedef": _typedef};
 
 
 
@@ -5733,7 +5907,7 @@ if (typeof exports != "undefined" && !exports.acorn) {
 
 
 
-  var isKeywordObjJ = makePredicate("IBAction IBOutlet byte char short int long unsigned signed id");
+  var isKeywordObjJ = makePredicate("IBAction IBOutlet byte char short int long float unsigned signed id BOOL SEL double");
 
 
 
@@ -5840,6 +6014,7 @@ var preprocessTokens = [_preIf, _preIfdef, _preIfndef, _preElse, _preElseIf, _pr
         }
       }
     }
+
     tokVal = val;
     lastTokCommentsAfter = tokCommentsAfter;
     lastTokSpacesAfter = tokSpacesAfter;
@@ -7382,6 +7557,15 @@ var preIfLevel = 0;
       }
       break;
 
+
+    case _typedef:
+      if (options.objj) {
+        next();
+        node.typedefname = parseIdent(true);
+        return finishNode(node, "TypeDefStatement");
+      }
+      break;
+
     }
       var maybeName = tokVal, expr = parseExpression();
       if (starttype === _name && expr.type === "Identifier" && eat(_colon)) {
@@ -7412,6 +7596,7 @@ var preIfLevel = 0;
       if (outlet)
         decl.outlet = outlet;
       decl.ivartype = type;
+
       decl.id = parseIdent();
       if (strict && isStrictBadIdWord(decl.id.name))
         raise(decl.id.start, "Binding " + decl.id.name + " in strict mode");
@@ -8085,6 +8270,7 @@ var preIfLevel = 0;
       node.typeisclass = true;
       next();
     } else {
+      node.typeisclass = false;
       node.name = tokType.keyword;
 
       if (!eat(_void)) {
@@ -8107,32 +8293,36 @@ var preIfLevel = 0;
         } else {
 
           var nextKeyWord;
-          if (eat(_signed) || eat(_unsigned))
-            nextKeyWord = tokType.keyword || true;
-          if (eat(_char) || eat(_byte) || eat(_short)) {
-            if (nextKeyWord)
-              node.name += " " + nextKeyWord;
-            nextKeyWord = tokType.keyword || true;
-          } else {
-            if (eat(_int)) {
-              if (nextKeyWord)
-                node.name += " " + nextKeyWord;
-              nextKeyWord = tokType.keyword || true;
-            }
-            if (eat(_long)) {
-              if (nextKeyWord)
-                node.name += " " + nextKeyWord;
-              nextKeyWord = tokType.keyword || true;
-              if (eat(_long)) {
-                node.name += " " + nextKeyWord;
-              }
-            }
-          }
-          if (!nextKeyWord) {
+          if (eat(_float) || eat(_boolean) || eat(_SEL) || eat(_double))
+              nextKeyWord = tokType.keyword;
+          else {
+             if (eat(_signed) || eat(_unsigned))
+               nextKeyWord = tokType.keyword || true;
+             if (eat(_char) || eat(_byte) || eat(_short)) {
+               if (nextKeyWord)
+                 node.name += " " + nextKeyWord;
+               nextKeyWord = tokType.keyword || true;
+             } else {
+               if (eat(_int)) {
+                 if (nextKeyWord)
+                   node.name += " " + nextKeyWord;
+                 nextKeyWord = tokType.keyword || true;
+               }
+               if (eat(_long)) {
+                 if (nextKeyWord)
+                   node.name += " " + nextKeyWord;
+                 nextKeyWord = tokType.keyword || true;
+                 if (eat(_long)) {
+                   node.name += " " + nextKeyWord;
+                 }
+               }
+             }
+             if (!nextKeyWord) {
 
-            node.name = (!options.forbidReserved && tokType.keyword) || unexpected();
-            node.typeisclass = true;
-            next();
+               node.name = (!options.forbidReserved && tokType.keyword) || unexpected();
+               node.typeisclass = true;
+               next();
+             }
           }
         }
       }
@@ -8347,6 +8537,8 @@ if (!exports.acorn) {
       c(node.optional[i], st, "Statement");
     }
   }
+
+  exports.TypeDefStatement = ignore;
 
   exports.MethodDeclarationStatement = function(node, st, c) {
     var body = node.body;
@@ -8742,6 +8934,11 @@ ProtocolDef.prototype.getClassMethod = function(name) {
     return null;
 }
 
+var TypeDef = function(name)
+{
+    this.name = name;
+}
+
 
 var MethodDef = function(name, types)
 {
@@ -8758,7 +8955,7 @@ var wordPrefixOperators = exports.acorn.makePredicate("delete in instanceof new 
 var isLogicalBinary = exports.acorn.makePredicate("LogicalExpression BinaryExpression");
 var isInInstanceof = exports.acorn.makePredicate("in instanceof");
 
-var ObjJAcornCompiler = function( aString, aURL, flags, pass, classDefs, protocolDefs)
+var ObjJAcornCompiler = function( aString, aURL, flags, pass, classDefs, protocolDefs, typeDefs)
 {
     this.source = aString;
     this.URL = new CFURL(aURL);
@@ -8772,15 +8969,13 @@ var ObjJAcornCompiler = function( aString, aURL, flags, pass, classDefs, protoco
         this.tokens = exports.acorn.parse(aString);
     }
     catch (e) {
-        if (e.lineStart)
+        if (e.lineStart != null)
         {
             var message = this.prettifyMessage(e, "ERROR");
 
             console.log(message);
-
-
-
         }
+
         throw e;
     }
 
@@ -8788,6 +8983,7 @@ var ObjJAcornCompiler = function( aString, aURL, flags, pass, classDefs, protoco
     this.flags = flags | ObjJAcornCompiler.Flags.IncludeDebugSymbols;
     this.classDefs = classDefs ? classDefs : Object.create(null);
     this.protocolDefs = protocolDefs ? protocolDefs : Object.create(null);
+    this.typeDefs = typeDefs ? typeDefs : Object.create(null);
     this.lastPos = 0;
     if (currentCompilerFlags & ObjJAcornCompiler.Flags.Generate)
         this.generate = true;
@@ -8804,9 +9000,9 @@ exports.ObjJAcornCompiler.compileToExecutable = function( aString, aURL, flags)
     return new ObjJAcornCompiler(aString, aURL, flags, 2).executable();
 }
 
-exports.ObjJAcornCompiler.compileToIMBuffer = function( aString, aURL, flags, classDefs, protocolDefs)
+exports.ObjJAcornCompiler.compileToIMBuffer = function( aString, aURL, flags, classDefs, protocolDefs, typeDefs)
 {
-    return new ObjJAcornCompiler(aString, aURL, flags, 2, classDefs, protocolDefs).IMBuffer();
+    return new ObjJAcornCompiler(aString, aURL, flags, 2, classDefs, protocolDefs, typeDefs).IMBuffer();
 }
 
 exports.ObjJAcornCompiler.compileFileDependencies = function( aString, aURL, flags)
@@ -8817,6 +9013,8 @@ exports.ObjJAcornCompiler.compileFileDependencies = function( aString, aURL, fla
 
 ObjJAcornCompiler.prototype.compilePass2 = function()
 {
+    var warnings = [];
+
     ObjJAcornCompiler.currentCompileFile = this.URL;
     this.pass = 2;
     this.jsBuffer = new StringBuffer();
@@ -8825,13 +9023,16 @@ ObjJAcornCompiler.prototype.compilePass2 = function()
     compile(this.tokens, new Scope(null ,{ compiler: this }), pass2);
     for (var i = 0; i < this.warnings.length; i++)
     {
-       var message = this.prettifyMessage(this.warnings[i], "WARNING");
+        var warning = this.warnings[i],
+            type = "WARNING";
+
+        var message = this.prettifyMessage(warning, type);
 
         console.log(message);
-
-
-
     }
+
+    if (warnings.length && exports.outputFormatInXML)
+        print(CFPropertyListCreateXMLData(warnings, kCFPropertyListXMLFormat_v1_0).rawString());
 
 
     return this.jsBuffer.toString();
@@ -8970,6 +9171,31 @@ ObjJAcornCompiler.prototype.getProtocolDef = function( aProtocolName)
 
 }
 
+ObjJAcornCompiler.prototype.getTypeDef = function( aTypeDefName)
+{
+    if (!aTypeDefName)
+        return null;
+
+    var t = this.typeDefs[aTypeDefName];
+
+    if (t)
+        return t;
+
+    if (typeof objj_getTypeDef === 'function')
+    {
+        var aTypeDef = objj_getTypeDef(aTypeDefName);
+        if (aTypeDef)
+        {
+            var typeDefName = typeDef_getName(aTypeDef)
+            t = new TypeDef(typeDefName);
+            this.typeDefs[typeDefName] = t;
+            return t;
+        }
+    }
+
+    return null;
+}
+
 ObjJAcornCompiler.methodDefsFromMethodList = function( methodList)
 {
     var methodSize = methodList.length,
@@ -9018,9 +9244,13 @@ ObjJAcornCompiler.prototype.prettifyMessage = function( aMessage, messageType)
 ObjJAcornCompiler.prototype.error_message = function(errorMessage, node)
 {
     var pos = exports.acorn.getLineInfo(this.source, node.start),
-        syntaxError = {message: errorMessage, line: pos.line, column: pos.column, lineStart: pos.lineStart, lineEnd: pos.lineEnd};
+        syntaxErrorData = {message: errorMessage, line: pos.line, column: pos.column, lineStart: pos.lineStart, lineEnd: pos.lineEnd},
+        syntaxError = new SyntaxError(this.prettifyMessage(syntaxErrorData, "ERROR"));
 
-    return new SyntaxError(this.prettifyMessage(syntaxError, "ERROR"));
+    syntaxError.line = pos.line;
+    syntaxError.path = this.URL.path();
+
+    return syntaxError;
 }
 
 ObjJAcornCompiler.prototype.pushImport = function(url)
@@ -10023,6 +10253,9 @@ ClassDeclarationStatement: function(node, st, c) {
     compiler.cmBuffer = new StringBuffer();
     compiler.classBodyBuffer = new StringBuffer();
 
+    if (compiler.getTypeDef(className))
+        throw compiler.error_message(className + " is already declared as a type", node.classname);
+
     if (!generate) saveJSBuffer.concat(compiler.source.substring(compiler.lastPos, node.start));
 
 
@@ -10085,6 +10318,8 @@ ClassDeclarationStatement: function(node, st, c) {
     compiler.currentSuperMetaClass = "objj_getMetaClass(\"" + className + "\").super_class";
 
     var firstIvarDeclaration = true,
+        ivars = classDef.ivars,
+        classDefIvars = [],
         hasAccessors = false;
 
 
@@ -10093,13 +10328,26 @@ ClassDeclarationStatement: function(node, st, c) {
         {
             var ivarDecl = node.ivardeclarations[i],
                 ivarType = ivarDecl.ivartype ? ivarDecl.ivartype.name : null,
+                ivarTypeIsClass = ivarDecl.ivartype ? ivarDecl.ivartype.typeisclass : false,
                 ivarName = ivarDecl.id.name,
-                ivars = classDef.ivars,
                 ivar = {"type": ivarType, "name": ivarName},
                 accessors = ivarDecl.accessors;
 
-            if (ivars[ivarName])
-                throw compiler.error_message("Instance variable '" + ivarName + "'is already declared for class " + className, ivarDecl.id);
+            var checkIfIvarIsAlreadyDeclaredAndInSuperClass = function(aClassDef, recursiveFunction) {
+                if (aClassDef.ivars[ivarName])
+                    throw compiler.error_message("Instance variable '" + ivarName + "' is already declared for class " + className + (aClassDef.name !== className ? " in superclass " + aClassDef.name : ""), ivarDecl.id);
+                if (aClassDef.superClass)
+                    recursiveFunction(aClassDef.superClass, recursiveFunction);
+            }
+
+
+            checkIfIvarIsAlreadyDeclaredAndInSuperClass(classDef, checkIfIvarIsAlreadyDeclaredAndInSuperClass);
+
+            var isTypeDefined = !ivarTypeIsClass || typeof global[ivarType] !== "undefined" || typeof window[ivarType] !== "undefined"
+                                || compiler.getClassDef(ivarType) || compiler.getTypeDef(ivarType) || ivarType == classDef.name;
+
+            if (!isTypeDefined)
+                compiler.addWarning(createMessage("Unknown type '" + ivarType + "' for ivar '" + ivarName + "'", ivarDecl.id, compiler.source));
 
             if (firstIvarDeclaration)
             {
@@ -10116,7 +10364,10 @@ ClassDeclarationStatement: function(node, st, c) {
 
             if (ivarDecl.outlet)
                 ivar.outlet = true;
-            ivars[ivarName] = ivar;
+
+
+            classDefIvars.push(ivar);
+
             if (!classScope.ivars)
                 classScope.ivars = Object.create(null);
             classScope.ivars[ivarName] = {type: "ivar", name: ivarName, node: ivarDecl.id, ivar: ivar};
@@ -10154,7 +10405,8 @@ ClassDeclarationStatement: function(node, st, c) {
         var getterSetterBuffer = new StringBuffer();
 
 
-        getterSetterBuffer.concat(compiler.source.substring(node.start, node.endOfIvars));
+
+        getterSetterBuffer.concat(compiler.source.substring(node.start, node.endOfIvars).replace(/<.*>/g, ""));
         getterSetterBuffer.concat("\n");
 
         for (var i = 0; i < node.ivardeclarations.length; ++i)
@@ -10199,11 +10451,20 @@ ClassDeclarationStatement: function(node, st, c) {
 
 
         var b = getterSetterBuffer.toString().replace(/@accessors(\(.*\))?/g, "");
-        var imBuffer = ObjJAcornCompiler.compileToIMBuffer(b, "Accessors", compiler.flags, compiler.classDefs, compiler.protocolDefs);
+        var imBuffer = ObjJAcornCompiler.compileToIMBuffer(b, "Accessors", compiler.flags, compiler.classDefs, compiler.protocolDefs, compiler.typeDefs);
 
 
 
         compiler.imBuffer.concat(imBuffer);
+    }
+
+
+    for (var ivarSize = classDefIvars.length, i = 0; i < ivarSize; i++) {
+        var ivar = classDefIvars[i],
+            ivarName = ivar.name;
+
+
+        ivars[ivarName] = ivar;
     }
 
 
@@ -10260,8 +10521,15 @@ ClassDeclarationStatement: function(node, st, c) {
 
         var protocolDefs = [];
 
-        for (var i = 0, size = protocols.length; i < size; i++)
-            protocolDefs.push(compiler.getProtocolDef(protocols[i].name));
+        for (var i = 0, size = protocols.length; i < size; i++) {
+            var protocol = protocols[i],
+                protocolDef = compiler.getProtocolDef(protocol.name);
+
+            if (!protocolDef)
+                throw compiler.error_message("Cannot find protocol declaration for '" + protocol.name + "'", protocol);
+
+            protocolDefs.push(protocolDef);
+        }
 
         var unimplementedMethods = classDef.listOfNotImplementedMethodsForProtocols(protocolDefs);
 
@@ -10699,9 +10967,9 @@ Reference: function(node, st, c) {
         buffer.concat(" ");
     }
     buffer.concat("function(__input) { if (arguments.length) return ");
-    buffer.concat(node.element.name);
+    c(node.element, st, "Expression");
     buffer.concat(" = __input; return ");
-    buffer.concat(node.element.name);
+    c(node.element, st, "Expression");
     buffer.concat("; }");
     if (!generate) compiler.lastPos = node.end;
 },
@@ -10730,6 +10998,10 @@ ClassStatement: function(node, st, c) {
         compiler.jsBuffer.concat("//");
     }
     var className = node.id.name;
+
+    if (compiler.getTypeDef(className))
+        throw compiler.error_message(className + " is already declared as a type", node.id);
+
     if (!compiler.getClassDef(className)) {
         classDef = new ClassDef(false, className);
         compiler.classDefs[className] = classDef;
@@ -10752,6 +11024,43 @@ PreprocessStatement: function(node, st, c) {
       compiler.lastPos = node.start;
       compiler.jsBuffer.concat("//");
     }
+},
+TypeDefStatement: function(node, st, c) {
+
+    var compiler = st.compiler,
+        generate = compiler.generate,
+        buffer = compiler.jsBuffer,
+        typeDefName = node.typedefname.name,
+        typeDef = compiler.getTypeDef(typeDefName),
+        typeDefScope = new Scope(st);
+
+    if (typeDef)
+        throw compiler.error_message("Duplicate type definition " + typeDefName, node.typedefname);
+
+    if (compiler.getClassDef(typeDefName))
+        throw compiler.error_message(typeDefName + " is already declared as class", node.typedefname);
+
+    compiler.imBuffer = new StringBuffer();
+    compiler.cmBuffer = new StringBuffer();
+
+    if (!generate)
+        buffer.concat(compiler.source.substring(compiler.lastPos, node.start));
+
+    buffer.concat("{var the_typedef = objj_allocateTypeDef(\"" + typeDefName + "\");");
+
+    typeDef = new TypeDef(typeDefName);
+    compiler.typeDefs[typeDefName] = typeDef;
+    typeDefScope.typeDef = typeDef;
+
+    buffer.concat("\nobjj_registerTypeDef(the_typedef);\n");
+
+    buffer.concat("}");
+
+    compiler.jsBuffer = buffer;
+
+
+    if (!generate)
+        compiler.lastPos = node.end;
 }
 });
 function FileDependency( aURL, isLocal)
@@ -11382,6 +11691,11 @@ objj_object = function()
     this._UID = -1;
 }
 
+objj_typeDef = function( aName)
+{
+    this.name = aName;
+}
+
 
 
 class_getName = function( aClass)
@@ -11722,6 +12036,26 @@ protocol_addProtocol = function( proto, addition)
     (proto.protocol_list || (proto.protocol_list = [])).push(addition);
 }
 
+
+var REGISTERED_TYPEDEFS = Object.create(null);
+
+objj_allocateTypeDef = function( aName)
+{
+    var typeDef = new objj_typeDef(aName);
+
+    return typeDef;
+}
+
+objj_registerTypeDef = function( typeDef)
+{
+    REGISTERED_TYPEDEFS[typeDef.name] = typeDef;
+}
+
+typeDef_getName = function( typeDef)
+{
+    return typeDef.name;
+}
+
 var _class_initialize = function( aClass)
 {
     var meta = (((aClass.info & (CLS_META))) ? aClass : aClass.isa);
@@ -11891,6 +12225,7 @@ objj_resetRegisterClasses = function()
 
     REGISTERED_CLASSES = Object.create(null);
     REGISTERED_PROTOCOLS = Object.create(null);
+    REGISTERED_TYPEDEFS = Object.create(null);
 
     resetBundle();
 }
@@ -12011,6 +12346,13 @@ objj_getMetaClass = function( aName)
 objj_getProtocol = function( aName)
 {
     return REGISTERED_PROTOCOLS[aName];
+}
+
+
+
+objj_getTypeDef = function( aName)
+{
+    return REGISTERED_TYPEDEFS[aName];
 }
 
 

@@ -1,4 +1,12 @@
-@STATIC;1.0;p;13;_CGGeometry.jt;9184;@STATIC;1.0;t;9165;CGPointMake = function(x, y)
+@STATIC;1.0;p;13;_CGGeometry.jt;9534;@STATIC;1.0;t;9515;{var the_typedef = objj_allocateTypeDef("CGPoint");
+objj_registerTypeDef(the_typedef);
+}{var the_typedef = objj_allocateTypeDef("CGSize");
+objj_registerTypeDef(the_typedef);
+}{var the_typedef = objj_allocateTypeDef("CGRect");
+objj_registerTypeDef(the_typedef);
+}{var the_typedef = objj_allocateTypeDef("CGInset");
+objj_registerTypeDef(the_typedef);
+}CGPointMake = function(x, y)
 {
     return {x: x, y: y};
 }
@@ -278,7 +286,7 @@ CGAlignCoordinate = function(coord)
 {
     return FLOOR(coord);
 }
-p;27;_CPCollectionKVCOperators.jt;5377;@STATIC;1.0;i;10;CPObject.jt;5343;objj_executeFile("CPObject.j", YES);var _CPCollectionKVCOperatorSimpleRE = /^@(avg|count|m(ax|in)|sum)(\.|$)/;
+p;27;_CPCollectionKVCOperators.jt;10733;@STATIC;1.0;i;10;CPObject.jt;10698;objj_executeFile("CPObject.j", YES);var _CPCollectionKVCOperatorSimpleRE = /^@(avg|count|m(ax|in)|sum|unionOfObjects|distinctUnionOfObjects|unionOfArrays|distinctUnionOfArrays|distinctUnionOfSets)(\.|$)/;
 {var the_class = objj_allocateClassPair(CPObject, "_CPCollectionKVCOperator"),
 meta_class = the_class.isa;objj_registerClassPair(the_class);
 class_addMethods(meta_class, [new objj_method(sel_getUid("isSimpleCollectionOperator:"), function $_CPCollectionKVCOperator__isSimpleCollectionOperator_(self, _cmd, operator)
@@ -354,7 +362,89 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("isSimpleCollectionOper
 {
     return (aCollection == null ? null : aCollection.isa.objj_msgSend0(aCollection, "count"));
 }
-,["int","id","CPString"])]);
+,["int","id","CPString"]), new objj_method(sel_getUid("unionOfObjectsForCollection:propertyPath:"), function $_CPCollectionKVCOperator__unionOfObjectsForCollection_propertyPath_(self, _cmd, aCollection, propertyPath)
+{
+    if (!propertyPath)
+        return (aCollection == null ? null : aCollection.isa.objj_msgSend1(aCollection, "valueForUndefinedKey:", "@unionOfObjects"));
+    var objects = (aCollection == null ? null : aCollection.isa.objj_msgSend1(aCollection, "valueForKeyPath:", propertyPath));
+    if ((objects == null ? null : objects.isa.objj_msgSend1(objects, "isKindOfClass:", (CPSet == null ? null : CPSet.isa.objj_msgSend0(CPSet, "class")))))
+        return (objects == null ? null : objects.isa.objj_msgSend0(objects, "allObjects"));
+    return objects;
+}
+,["CPArray","id","CPString"]), new objj_method(sel_getUid("distinctUnionOfObjectsForCollection:propertyPath:"), function $_CPCollectionKVCOperator__distinctUnionOfObjectsForCollection_propertyPath_(self, _cmd, aCollection, propertyPath)
+{
+    if (!propertyPath)
+        return (aCollection == null ? null : aCollection.isa.objj_msgSend1(aCollection, "valueForUndefinedKey:", "@distinctUnionOfObjects"));
+    var objects = (aCollection == null ? null : aCollection.isa.objj_msgSend1(aCollection, "valueForKeyPath:", propertyPath)),
+        distinctObjects = (CPMutableArray == null ? null : CPMutableArray.isa.objj_msgSend0(CPMutableArray, "new")),
+        enumerator = (objects == null ? null : objects.isa.objj_msgSend0(objects, "objectEnumerator")),
+        object;
+    while ((object = (enumerator == null ? null : enumerator.isa.objj_msgSend0(enumerator, "nextObject"))) !== nil)
+    {
+        if ((distinctObjects == null ? null : distinctObjects.isa.objj_msgSend1(distinctObjects, "indexOfObject:", object)) == CPNotFound)
+            (distinctObjects == null ? null : distinctObjects.isa.objj_msgSend1(distinctObjects, "addObject:", object));
+    }
+    return distinctObjects;
+}
+,["CPArray","id","CPString"]), new objj_method(sel_getUid("unionOfArraysForCollection:propertyPath:"), function $_CPCollectionKVCOperator__unionOfArraysForCollection_propertyPath_(self, _cmd, aCollection, propertyPath)
+{
+    if (!propertyPath)
+        return (aCollection == null ? null : aCollection.isa.objj_msgSend1(aCollection, "valueForUndefinedKey:", "@unionOfArrays"));
+    var objects = [],
+        number = (aCollection == null ? null : aCollection.isa.objj_msgSend0(aCollection, "count"));
+    for (var i = 0; i < number; i++)
+        (objects == null ? null : objects.isa.objj_msgSend1(objects, "addObjectsFromArray:", ((___r1 = aCollection[i]), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "valueForKeyPath:", propertyPath))));
+    return objects;
+    var ___r1;
+}
+,["CPArray","id","CPString"]), new objj_method(sel_getUid("distinctUnionOfArraysForCollection:propertyPath:"), function $_CPCollectionKVCOperator__distinctUnionOfArraysForCollection_propertyPath_(self, _cmd, aCollection, propertyPath)
+{
+    if (!propertyPath)
+        return (aCollection == null ? null : aCollection.isa.objj_msgSend1(aCollection, "valueForUndefinedKey:", "@distinctUnionOfArrays"));
+    var objects = [],
+        number = (aCollection == null ? null : aCollection.isa.objj_msgSend0(aCollection, "count"));
+    for (var i = 0; i < number; i++)
+        (objects == null ? null : objects.isa.objj_msgSend1(objects, "addObjectsFromArray:", ((___r1 = aCollection[i]), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "valueForKeyPath:", propertyPath))));
+    var distinctObjects = (CPMutableArray == null ? null : CPMutableArray.isa.objj_msgSend0(CPMutableArray, "new")),
+        enumerator = (objects == null ? null : objects.isa.objj_msgSend0(objects, "objectEnumerator")),
+        object;
+    while ((object = (enumerator == null ? null : enumerator.isa.objj_msgSend0(enumerator, "nextObject"))) !== nil)
+    {
+        if ((distinctObjects == null ? null : distinctObjects.isa.objj_msgSend1(distinctObjects, "indexOfObject:", object)) == CPNotFound)
+            (distinctObjects == null ? null : distinctObjects.isa.objj_msgSend1(distinctObjects, "addObject:", object));
+    }
+    return distinctObjects;
+    var ___r1;
+}
+,["CPArray","id","CPString"]), new objj_method(sel_getUid("distinctUnionOfSetsForCollection:propertyPath:"), function $_CPCollectionKVCOperator__distinctUnionOfSetsForCollection_propertyPath_(self, _cmd, aCollection, propertyPath)
+{
+    if (!propertyPath)
+        return (aCollection == null ? null : aCollection.isa.objj_msgSend1(aCollection, "valueForUndefinedKey:", "@distinctUnionOfSets"));
+    var objects = (CPMutableSet == null ? null : CPMutableSet.isa.objj_msgSend0(CPMutableSet, "new")),
+        number = (aCollection == null ? null : aCollection.isa.objj_msgSend0(aCollection, "count")),
+        sets = (aCollection == null ? null : aCollection.isa.objj_msgSend0(aCollection, "allObjects"));
+    for (var i = 0; i < number; i++)
+        (objects == null ? null : objects.isa.objj_msgSend1(objects, "addObjectsFromArray:", ((___r1 = ((___r2 = sets[i]), ___r2 == null ? null : ___r2.isa.objj_msgSend1(___r2, "valueForKeyPath:", propertyPath))), ___r1 == null ? null : ___r1.isa.objj_msgSend0(___r1, "allObjects"))));
+    return objects;
+    var ___r1, ___r2;
+}
+,["CPArray","id","CPString"])]);
+}p;20;_CPTypeDefinitions.jt;759;@STATIC;1.0;t;741;{var the_typedef = objj_allocateTypeDef("Class");
+objj_registerTypeDef(the_typedef);
+}{var the_typedef = objj_allocateTypeDef("CPInteger");
+objj_registerTypeDef(the_typedef);
+}{var the_typedef = objj_allocateTypeDef("CPUInteger");
+objj_registerTypeDef(the_typedef);
+}{var the_typedef = objj_allocateTypeDef("DOMElement");
+objj_registerTypeDef(the_typedef);
+}{var the_typedef = objj_allocateTypeDef("JSObject");
+objj_registerTypeDef(the_typedef);
+}{var the_typedef = objj_allocateTypeDef("CPMethodSignature");
+objj_registerTypeDef(the_typedef);
+}{var the_typedef = objj_allocateTypeDef("CPPropertyListFormat");
+objj_registerTypeDef(the_typedef);
+}{var the_typedef = objj_allocateTypeDef("CPTimeInterval");
+objj_registerTypeDef(the_typedef);
 }p;13;CPArray+KVO.jt;25901;@STATIC;1.0;i;9;CPArray.ji;8;CPNull.ji;27;_CPCollectionKVCOperators.jt;25824;objj_executeFile("CPArray.j", YES);objj_executeFile("CPNull.j", YES);objj_executeFile("_CPCollectionKVCOperators.j", YES);{
 var the_class = objj_getClass("CPObject")
 if(!the_class) throw new SyntaxError("*** Could not find definition for class \"CPObject\"");
@@ -1629,14 +1719,286 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     (aCoder == null ? null : aCoder.isa.objj_msgSend2(aCoder, "encodeInt:forKey:", self._allowedUnits, CPByteCountFormatterAllowedUnitsKey));
 }
 ,["void","CPCoder"])]);
-}p;16;CPCharacterSet.jt;41730;@STATIC;1.0;i;9;CPArray.ji;13;CPException.ji;10;CPObject.ji;10;CPString.ji;7;CPURL.jt;41638;objj_executeFile("CPArray.j", YES);objj_executeFile("CPException.j", YES);objj_executeFile("CPObject.j", YES);objj_executeFile("CPString.j", YES);objj_executeFile("CPURL.j", YES);var _builtInCharacterSets = {};
+}p;9;CPCache.jt;12424;@STATIC;1.0;i;10;CPObject.ji;14;CPDictionary.ji;10;CPString.jt;12355;objj_executeFile("CPObject.j", YES);objj_executeFile("CPDictionary.j", YES);objj_executeFile("CPString.j", YES);{var the_protocol = objj_allocateProtocol("CPCacheDelegate");
+var aProtocol = objj_getProtocol("CPObject");
+if (!aProtocol) throw new SyntaxError("*** Could not find definition for protocol \"CPCacheDelegate\"");
+protocol_addProtocol(the_protocol, aProtocol);
+objj_registerProtocol(the_protocol);
+}var CPCacheDelegate_cache_willEvictObject_ = 1 << 1;
+{var the_class = objj_allocateClassPair(CPObject, "CPCache"),
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_items"), new objj_ivar("_currentPosition"), new objj_ivar("_totalCostCache"), new objj_ivar("_implementedDelegateMethods"), new objj_ivar("_name"), new objj_ivar("_countLimit"), new objj_ivar("_totalCostLimit"), new objj_ivar("_delegate")]);objj_registerClassPair(the_class);
+class_addMethods(the_class, [new objj_method(sel_getUid("name"), function $CPCache__name(self, _cmd)
+{
+    return self._name;
+}
+,["CPString"]), new objj_method(sel_getUid("setName:"), function $CPCache__setName_(self, _cmd, newValue)
+{
+    self._name = newValue;
+}
+,["void","CPString"]), new objj_method(sel_getUid("countLimit"), function $CPCache__countLimit(self, _cmd)
+{
+    return self._countLimit;
+}
+,["int"]), new objj_method(sel_getUid("setCountLimit:"), function $CPCache__setCountLimit_(self, _cmd, newValue)
+{
+    self._countLimit = newValue;
+}
+,["void","int"]), new objj_method(sel_getUid("totalCostLimit"), function $CPCache__totalCostLimit(self, _cmd)
+{
+    return self._totalCostLimit;
+}
+,["int"]), new objj_method(sel_getUid("setTotalCostLimit:"), function $CPCache__setTotalCostLimit_(self, _cmd, newValue)
+{
+    self._totalCostLimit = newValue;
+}
+,["void","int"]), new objj_method(sel_getUid("delegate"), function $CPCache__delegate(self, _cmd)
+{
+    return self._delegate;
+}
+,["id"]), new objj_method(sel_getUid("setDelegate:"), function $CPCache__setDelegate_(self, _cmd, newValue)
+{
+    self._delegate = newValue;
+}
+,["void","id"]), new objj_method(sel_getUid("init"), function $CPCache__init(self, _cmd)
+{
+    if (self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPCache").super_class }, "init"))
+    {
+        self._items = ((___r1 = CPDictionary.isa.objj_msgSend0(CPDictionary, "alloc")), ___r1 == null ? null : ___r1.isa.objj_msgSend0(___r1, "init"));
+        self._currentPosition = 0;
+        self._totalCostCache = -1;
+        self._implementedDelegateMethods = 0;
+        self._name = "";
+        self._countLimit = 0;
+        self._totalCostLimit = 0;
+        self._delegate = nil;
+    }
+    return self;
+    var ___r1;
+}
+,["id"]), new objj_method(sel_getUid("objectForKey:"), function $CPCache__objectForKey_(self, _cmd, aKey)
+{
+    return ((___r1 = ((___r2 = self._items), ___r2 == null ? null : ___r2.isa.objj_msgSend1(___r2, "objectForKey:", aKey))), ___r1 == null ? null : ___r1.isa.objj_msgSend0(___r1, "object"));
+    var ___r1, ___r2;
+}
+,["id","id"]), new objj_method(sel_getUid("setObject:forKey:"), function $CPCache__setObject_forKey_(self, _cmd, anObject, aKey)
+{
+    self.isa.objj_msgSend3(self, "setObject:forKey:cost:", anObject, aKey, 0);
+}
+,["void","id","id"]), new objj_method(sel_getUid("setObject:forKey:cost:"), function $CPCache__setObject_forKey_cost_(self, _cmd, anObject, aKey, aCost)
+{
+    if (((___r1 = self._items), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "objectForKey:", aKey)))
+        self.isa.objj_msgSend1(self, "removeObjectForKey:", aKey);
+    ((___r1 = self._items), ___r1 == null ? null : ___r1.isa.objj_msgSend2(___r1, "setObject:forKey:", (_CPCacheItem == null ? null : _CPCacheItem.isa.objj_msgSend3(_CPCacheItem, "cacheItemWithObject:cost:position:", anObject, aCost, ++self._currentPosition)), aKey));
+    self._totalCostCache = -1;
+    self.isa.objj_msgSend0(self, "_cleanCache");
+    var ___r1;
+}
+,["void","id","id","int"]), new objj_method(sel_getUid("removeObjectForKey:"), function $CPCache__removeObjectForKey_(self, _cmd, aKey)
+{
+    self.isa.objj_msgSend1(self, "_sendDelegateWillEvictObjectForKey:", aKey);
+    ((___r1 = self._items), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "removeObjectForKey:", aKey));
+    self._totalCostCache = -1;
+    var ___r1;
+}
+,["void","id"]), new objj_method(sel_getUid("removeAllObjects"), function $CPCache__removeAllObjects(self, _cmd)
+{
+    var enumerator = ((___r1 = self._items), ___r1 == null ? null : ___r1.isa.objj_msgSend0(___r1, "keyEnumerator")),
+        key;
+    while (key = (enumerator == null ? null : enumerator.isa.objj_msgSend0(enumerator, "nextObject")))
+        self.isa.objj_msgSend1(self, "_sendDelegateWillEvictObjectForKey:", key);
+    ((___r1 = self._items), ___r1 == null ? null : ___r1.isa.objj_msgSend0(___r1, "removeAllObjects"));
+    self._totalCostCache = -1;
+    self._currentPosition = 0;
+    var ___r1;
+}
+,["void"]), new objj_method(sel_getUid("setCountLimit:"), function $CPCache__setCountLimit_(self, _cmd, aCountLimit)
+{
+    self._countLimit = aCountLimit;
+    self.isa.objj_msgSend0(self, "_cleanCache");
+}
+,["void","int"]), new objj_method(sel_getUid("setTotalCostLimit:"), function $CPCache__setTotalCostLimit_(self, _cmd, aTotalCostLimit)
+{
+    self._totalCostLimit = aTotalCostLimit;
+    self.isa.objj_msgSend0(self, "_cleanCache");
+}
+,["void","int"]), new objj_method(sel_getUid("setDelegate:"), function $CPCache__setDelegate_(self, _cmd, aDelegate)
+{
+    if (self._delegate === aDelegate)
+        return;
+    self._delegate = aDelegate;
+    self._implementedDelegateMethods = 0;
+    if (((___r1 = self._delegate), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "respondsToSelector:", sel_getUid("cache:willEvictObject:"))))
+        self._implementedDelegateMethods |= CPCacheDelegate_cache_willEvictObject_;
+    var ___r1;
+}
+,["void","id"]), new objj_method(sel_getUid("_count"), function $CPCache___count(self, _cmd)
+{
+    return ((___r1 = self._items), ___r1 == null ? null : ___r1.isa.objj_msgSend0(___r1, "count"));
+    var ___r1;
+}
+,["int"]), new objj_method(sel_getUid("_totalCost"), function $CPCache___totalCost(self, _cmd)
+{
+    if (self._totalCostCache >= 0)
+        return self._totalCostCache;
+    var enumerator = ((___r1 = self._items), ___r1 == null ? null : ___r1.isa.objj_msgSend0(___r1, "objectEnumerator")),
+        value;
+    self._totalCostCache = 0;
+    while (value = (enumerator == null ? null : enumerator.isa.objj_msgSend0(enumerator, "nextObject")))
+        self._totalCostCache += (value == null ? null : value.isa.objj_msgSend0(value, "cost"));
+    return self._totalCostCache;
+    var ___r1;
+}
+,["int"]), new objj_method(sel_getUid("_resequencePosition"), function $CPCache___resequencePosition(self, _cmd)
+{
+    self._currentPosition = 1;
+    var sortedKeys = ((___r1 = ((___r2 = self._items), ___r2 == null ? null : ___r2.isa.objj_msgSend0(___r2, "allKeys"))), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "sortedArrayUsingFunction:", function(k1, k2)
+    {
+        return ((___r1 = ((___r2 = ((___r3 = self._items), ___r3 == null ? null : ___r3.isa.objj_msgSend1(___r3, "objectForKey:", k1))), ___r2 == null ? null : ___r2.isa.objj_msgSend0(___r2, "position"))), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "compare:", ((___r2 = ((___r3 = self._items), ___r3 == null ? null : ___r3.isa.objj_msgSend1(___r3, "objectForKey:", k2))), ___r2 == null ? null : ___r2.isa.objj_msgSend0(___r2, "position"))));
+        var ___r1, ___r2, ___r3;
+    }));
+    for (var i = 0; i < sortedKeys.length; ++i)
+        ((___r1 = ((___r2 = self._items), ___r2 == null ? null : ___r2.isa.objj_msgSend1(___r2, "objectForKey:", sortedKeys[i]))), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "setPosition:", self._currentPosition++));
+    var ___r1, ___r2;
+}
+,["void"]), new objj_method(sel_getUid("_isTotalCostLimitExceeded"), function $CPCache___isTotalCostLimitExceeded(self, _cmd)
+{
+    return self.isa.objj_msgSend0(self, "_totalCost") > self._totalCostLimit && self._totalCostLimit > 0;
+}
+,["BOOL"]), new objj_method(sel_getUid("_isCountLimitExceeded"), function $CPCache___isCountLimitExceeded(self, _cmd)
+{
+    return self.isa.objj_msgSend0(self, "_count") > self._countLimit && self._countLimit > 0;
+}
+,["BOOL"]), new objj_method(sel_getUid("_cleanCache"), function $CPCache___cleanCache(self, _cmd)
+{
+    if (!self.isa.objj_msgSend0(self, "_isTotalCostLimitExceeded") && !self.isa.objj_msgSend0(self, "_isCountLimitExceeded"))
+        return;
+    var sortedKeys = ((___r1 = ((___r2 = self._items), ___r2 == null ? null : ___r2.isa.objj_msgSend0(___r2, "allKeys"))), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "sortedArrayUsingFunction:", function(k1, k2)
+    {
+        return ((___r1 = ((___r2 = ((___r3 = self._items), ___r3 == null ? null : ___r3.isa.objj_msgSend1(___r3, "objectForKey:", k1))), ___r2 == null ? null : ___r2.isa.objj_msgSend0(___r2, "position"))), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "compare:", ((___r2 = ((___r3 = self._items), ___r3 == null ? null : ___r3.isa.objj_msgSend1(___r3, "objectForKey:", k2))), ___r2 == null ? null : ___r2.isa.objj_msgSend0(___r2, "position"))));
+        var ___r1, ___r2, ___r3;
+    }));
+    for (var i = 0; i < sortedKeys.length; ++i)
+    {
+        if (!self.isa.objj_msgSend0(self, "_isTotalCostLimitExceeded") && !self.isa.objj_msgSend0(self, "_isCountLimitExceeded"))
+            break;
+        self.isa.objj_msgSend1(self, "_sendDelegateWillEvictObjectForKey:", sortedKeys[i]);
+        ((___r1 = self._items), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "removeObjectForKey:", sortedKeys[i]));
+        self._totalCostCache = -1;
+    }
+    self.isa.objj_msgSend0(self, "_resequencePosition");
+    var ___r1, ___r2;
+}
+,["void"])]);
+}{
+var the_class = objj_getClass("CPCache")
+if(!the_class) throw new SyntaxError("*** Could not find definition for class \"CPCache\"");
+var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_getUid("_sendDelegateWillEvictObjectForKey:"), function $CPCache___sendDelegateWillEvictObjectForKey_(self, _cmd, aKey)
+{
+    if (self._implementedDelegateMethods & CPCacheDelegate_cache_willEvictObject_)
+        ((___r1 = self._delegate), ___r1 == null ? null : ___r1.isa.objj_msgSend2(___r1, "cache:willEvictObject:", self, ((___r2 = ((___r3 = self._items), ___r3 == null ? null : ___r3.isa.objj_msgSend1(___r3, "objectForKey:", aKey))), ___r2 == null ? null : ___r2.isa.objj_msgSend0(___r2, "object"))));
+    var ___r1, ___r2, ___r3;
+}
+,["void","id"])]);
+}{var the_class = objj_allocateClassPair(CPObject, "_CPCacheItem"),
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_object"), new objj_ivar("_cost"), new objj_ivar("_position")]);objj_registerClassPair(the_class);
+class_addMethods(the_class, [new objj_method(sel_getUid("object"), function $_CPCacheItem__object(self, _cmd)
+{
+    return self._object;
+}
+,["CPObject"]), new objj_method(sel_getUid("setObject:"), function $_CPCacheItem__setObject_(self, _cmd, newValue)
+{
+    self._object = newValue;
+}
+,["void","CPObject"]), new objj_method(sel_getUid("cost"), function $_CPCacheItem__cost(self, _cmd)
+{
+    return self._cost;
+}
+,["int"]), new objj_method(sel_getUid("setCost:"), function $_CPCacheItem__setCost_(self, _cmd, newValue)
+{
+    self._cost = newValue;
+}
+,["void","int"]), new objj_method(sel_getUid("position"), function $_CPCacheItem__position(self, _cmd)
+{
+    return self._position;
+}
+,["int"]), new objj_method(sel_getUid("setPosition:"), function $_CPCacheItem__setPosition_(self, _cmd, newValue)
+{
+    self._position = newValue;
+}
+,["void","int"])]);
+class_addMethods(meta_class, [new objj_method(sel_getUid("cacheItemWithObject:cost:position:"), function $_CPCacheItem__cacheItemWithObject_cost_position_(self, _cmd, anObject, aCost, aPosition)
+{
+    var cacheItem = ((___r1 = self.isa.objj_msgSend0(self, "alloc")), ___r1 == null ? null : ___r1.isa.objj_msgSend0(___r1, "init"));
+    if (cacheItem)
+    {
+        (cacheItem == null ? null : cacheItem.isa.objj_msgSend1(cacheItem, "setObject:", anObject));
+        (cacheItem == null ? null : cacheItem.isa.objj_msgSend1(cacheItem, "setCost:", aCost));
+        (cacheItem == null ? null : cacheItem.isa.objj_msgSend1(cacheItem, "setPosition:", aPosition));
+    }
+    return cacheItem;
+    var ___r1;
+}
+,["id","CPObject","int","int"])]);
+}p;16;CPCharacterSet.jt;37164;@STATIC;1.0;i;9;CPArray.ji;13;CPException.ji;10;CPObject.ji;10;CPString.ji;7;CPURL.jt;37072;
+objj_executeFile("CPArray.j", YES);
+objj_executeFile("CPException.j", YES);
+objj_executeFile("CPObject.j", YES);
+objj_executeFile("CPString.j", YES);
+objj_executeFile("CPURL.j", YES);
+
+
+
+
+var _builtInCharacterSets = {};
+
 {var the_class = objj_allocateClassPair(CPObject, "CPCharacterSet"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_inverted")]);objj_registerClassPair(the_class);
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_inverted")]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+objj_registerClassPair(the_class);
 class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPCharacterSet__init(self, _cmd)
 {
     self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPCharacterSet").super_class }, "init");
+
     if (self)
         self._inverted = NO;
+
     return self;
 }
 ,["id"]), new objj_method(sel_getUid("invert"), function $CPCharacterSet__invert(self, _cmd)
@@ -1645,213 +2007,273 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPCha
 }
 ,["void"]), new objj_method(sel_getUid("characterIsMember:"), function $CPCharacterSet__characterIsMember_(self, _cmd, aCharacter)
 {
+
 }
 ,["BOOL","CPString"]), new objj_method(sel_getUid("hasMemberInPlane:"), function $CPCharacterSet__hasMemberInPlane_(self, _cmd, aPlane)
 {
+
 }
 ,["BOOL","int"]), new objj_method(sel_getUid("_setInverted:"), function $CPCharacterSet___setInverted_(self, _cmd, flag)
 {
     self._inverted = flag;
 }
-,["void","id"])]);
+,["void",null])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("characterSetWithCharactersInString:"), function $CPCharacterSet__characterSetWithCharactersInString_(self, _cmd, aString)
 {
-    return ((___r1 = (_CPStringContentCharacterSet == null ? null : _CPStringContentCharacterSet.isa.objj_msgSend0(_CPStringContentCharacterSet, "alloc"))), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "initWithString:", aString));
-    var ___r1;
+    return objj_msgSend(objj_msgSend(_CPStringContentCharacterSet, "alloc"), "initWithString:", aString);
 }
 ,["id","CPString"]), new objj_method(sel_getUid("characterSetWithRange:"), function $CPCharacterSet__characterSetWithRange_(self, _cmd, aRange)
 {
-    return ((___r1 = (_CPRangeCharacterSet == null ? null : _CPRangeCharacterSet.isa.objj_msgSend0(_CPRangeCharacterSet, "alloc"))), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "initWithRange:", aRange));
-    var ___r1;
+    return objj_msgSend(objj_msgSend(_CPRangeCharacterSet, "alloc"), "initWithRange:", aRange);
 }
 ,["id","CPRange"]), new objj_method(sel_getUid("alphanumericCharacterSet"), function $CPCharacterSet__alphanumericCharacterSet(self, _cmd)
 {
-    return CPCharacterSet.isa.objj_msgSend1(CPCharacterSet, "_sharedCharacterSetWithName:", _cmd);
+    return objj_msgSend(CPCharacterSet, "_sharedCharacterSetWithName:", _cmd);
 }
 ,["id"]), new objj_method(sel_getUid("controlCharacterSet"), function $CPCharacterSet__controlCharacterSet(self, _cmd)
 {
-    return CPCharacterSet.isa.objj_msgSend1(CPCharacterSet, "_sharedCharacterSetWithName:", _cmd);
+    return objj_msgSend(CPCharacterSet, "_sharedCharacterSetWithName:", _cmd);
 }
 ,["id"]), new objj_method(sel_getUid("decimalDigitCharacterSet"), function $CPCharacterSet__decimalDigitCharacterSet(self, _cmd)
 {
-    return CPCharacterSet.isa.objj_msgSend1(CPCharacterSet, "_sharedCharacterSetWithName:", _cmd);
+    return objj_msgSend(CPCharacterSet, "_sharedCharacterSetWithName:", _cmd);
 }
 ,["id"]), new objj_method(sel_getUid("decomposableCharacterSet"), function $CPCharacterSet__decomposableCharacterSet(self, _cmd)
 {
-    return CPCharacterSet.isa.objj_msgSend1(CPCharacterSet, "_sharedCharacterSetWithName:", _cmd);
+    return objj_msgSend(CPCharacterSet, "_sharedCharacterSetWithName:", _cmd);
 }
 ,["id"]), new objj_method(sel_getUid("illegalCharacterSet"), function $CPCharacterSet__illegalCharacterSet(self, _cmd)
 {
-    return CPCharacterSet.isa.objj_msgSend1(CPCharacterSet, "_sharedCharacterSetWithName:", _cmd);
+    return objj_msgSend(CPCharacterSet, "_sharedCharacterSetWithName:", _cmd);
 }
 ,["id"]), new objj_method(sel_getUid("letterCharacterSet"), function $CPCharacterSet__letterCharacterSet(self, _cmd)
 {
-    return CPCharacterSet.isa.objj_msgSend1(CPCharacterSet, "_sharedCharacterSetWithName:", _cmd);
+    return objj_msgSend(CPCharacterSet, "_sharedCharacterSetWithName:", _cmd);
 }
 ,["id"]), new objj_method(sel_getUid("lowercaseLetterCharacterSet"), function $CPCharacterSet__lowercaseLetterCharacterSet(self, _cmd)
 {
-    return CPCharacterSet.isa.objj_msgSend1(CPCharacterSet, "_sharedCharacterSetWithName:", _cmd);
+    return objj_msgSend(CPCharacterSet, "_sharedCharacterSetWithName:", _cmd);
 }
 ,["id"]), new objj_method(sel_getUid("nonBaseCharacterSet"), function $CPCharacterSet__nonBaseCharacterSet(self, _cmd)
 {
-    return CPCharacterSet.isa.objj_msgSend1(CPCharacterSet, "_sharedCharacterSetWithName:", _cmd);
+    return objj_msgSend(CPCharacterSet, "_sharedCharacterSetWithName:", _cmd);
 }
 ,["id"]), new objj_method(sel_getUid("punctuationCharacterSet"), function $CPCharacterSet__punctuationCharacterSet(self, _cmd)
 {
-    return CPCharacterSet.isa.objj_msgSend1(CPCharacterSet, "_sharedCharacterSetWithName:", _cmd);
+    return objj_msgSend(CPCharacterSet, "_sharedCharacterSetWithName:", _cmd);
 }
 ,["id"]), new objj_method(sel_getUid("uppercaseLetterCharacterSet"), function $CPCharacterSet__uppercaseLetterCharacterSet(self, _cmd)
 {
-    return CPCharacterSet.isa.objj_msgSend1(CPCharacterSet, "_sharedCharacterSetWithName:", _cmd);
+    return objj_msgSend(CPCharacterSet, "_sharedCharacterSetWithName:", _cmd);
 }
 ,["id"]), new objj_method(sel_getUid("whitespaceAndNewlineCharacterSet"), function $CPCharacterSet__whitespaceAndNewlineCharacterSet(self, _cmd)
 {
-    return CPCharacterSet.isa.objj_msgSend1(CPCharacterSet, "_sharedCharacterSetWithName:", _cmd);
+    return objj_msgSend(CPCharacterSet, "_sharedCharacterSetWithName:", _cmd);
 }
 ,["id"]), new objj_method(sel_getUid("whitespaceCharacterSet"), function $CPCharacterSet__whitespaceCharacterSet(self, _cmd)
 {
-    return CPCharacterSet.isa.objj_msgSend1(CPCharacterSet, "_sharedCharacterSetWithName:", _cmd);
+    return objj_msgSend(CPCharacterSet, "_sharedCharacterSetWithName:", _cmd);
 }
 ,["id"]), new objj_method(sel_getUid("_sharedCharacterSetWithName:"), function $CPCharacterSet___sharedCharacterSetWithName_(self, _cmd, csname)
 {
     var cs = _builtInCharacterSets[csname];
+
     if (!cs)
     {
         var i = 0,
-            ranges = CPArray.isa.objj_msgSend0(CPArray, "array"),
+            ranges = objj_msgSend(CPArray, "array"),
             rangeArray = eval(csname);
-        for (; i < rangeArray.length; i += 2)
+
+        for (; i < rangeArray.length; i+= 2)
         {
             var loc = rangeArray[i],
                 length = rangeArray[i + 1],
-                range = CPMakeRange(loc, length);
-            (ranges == null ? null : ranges.isa.objj_msgSend1(ranges, "addObject:", range));
+                range = CPMakeRange(loc,length);
+            objj_msgSend(ranges, "addObject:", range);
         }
-        cs = ((___r1 = (_CPRangeCharacterSet == null ? null : _CPRangeCharacterSet.isa.objj_msgSend0(_CPRangeCharacterSet, "alloc"))), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "initWithRanges:", ranges));
+
+        cs = objj_msgSend(objj_msgSend(_CPRangeCharacterSet, "alloc"), "initWithRanges:", ranges);
         _builtInCharacterSets[csname] = cs;
     }
+
     return cs;
-    var ___r1;
 }
 ,["id","id"])]);
-}var CPCharacterSetInvertedKey = "CPCharacterSetInvertedKey";
+}
+
+var CPCharacterSetInvertedKey = "CPCharacterSetInvertedKey";
+
 {
 var the_class = objj_getClass("CPCharacterSet")
 if(!the_class) throw new SyntaxError("*** Could not find definition for class \"CPCharacterSet\"");
-var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_getUid("initWithCoder:"), function $CPCharacterSet__initWithCoder_(self, _cmd, aCoder)
+var meta_class = the_class.isa;
+
+class_addMethods(the_class, [new objj_method(sel_getUid("initWithCoder:"), function $CPCharacterSet__initWithCoder_(self, _cmd, aCoder)
 {
     if (self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPCharacterSet").super_class }, "init"))
     {
-        self._inverted = (aCoder == null ? null : aCoder.isa.objj_msgSend1(aCoder, "decodeBoolForKey:", CPCharacterSetInvertedKey));
+        self._inverted = objj_msgSend(aCoder, "decodeBoolForKey:", CPCharacterSetInvertedKey);
     }
+
     return self;
 }
 ,["id","CPCoder"]), new objj_method(sel_getUid("encodeWithCoder:"), function $CPCharacterSet__encodeWithCoder_(self, _cmd, aCoder)
 {
-    (aCoder == null ? null : aCoder.isa.objj_msgSend2(aCoder, "encodeBool:forKey:", self._inverted, CPCharacterSetInvertedKey));
+    objj_msgSend(aCoder, "encodeBool:forKey:", self._inverted, CPCharacterSetInvertedKey);
 }
 ,["void","CPCoder"])]);
-}{var the_class = objj_allocateClassPair(CPCharacterSet, "_CPRangeCharacterSet"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_ranges")]);objj_registerClassPair(the_class);
+}
+
+
+
+{var the_class = objj_allocateClassPair(CPCharacterSet, "_CPRangeCharacterSet"),
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_ranges")]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+objj_registerClassPair(the_class);
 class_addMethods(the_class, [new objj_method(sel_getUid("initWithRange:"), function $_CPRangeCharacterSet__initWithRange_(self, _cmd, r)
 {
-    return self.isa.objj_msgSend1(self, "initWithRanges:", CPArray.isa.objj_msgSend1(CPArray, "arrayWithObject:", r));
+    return objj_msgSend(self, "initWithRanges:", objj_msgSend(CPArray, "arrayWithObject:", r));
 }
 ,["id","CPRange"]), new objj_method(sel_getUid("initWithRanges:"), function $_CPRangeCharacterSet__initWithRanges_(self, _cmd, ranges)
 {
     self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("_CPRangeCharacterSet").super_class }, "init");
+
     if (self)
     {
         self._ranges = ranges;
     }
+
     return self;
 }
 ,["id","CPArray"]), new objj_method(sel_getUid("copy"), function $_CPRangeCharacterSet__copy(self, _cmd)
 {
-    var set = ((___r1 = _CPRangeCharacterSet.isa.objj_msgSend0(_CPRangeCharacterSet, "alloc")), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "initWithRanges:", self._ranges));
-    (set == null ? null : set.isa.objj_msgSend1(set, "_setInverted:", self._inverted));
+    var set = objj_msgSend(objj_msgSend(_CPRangeCharacterSet, "alloc"), "initWithRanges:", self._ranges);
+    objj_msgSend(set, "_setInverted:", self._inverted);
     return set;
-    var ___r1;
 }
 ,["id"]), new objj_method(sel_getUid("invertedSet"), function $_CPRangeCharacterSet__invertedSet(self, _cmd)
 {
-    var set = ((___r1 = _CPRangeCharacterSet.isa.objj_msgSend0(_CPRangeCharacterSet, "alloc")), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "initWithRanges:", self._ranges));
-    (set == null ? null : set.isa.objj_msgSend0(set, "invert"));
+    var set = objj_msgSend(objj_msgSend(_CPRangeCharacterSet, "alloc"), "initWithRanges:", self._ranges);
+    objj_msgSend(set, "invert");
     return set;
-    var ___r1;
 }
 ,["id"]), new objj_method(sel_getUid("characterIsMember:"), function $_CPRangeCharacterSet__characterIsMember_(self, _cmd, aCharacter)
 {
     var c = aCharacter.charCodeAt(0),
-        enu = ((___r1 = self._ranges), ___r1 == null ? null : ___r1.isa.objj_msgSend0(___r1, "objectEnumerator")),
+        enu = objj_msgSend(self._ranges, "objectEnumerator"),
         range;
-    while ((range = (enu == null ? null : enu.isa.objj_msgSend0(enu, "nextObject"))) !== nil)
+
+    while ((range = objj_msgSend(enu, "nextObject")) !== nil)
     {
         if (CPLocationInRange(c, range))
             return !self._inverted;
     }
+
     return self._inverted;
-    var ___r1;
 }
 ,["BOOL","CPString"]), new objj_method(sel_getUid("hasMemberInPlane:"), function $_CPRangeCharacterSet__hasMemberInPlane_(self, _cmd, plane)
 {
+
+
+
+
+
     if (plane !== 0)
         return NO;
-    var enu = ((___r1 = self._ranges), ___r1 == null ? null : ___r1.isa.objj_msgSend0(___r1, "objectEnumerator")),
+
+    var enu = objj_msgSend(self._ranges, "objectEnumerator"),
         range;
-    while ((range = (enu == null ? null : enu.isa.objj_msgSend0(enu, "nextObject"))) !== nil)
+
+    while ((range = objj_msgSend(enu, "nextObject")) !== nil)
     {
         if (!CPEmptyRange(range))
             return YES;
     }
+
     return NO;
-    var ___r1;
 }
 ,["BOOL","int"]), new objj_method(sel_getUid("addCharactersInRange:"), function $_CPRangeCharacterSet__addCharactersInRange_(self, _cmd, aRange)
 {
-    ((___r1 = self._ranges), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "addObject:", aRange));
-    var ___r1;
+    objj_msgSend(self._ranges, "addObject:", aRange);
 }
 ,["void","CPRange"]), new objj_method(sel_getUid("addCharactersInString:"), function $_CPRangeCharacterSet__addCharactersInString_(self, _cmd, aString)
 {
     var i = 0;
+
     for (; i < aString.length; i++)
     {
         var code = aString.charCodeAt(i),
-            range = CPMakeRange(code, 1);
-        ((___r1 = self._ranges), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "addObject:", range));
+            range = CPMakeRange(code,1);
+
+        objj_msgSend(self._ranges, "addObject:", range);
     }
-    var ___r1;
 }
 ,["void","CPString"])]);
-}{var the_class = objj_allocateClassPair(CPCharacterSet, "_CPStringContentCharacterSet"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_string")]);objj_registerClassPair(the_class);
+}
+
+
+
+{var the_class = objj_allocateClassPair(CPCharacterSet, "_CPStringContentCharacterSet"),
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_string")]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+objj_registerClassPair(the_class);
 class_addMethods(the_class, [new objj_method(sel_getUid("initWithString:"), function $_CPStringContentCharacterSet__initWithString_(self, _cmd, s)
 {
     self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("_CPStringContentCharacterSet").super_class }, "init");
+
     if (self)
     {
         self._string = s;
     }
+
     return self;
 }
 ,["id","CPString"]), new objj_method(sel_getUid("copy"), function $_CPStringContentCharacterSet__copy(self, _cmd)
 {
-    var set = ((___r1 = _CPStringContentCharacterSet.isa.objj_msgSend0(_CPStringContentCharacterSet, "alloc")), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "initWithString:", self._string));
-    (set == null ? null : set.isa.objj_msgSend1(set, "_setInverted:", self._inverted));
+    var set = objj_msgSend(objj_msgSend(_CPStringContentCharacterSet, "alloc"), "initWithString:", self._string);
+    objj_msgSend(set, "_setInverted:", self._inverted);
+
     return set;
-    var ___r1;
 }
 ,["id"]), new objj_method(sel_getUid("invertedSet"), function $_CPStringContentCharacterSet__invertedSet(self, _cmd)
 {
-    var set = ((___r1 = _CPStringContentCharacterSet.isa.objj_msgSend0(_CPStringContentCharacterSet, "alloc")), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "initWithString:", self._string));
-    (set == null ? null : set.isa.objj_msgSend0(set, "invert"));
+    var set = objj_msgSend(objj_msgSend(_CPStringContentCharacterSet, "alloc"), "initWithString:", self._string);
+    objj_msgSend(set, "invert");
+
     return set;
-    var ___r1;
 }
 ,["id"]), new objj_method(sel_getUid("characterIsMember:"), function $_CPStringContentCharacterSet__characterIsMember_(self, _cmd, c)
 {
-    return self._string.indexOf(c.charAt(0)) !== -1 === !self._inverted;
+    return (self._string.indexOf(c.charAt(0)) !== -1) === !self._inverted;
 }
 ,["BOOL","CPString"]), new objj_method(sel_getUid("description"), function $_CPStringContentCharacterSet__description(self, _cmd)
 {
@@ -1859,132 +2281,2724 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithString:"), func
 }
 ,["CPString"]), new objj_method(sel_getUid("hasMemberInPlane:"), function $_CPStringContentCharacterSet__hasMemberInPlane_(self, _cmd, plane)
 {
+
+
+
+
+
     return self._string.length && plane === 0;
 }
 ,["BOOL","int"]), new objj_method(sel_getUid("addCharactersInRange:"), function $_CPStringContentCharacterSet__addCharactersInRange_(self, _cmd, aRange)
 {
     var i = aRange.location,
         count = aRange.location + aRange.length;
+
     for (; i < count; i++)
     {
         var s = String.fromCharCode(i);
-        if (!self.isa.objj_msgSend1(self, "characterIsMember:", s))
-            self._string = ((___r1 = self._string), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "stringByAppendingString:", s));
+
+        if (!objj_msgSend(self, "characterIsMember:", s))
+            self._string = objj_msgSend(self._string, "stringByAppendingString:", s);
     }
-    var ___r1;
 }
 ,["void","CPRange"]), new objj_method(sel_getUid("addCharactersInString:"), function $_CPStringContentCharacterSet__addCharactersInString_(self, _cmd, aString)
 {
     var i = 0;
+
     for (; i < aString.length; i++)
     {
         var s = aString.charAt(i);
-        if (!self.isa.objj_msgSend1(self, "characterIsMember:", s))
-            self._string = ((___r1 = self._string), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "stringByAppendingString:", s));
+
+        if (!objj_msgSend(self, "characterIsMember:", s))
+            self._string = objj_msgSend(self._string, "stringByAppendingString:", s);
     }
-    var ___r1;
 }
 ,["void","CPString"]), new objj_method(sel_getUid("isEqual:"), function $_CPStringContentCharacterSet__isEqual_(self, _cmd, aCharacterSet)
 {
     if (self === aCharacterSet)
         return YES;
-    if (!aCharacterSet || !(aCharacterSet == null ? null : aCharacterSet.isa.objj_msgSend1(aCharacterSet, "isKindOfClass:", self.isa.objj_msgSend0(self, "class"))))
+
+    if (!aCharacterSet || !objj_msgSend(aCharacterSet, "isKindOfClass:", objj_msgSend(self, "class")))
         return NO;
-    return self.isa.objj_msgSend1(self, "_isEqualToStringContentCharacterSet:", aCharacterSet);
+
+    return objj_msgSend(self, "_isEqualToStringContentCharacterSet:", aCharacterSet);
 }
 ,["BOOL","CPCharacterSet"]), new objj_method(sel_getUid("_isEqualToStringContentCharacterSet:"), function $_CPStringContentCharacterSet___isEqualToStringContentCharacterSet_(self, _cmd, aCharacterSet)
 {
     if (!aCharacterSet)
         return NO;
+
     return self._string === aCharacterSet._string && self._inverted === aCharacterSet._inverted;
 }
 ,["BOOL","_CPStringContentCharacterSet"])]);
-}var _CPStringContentCharacterSetStringKey = "_CPStringContentCharacterSetStringKey";
+}
+
+var _CPStringContentCharacterSetStringKey = "_CPStringContentCharacterSetStringKey";
+
 {
 var the_class = objj_getClass("_CPStringContentCharacterSet")
 if(!the_class) throw new SyntaxError("*** Could not find definition for class \"_CPStringContentCharacterSet\"");
-var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_getUid("initWithCoder:"), function $_CPStringContentCharacterSet__initWithCoder_(self, _cmd, aCoder)
+var meta_class = the_class.isa;
+
+class_addMethods(the_class, [new objj_method(sel_getUid("initWithCoder:"), function $_CPStringContentCharacterSet__initWithCoder_(self, _cmd, aCoder)
 {
     if (self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("_CPStringContentCharacterSet").super_class }, "initWithCoder:", aCoder))
     {
-        self._string = (aCoder == null ? null : aCoder.isa.objj_msgSend1(aCoder, "decodeObjectForKey:", _CPStringContentCharacterSetStringKey));
+        self._string = objj_msgSend(aCoder, "decodeObjectForKey:", _CPStringContentCharacterSetStringKey)
     }
+
     return self;
 }
 ,["id","CPCoder"]), new objj_method(sel_getUid("encodeWithCoder:"), function $_CPStringContentCharacterSet__encodeWithCoder_(self, _cmd, aCoder)
 {
     objj_msgSendSuper({ receiver:self, super_class:objj_getClass("_CPStringContentCharacterSet").super_class }, "encodeWithCoder:", aCoder);
-    (aCoder == null ? null : aCoder.isa.objj_msgSend2(aCoder, "encodeObject:forKey:", self._string, _CPStringContentCharacterSetStringKey));
+
+    objj_msgSend(aCoder, "encodeObject:forKey:", self._string, _CPStringContentCharacterSetStringKey);
 }
 ,["void","CPCoder"])]);
-}_CPCharacterSetTrimAtBeginning = 1 << 1;
+}
+
+_CPCharacterSetTrimAtBeginning = 1 << 1;
 _CPCharacterSetTrimAtEnd = 1 << 2;
+
 {
 var the_class = objj_getClass("CPString")
 if(!the_class) throw new SyntaxError("*** Could not find definition for class \"CPString\"");
-var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_getUid("componentsSeparatedByCharactersInSet:"), function $CPString__componentsSeparatedByCharactersInSet_(self, _cmd, separator)
+var meta_class = the_class.isa;
+
+
+
+
+
+
+
+class_addMethods(the_class, [new objj_method(sel_getUid("componentsSeparatedByCharactersInSet:"), function $CPString__componentsSeparatedByCharactersInSet_(self, _cmd, separator)
 {
     if (!separator)
-        CPException.isa.objj_msgSend2(CPException, "raise:reason:", CPInvalidArgumentException, "componentsSeparatedByCharactersInSet: the separator can't be 'nil'");
-    var components = CPMutableArray.isa.objj_msgSend0(CPMutableArray, "array"),
+        objj_msgSend(CPException, "raise:reason:", CPInvalidArgumentException, "componentsSeparatedByCharactersInSet: the separator can't be 'nil'");
+
+    var components = objj_msgSend(CPMutableArray, "array"),
         componentRange = CPMakeRange(0, 0),
         i = 0;
+
     for (; i < self.length; i++)
     {
-        if ((separator == null ? null : separator.isa.objj_msgSend1(separator, "characterIsMember:", self.charAt(i))))
+        if (objj_msgSend(separator, "characterIsMember:", self.charAt(i)))
         {
             componentRange.length = i - componentRange.location;
-            (components == null ? null : components.isa.objj_msgSend1(components, "addObject:", self.isa.objj_msgSend1(self, "substringWithRange:", componentRange)));
+            objj_msgSend(components, "addObject:", objj_msgSend(self, "substringWithRange:", componentRange));
             componentRange.location += componentRange.length + 1;
         }
     }
+
     componentRange.length = self.length - componentRange.location;
-    (components == null ? null : components.isa.objj_msgSend1(components, "addObject:", self.isa.objj_msgSend1(self, "substringWithRange:", componentRange)));
+    objj_msgSend(components, "addObject:", objj_msgSend(self, "substringWithRange:", componentRange));
+
     return components;
 }
 ,["CPArray","CPCharacterSet"]), new objj_method(sel_getUid("stringByTrimmingCharactersInSet:"), function $CPString__stringByTrimmingCharactersInSet_(self, _cmd, set)
 {
-    return self.isa.objj_msgSend2(self, "_stringByTrimmingCharactersInSet:options:", set, _CPCharacterSetTrimAtBeginning | _CPCharacterSetTrimAtEnd);
+    return objj_msgSend(self, "_stringByTrimmingCharactersInSet:options:", set, _CPCharacterSetTrimAtBeginning | _CPCharacterSetTrimAtEnd);
 }
 ,["id","CPCharacterSet"]), new objj_method(sel_getUid("_stringByTrimmingCharactersInSet:options:"), function $CPString___stringByTrimmingCharactersInSet_options_(self, _cmd, set, options)
 {
     var str = self;
+
     if (options & _CPCharacterSetTrimAtBeginning)
     {
         var cutEdgeBeginning = 0;
-        while (cutEdgeBeginning < self.length && (set == null ? null : set.isa.objj_msgSend1(set, "characterIsMember:", self.charAt(cutEdgeBeginning))))
+
+        while (cutEdgeBeginning < self.length && objj_msgSend(set, "characterIsMember:", self.charAt(cutEdgeBeginning)))
             cutEdgeBeginning++;
+
         str = str.substr(cutEdgeBeginning);
     }
+
     if (options & _CPCharacterSetTrimAtEnd)
     {
         var cutEdgeEnd = str.length;
-        while (cutEdgeEnd > 0 && (set == null ? null : set.isa.objj_msgSend1(set, "characterIsMember:", str.charAt(cutEdgeEnd - 1))))
+
+        while (cutEdgeEnd > 0 && objj_msgSend(set, "characterIsMember:", str.charAt(cutEdgeEnd - 1)))
             cutEdgeEnd--;
+
         str = str.substr(0, cutEdgeEnd);
     }
+
     return str;
 }
 ,["id","CPCharacterSet","int"])]);
-}alphanumericCharacterSet = [48, 10, 65, 26, 97, 26, 170, 1, 178, 2, 181, 1, 185, 2, 188, 3, 192, 23, 216, 31, 248, 458, 710, 12, 736, 5, 750, 1, 768, 112, 890, 4, 902, 1, 904, 3, 908, 1, 910, 20, 931, 44, 976, 38, 1015, 139, 1155, 4, 1160, 140, 1329, 38, 1369, 1, 1377, 39, 1425, 45, 1471, 1, 1473, 2, 1476, 2, 1479, 1, 1488, 27, 1520, 3, 1552, 6, 1569, 26, 1600, 31, 1632, 10, 1646, 102, 1749, 8, 1758, 11, 1770, 19, 1791, 1, 1808, 59, 1869, 33, 1920, 50, 1984, 54, 2042, 1, 2305, 57, 2364, 18, 2384, 5, 2392, 12, 2406, 10, 2427, 5, 2433, 3, 2437, 8, 2447, 2, 2451, 22, 2474, 7, 2482, 1, 2486, 4, 2492, 9, 2503, 2, 2507, 4, 2519, 1, 2524, 2, 2527, 5, 2534, 12, 2548, 6, 2561, 3, 2565, 6, 2575, 2, 2579, 22, 2602, 7, 2610, 2, 2613, 2, 2616, 2, 2620, 1, 2622, 5, 2631, 2, 2635, 3, 2649, 4, 2654, 1, 2662, 15, 2689, 3, 2693, 9, 2703, 3, 2707, 22, 2730, 7, 2738, 2, 2741, 5, 2748, 10, 2759, 3, 2763, 3, 2768, 1, 2784, 4, 2790, 10, 2817, 3, 2821, 8, 2831, 2, 2835, 22, 2858, 7, 2866, 2, 2869, 5, 2876, 8, 2887, 2, 2891, 3, 2902, 2, 2908, 2, 2911, 3, 2918, 10, 2929, 1, 2946, 2, 2949, 6, 2958, 3, 2962, 4, 2969, 2, 2972, 1, 2974, 2, 2979, 2, 2984, 3, 2990, 12, 3006, 5, 3014, 3, 3018, 4, 3031, 1, 3046, 13, 3073, 3, 3077, 8, 3086, 3, 3090, 23, 3114, 10, 3125, 5, 3134, 7, 3142, 3, 3146, 4, 3157, 2, 3168, 2, 3174, 10, 3202, 2, 3205, 8, 3214, 3, 3218, 23, 3242, 10, 3253, 5, 3260, 9, 3270, 3, 3274, 4, 3285, 2, 3294, 1, 3296, 4, 3302, 10, 3330, 2, 3333, 8, 3342, 3, 3346, 23, 3370, 16, 3390, 6, 3398, 3, 3402, 4, 3415, 1, 3424, 2, 3430, 10, 3458, 2, 3461, 18, 3482, 24, 3507, 9, 3517, 1, 3520, 7, 3530, 1, 3535, 6, 3542, 1, 3544, 8, 3570, 2, 3585, 58, 3648, 15, 3664, 10, 3713, 2, 3716, 1, 3719, 2, 3722, 1, 3725, 1, 3732, 4, 3737, 7, 3745, 3, 3749, 1, 3751, 1, 3754, 2, 3757, 13, 3771, 3, 3776, 5, 3782, 1, 3784, 6, 3792, 10, 3804, 2, 3840, 1, 3864, 2, 3872, 20, 3893, 1, 3895, 1, 3897, 1, 3902, 10, 3913, 34, 3953, 20, 3974, 6, 3984, 8, 3993, 36, 4038, 1, 4096, 34, 4131, 5, 4137, 2, 4140, 7, 4150, 4, 4160, 10, 4176, 10, 4256, 38, 4304, 43, 4348, 1, 4352, 90, 4447, 68, 4520, 82, 4608, 73, 4682, 4, 4688, 7, 4696, 1, 4698, 4, 4704, 41, 4746, 4, 4752, 33, 4786, 4, 4792, 7, 4800, 1, 4802, 4, 4808, 15, 4824, 57, 4882, 4, 4888, 67, 4959, 1, 4969, 20, 4992, 16, 5024, 85, 5121, 620, 5743, 8, 5761, 26, 5792, 75, 5870, 3, 5888, 13, 5902, 7, 5920, 21, 5952, 20, 5984, 13, 5998, 3, 6002, 2, 6016, 52, 6070, 30, 6103, 1, 6108, 2, 6112, 10, 6128, 10, 6155, 3, 6160, 10, 6176, 88, 6272, 42, 6400, 29, 6432, 12, 6448, 12, 6470, 40, 6512, 5, 6528, 42, 6576, 26, 6608, 10, 6656, 28, 6912, 76, 6992, 10, 7019, 9, 7424, 203, 7678, 158, 7840, 90, 7936, 22, 7960, 6, 7968, 38, 8008, 6, 8016, 8, 8025, 1, 8027, 1, 8029, 1, 8031, 31, 8064, 53, 8118, 7, 8126, 1, 8130, 3, 8134, 7, 8144, 4, 8150, 6, 8160, 13, 8178, 3, 8182, 7, 8304, 2, 8308, 6, 8319, 11, 8336, 5, 8400, 32, 8450, 1, 8455, 1, 8458, 10, 8469, 1, 8473, 5, 8484, 1, 8486, 1, 8488, 1, 8490, 4, 8495, 11, 8508, 4, 8517, 5, 8526, 1, 8531, 50, 9312, 60, 9450, 22, 10102, 30, 11264, 47, 11312, 47, 11360, 13, 11380, 4, 11392, 101, 11517, 1, 11520, 38, 11568, 54, 11631, 1, 11648, 23, 11680, 7, 11688, 7, 11696, 7, 11704, 7, 11712, 7, 11720, 7, 11728, 7, 11736, 7, 12293, 3, 12321, 15, 12337, 5, 12344, 5, 12353, 86, 12441, 2, 12445, 3, 12449, 90, 12540, 4, 12549, 40, 12593, 94, 12690, 4, 12704, 24, 12784, 16, 12832, 10, 12881, 15, 12928, 10, 12977, 15, 13312, 6582, 19968, 20924, 40960, 1165, 42775, 4, 43008, 40, 43072, 52, 44032, 11172, 63744, 302, 64048, 59, 64112, 106, 64256, 7, 64275, 5, 64285, 12, 64298, 13, 64312, 5, 64318, 1, 64320, 2, 64323, 2, 64326, 108, 64467, 363, 64848, 64, 64914, 54, 65008, 12, 65024, 16, 65056, 4, 65136, 5, 65142, 135, 65296, 10, 65313, 26, 65345, 26, 65382, 89, 65474, 6, 65482, 6, 65490, 6];
-controlCharacterSet = [0, 32, 127, 33, 173, 1, 1536, 4, 1757, 1, 1807, 1, 6068, 2, 8203, 5, 8234, 5, 8288, 4, 8298, 6, 65279, 1];
-decimalDigitCharacterSet = [48, 10, 1632, 10, 1776, 10, 1984, 10, 2406, 10, 2534, 10, 2662, 10, 2790, 10, 2918, 10, 3046, 10, 3174, 10, 3302, 10, 3430, 10, 3664, 10, 3792, 10, 3872, 10, 4160, 10, 6112, 10, 6160, 10, 6470, 10, 6608, 10, 6992, 10];
-decomposableCharacterSet = [192, 6, 199, 9, 209, 6, 217, 5, 224, 6, 231, 9, 241, 6, 249, 5, 255, 17, 274, 20, 296, 9, 308, 4, 313, 6, 323, 6, 332, 6, 340, 18, 360, 23, 416, 2, 431, 2, 461, 16, 478, 6, 486, 11, 500, 2, 504, 36, 542, 2, 550, 14, 832, 2, 835, 2, 884, 1, 894, 1, 901, 6, 908, 1, 910, 3, 938, 7, 970, 5, 979, 2, 1024, 2, 1027, 1, 1031, 1, 1036, 3, 1049, 1, 1081, 1, 1104, 2, 1107, 1, 1111, 1, 1116, 3, 1142, 2, 1217, 2, 1232, 4, 1238, 2, 1242, 6, 1250, 6, 1258, 12, 1272, 2, 1570, 5, 1728, 1, 1730, 1, 1747, 1, 2345, 1, 2353, 1, 2356, 1, 2392, 8, 2507, 2, 2524, 2, 2527, 1, 2611, 1, 2614, 1, 2649, 3, 2654, 1, 2888, 1, 2891, 2, 2908, 2, 2964, 1, 3018, 3, 3144, 1, 3264, 1, 3271, 2, 3274, 2, 3402, 3, 3546, 1, 3548, 3, 3907, 1, 3917, 1, 3922, 1, 3927, 1, 3932, 1, 3945, 1, 3955, 1, 3957, 2, 3960, 1, 3969, 1, 3987, 1, 3997, 1, 4002, 1, 4007, 1, 4012, 1, 4025, 1, 4134, 1, 6918, 1, 6920, 1, 6922, 1, 6924, 1, 6926, 1, 6930, 1, 6971, 1, 6973, 1, 6976, 2, 6979, 1, 7680, 154, 7835, 1, 7840, 90, 7936, 22, 7960, 6, 7968, 38, 8008, 6, 8016, 8, 8025, 1, 8027, 1, 8029, 1, 8031, 31, 8064, 53, 8118, 7, 8126, 1, 8129, 4, 8134, 14, 8150, 6, 8157, 19, 8178, 3, 8182, 8, 8192, 2, 8486, 1, 8490, 2, 8602, 2, 8622, 1, 8653, 3, 8708, 1, 8713, 1, 8716, 1, 8740, 1, 8742, 1, 8769, 1, 8772, 1, 8775, 1, 8777, 1, 8800, 1, 8802, 1, 8813, 5, 8820, 2, 8824, 2, 8832, 2, 8836, 2, 8840, 2, 8876, 4, 8928, 4, 8938, 4, 9001, 2, 10972, 1, 12364, 1, 12366, 1, 12368, 1, 12370, 1, 12372, 1, 12374, 1, 12376, 1, 12378, 1, 12380, 1, 12382, 1, 12384, 1, 12386, 1, 12389, 1, 12391, 1, 12393, 1, 12400, 2, 12403, 2, 12406, 2, 12409, 2, 12412, 2, 12436, 1, 12446, 1, 12460, 1, 12462, 1, 12464, 1, 12466, 1, 12468, 1, 12470, 1, 12472, 1, 12474, 1, 12476, 1, 12478, 1, 12480, 1, 12482, 1, 12485, 1, 12487, 1, 12489, 1, 12496, 2, 12499, 2, 12502, 2, 12505, 2, 12508, 2, 12532, 1, 12535, 4, 12542, 1, 44032, 11172, 63744, 270, 64016, 1, 64018, 1, 64021, 10, 64032, 1, 64034, 1, 64037, 2, 64042, 4, 64048, 59, 64112, 106, 64285, 1, 64287, 1, 64298, 13, 64312, 5, 64318, 1, 64320, 2, 64323, 2];
-illegalCharacterSet = [880, 4, 886, 4, 895, 5, 907, 1, 909, 1, 930, 1, 975, 1, 1159, 1, 1300, 29, 1367, 2, 1376, 1, 1416, 1, 1419, 6, 1480, 8, 1515, 5, 1525, 11, 1540, 7, 1558, 5, 1564, 2, 1568, 1, 1595, 5, 1631, 1, 1806, 1, 1867, 2, 1902, 18, 1970, 14, 2043, 262, 2362, 2, 2382, 2, 2389, 3, 2417, 10, 2432, 1, 2436, 1, 2445, 2, 2449, 2, 2473, 1, 2481, 1, 2483, 3, 2490, 2, 2501, 2, 2505, 2, 2511, 8, 2520, 4, 2526, 1, 2532, 2, 2555, 6, 2564, 1, 2571, 4, 2577, 2, 2601, 1, 2609, 1, 2612, 1, 2615, 1, 2618, 2, 2621, 1, 2627, 4, 2633, 2, 2638, 11, 2653, 1, 2655, 7, 2677, 12, 2692, 1, 2702, 1, 2706, 1, 2729, 1, 2737, 1, 2740, 1, 2746, 2, 2758, 1, 2762, 1, 2766, 2, 2769, 15, 2788, 2, 2800, 1, 2802, 15, 2820, 1, 2829, 2, 2833, 2, 2857, 1, 2865, 1, 2868, 1, 2874, 2, 2884, 3, 2889, 2, 2894, 8, 2904, 4, 2910, 1, 2914, 4, 2930, 16, 2948, 1, 2955, 3, 2961, 1, 2966, 3, 2971, 1, 2973, 1, 2976, 3, 2981, 3, 2987, 3, 3002, 4, 3011, 3, 3017, 1, 3022, 9, 3032, 14, 3067, 6, 3076, 1, 3085, 1, 3089, 1, 3113, 1, 3124, 1, 3130, 4, 3141, 1, 3145, 1, 3150, 7, 3159, 9, 3170, 4, 3184, 18, 3204, 1, 3213, 1, 3217, 1, 3241, 1, 3252, 1, 3258, 2, 3269, 1, 3273, 1, 3278, 7, 3287, 7, 3295, 1, 3300, 2, 3312, 1, 3315, 15, 3332, 1, 3341, 1, 3345, 1, 3369, 1, 3386, 4, 3396, 2, 3401, 1, 3406, 9, 3416, 8, 3426, 4, 3440, 18, 3460, 1, 3479, 3, 3506, 1, 3516, 1, 3518, 2, 3527, 3, 3531, 4, 3541, 1, 3543, 1, 3552, 18, 3573, 12, 3643, 4, 3676, 37, 3715, 1, 3717, 2, 3721, 1, 3723, 2, 3726, 6, 3736, 1, 3744, 1, 3748, 1, 3750, 1, 3752, 2, 3756, 1, 3770, 1, 3774, 2, 3781, 1, 3783, 1, 3790, 2, 3802, 2, 3806, 34, 3912, 1, 3947, 6, 3980, 4, 3992, 1, 4029, 1, 4045, 2, 4050, 46, 4130, 1, 4136, 1, 4139, 1, 4147, 3, 4154, 6, 4186, 70, 4294, 10, 4349, 3, 4442, 5, 4515, 5, 4602, 6, 4681, 1, 4686, 2, 4695, 1, 4697, 1, 4702, 2, 4745, 1, 4750, 2, 4785, 1, 4790, 2, 4799, 1, 4801, 1, 4806, 2, 4823, 1, 4881, 1, 4886, 2, 4955, 4, 4989, 3, 5018, 6, 5109, 12, 5751, 9, 5789, 3, 5873, 15, 5901, 1, 5909, 11, 5943, 9, 5972, 12, 5997, 1, 6001, 1, 6004, 12, 6110, 2, 6122, 6, 6138, 6, 6159, 1, 6170, 6, 6264, 8, 6314, 86, 6429, 3, 6444, 4, 6460, 4, 6465, 3, 6510, 2, 6517, 11, 6570, 6, 6602, 6, 6618, 4, 6684, 2, 6688, 224, 6988, 4, 7037, 387, 7627, 51, 7836, 4, 7930, 6, 7958, 2, 7966, 2, 8006, 2, 8014, 2, 8024, 1, 8026, 1, 8028, 1, 8030, 1, 8062, 2, 8117, 1, 8133, 1, 8148, 2, 8156, 1, 8176, 2, 8181, 1, 8191, 1, 8292, 6, 8306, 2, 8335, 1, 8341, 11, 8374, 26, 8432, 16, 8527, 4, 8581, 11, 9192, 24, 9255, 25, 9291, 21, 9885, 3, 9907, 78, 9989, 1, 9994, 2, 10024, 1, 10060, 1, 10062, 1, 10067, 3, 10071, 1, 10079, 2, 10133, 3, 10160, 1, 10175, 1, 10187, 5, 10220, 4, 11035, 5, 11044, 220, 11311, 1, 11359, 1, 11373, 7, 11384, 8, 11499, 14, 11558, 10, 11622, 9, 11632, 16, 11671, 9, 11687, 1, 11695, 1, 11703, 1, 11711, 1, 11719, 1, 11727, 1, 11735, 1, 11743, 33, 11800, 4, 11806, 98, 11930, 1, 12020, 12, 12246, 26, 12284, 4, 12352, 1, 12439, 2, 12544, 5, 12589, 4, 12687, 1, 12728, 8, 12752, 32, 12831, 1, 12868, 12, 13055, 1, 19894, 10, 40892, 68, 42125, 3, 42183, 569, 42779, 5, 42786, 222, 43052, 20, 43128, 904, 55204, 92, 64046, 2, 64107, 5, 64218, 38, 64263, 12, 64280, 5, 64311, 1, 64317, 1, 64319, 1, 64322, 1, 64325, 1, 64434, 33, 64832, 16, 64912, 2, 64968, 40, 65022, 2, 65050, 6, 65060, 12, 65107, 1, 65127, 1, 65132, 4, 65141, 1, 65277, 2, 65280, 1, 65471, 3, 65480, 2, 65488, 2, 65496, 2, 65501, 3, 65511, 1, 65519, 10];
-letterCharacterSet = [65, 26, 97, 26, 170, 1, 181, 1, 186, 1, 192, 23, 216, 31, 248, 458, 710, 12, 736, 5, 750, 1, 768, 112, 890, 4, 902, 1, 904, 3, 908, 1, 910, 20, 931, 44, 976, 38, 1015, 139, 1155, 4, 1160, 140, 1329, 38, 1369, 1, 1377, 39, 1425, 45, 1471, 1, 1473, 2, 1476, 2, 1479, 1, 1488, 27, 1520, 3, 1552, 6, 1569, 26, 1600, 31, 1646, 102, 1749, 8, 1758, 11, 1770, 6, 1786, 3, 1791, 1, 1808, 59, 1869, 33, 1920, 50, 1994, 44, 2042, 1, 2305, 57, 2364, 18, 2384, 5, 2392, 12, 2427, 5, 2433, 3, 2437, 8, 2447, 2, 2451, 22, 2474, 7, 2482, 1, 2486, 4, 2492, 9, 2503, 2, 2507, 4, 2519, 1, 2524, 2, 2527, 5, 2544, 2, 2561, 3, 2565, 6, 2575, 2, 2579, 22, 2602, 7, 2610, 2, 2613, 2, 2616, 2, 2620, 1, 2622, 5, 2631, 2, 2635, 3, 2649, 4, 2654, 1, 2672, 5, 2689, 3, 2693, 9, 2703, 3, 2707, 22, 2730, 7, 2738, 2, 2741, 5, 2748, 10, 2759, 3, 2763, 3, 2768, 1, 2784, 4, 2817, 3, 2821, 8, 2831, 2, 2835, 22, 2858, 7, 2866, 2, 2869, 5, 2876, 8, 2887, 2, 2891, 3, 2902, 2, 2908, 2, 2911, 3, 2929, 1, 2946, 2, 2949, 6, 2958, 3, 2962, 4, 2969, 2, 2972, 1, 2974, 2, 2979, 2, 2984, 3, 2990, 12, 3006, 5, 3014, 3, 3018, 4, 3031, 1, 3073, 3, 3077, 8, 3086, 3, 3090, 23, 3114, 10, 3125, 5, 3134, 7, 3142, 3, 3146, 4, 3157, 2, 3168, 2, 3202, 2, 3205, 8, 3214, 3, 3218, 23, 3242, 10, 3253, 5, 3260, 9, 3270, 3, 3274, 4, 3285, 2, 3294, 1, 3296, 4, 3330, 2, 3333, 8, 3342, 3, 3346, 23, 3370, 16, 3390, 6, 3398, 3, 3402, 4, 3415, 1, 3424, 2, 3458, 2, 3461, 18, 3482, 24, 3507, 9, 3517, 1, 3520, 7, 3530, 1, 3535, 6, 3542, 1, 3544, 8, 3570, 2, 3585, 58, 3648, 15, 3713, 2, 3716, 1, 3719, 2, 3722, 1, 3725, 1, 3732, 4, 3737, 7, 3745, 3, 3749, 1, 3751, 1, 3754, 2, 3757, 13, 3771, 3, 3776, 5, 3782, 1, 3784, 6, 3804, 2, 3840, 1, 3864, 2, 3893, 1, 3895, 1, 3897, 1, 3902, 10, 3913, 34, 3953, 20, 3974, 6, 3984, 8, 3993, 36, 4038, 1, 4096, 34, 4131, 5, 4137, 2, 4140, 7, 4150, 4, 4176, 10, 4256, 38, 4304, 43, 4348, 1, 4352, 90, 4447, 68, 4520, 82, 4608, 73, 4682, 4, 4688, 7, 4696, 1, 4698, 4, 4704, 41, 4746, 4, 4752, 33, 4786, 4, 4792, 7, 4800, 1, 4802, 4, 4808, 15, 4824, 57, 4882, 4, 4888, 67, 4959, 1, 4992, 16, 5024, 85, 5121, 620, 5743, 8, 5761, 26, 5792, 75, 5888, 13, 5902, 7, 5920, 21, 5952, 20, 5984, 13, 5998, 3, 6002, 2, 6016, 52, 6070, 30, 6103, 1, 6108, 2, 6155, 3, 6176, 88, 6272, 42, 6400, 29, 6432, 12, 6448, 12, 6480, 30, 6512, 5, 6528, 42, 6576, 26, 6656, 28, 6912, 76, 7019, 9, 7424, 203, 7678, 158, 7840, 90, 7936, 22, 7960, 6, 7968, 38, 8008, 6, 8016, 8, 8025, 1, 8027, 1, 8029, 1, 8031, 31, 8064, 53, 8118, 7, 8126, 1, 8130, 3, 8134, 7, 8144, 4, 8150, 6, 8160, 13, 8178, 3, 8182, 7, 8305, 1, 8319, 1, 8336, 5, 8400, 32, 8450, 1, 8455, 1, 8458, 10, 8469, 1, 8473, 5, 8484, 1, 8486, 1, 8488, 1, 8490, 4, 8495, 11, 8508, 4, 8517, 5, 8526, 1, 8579, 2, 11264, 47, 11312, 47, 11360, 13, 11380, 4, 11392, 101, 11520, 38, 11568, 54, 11631, 1, 11648, 23, 11680, 7, 11688, 7, 11696, 7, 11704, 7, 11712, 7, 11720, 7, 11728, 7, 11736, 7, 12293, 2, 12330, 6, 12337, 5, 12347, 2, 12353, 86, 12441, 2, 12445, 3, 12449, 90, 12540, 4, 12549, 40, 12593, 94, 12704, 24, 12784, 16, 13312, 6582, 19968, 20924, 40960, 1165, 42775, 4, 43008, 40, 43072, 52, 44032, 11172, 63744, 302, 64048, 59, 64112, 106, 64256, 7, 64275, 5, 64285, 12, 64298, 13, 64312, 5, 64318, 1, 64320, 2, 64323, 2, 64326, 108, 64467, 363, 64848, 64, 64914, 54, 65008, 12, 65024, 16, 65056, 4, 65136, 5, 65142, 135, 65313, 26, 65345, 26, 65382, 89, 65474, 6, 65482, 6, 65490, 6];
-lowercaseLetterCharacterSet = [97, 26, 170, 1, 181, 1, 186, 1, 223, 24, 248, 8, 257, 1, 259, 1, 261, 1, 263, 1, 265, 1, 267, 1, 269, 1, 271, 1, 273, 1, 275, 1, 277, 1, 279, 1, 281, 1, 283, 1, 285, 1, 287, 1, 289, 1, 291, 1, 293, 1, 295, 1, 297, 1, 299, 1, 301, 1, 303, 1, 305, 1, 307, 1, 309, 1, 311, 2, 314, 1, 316, 1, 318, 1, 320, 1, 322, 1, 324, 1, 326, 1, 328, 2, 331, 1, 333, 1, 335, 1, 337, 1, 339, 1, 341, 1, 343, 1, 345, 1, 347, 1, 349, 1, 351, 1, 353, 1, 355, 1, 357, 1, 359, 1, 361, 1, 363, 1, 365, 1, 367, 1, 369, 1, 371, 1, 373, 1, 375, 1, 378, 1, 380, 1, 382, 3, 387, 1, 389, 1, 392, 1, 396, 2, 402, 1, 405, 1, 409, 3, 414, 1, 417, 1, 419, 1, 421, 1, 424, 1, 426, 2, 429, 1, 432, 1, 436, 1, 438, 1, 441, 2, 445, 3, 454, 1, 457, 1, 460, 1, 462, 1, 464, 1, 466, 1, 468, 1, 470, 1, 472, 1, 474, 1, 476, 2, 479, 1, 481, 1, 483, 1, 485, 1, 487, 1, 489, 1, 491, 1, 493, 1, 495, 2, 499, 1, 501, 1, 505, 1, 507, 1, 509, 1, 511, 1, 513, 1, 515, 1, 517, 1, 519, 1, 521, 1, 523, 1, 525, 1, 527, 1, 529, 1, 531, 1, 533, 1, 535, 1, 537, 1, 539, 1, 541, 1, 543, 1, 545, 1, 547, 1, 549, 1, 551, 1, 553, 1, 555, 1, 557, 1, 559, 1, 561, 1, 563, 7, 572, 1, 575, 2, 578, 1, 583, 1, 585, 1, 587, 1, 589, 1, 591, 69, 661, 27, 891, 3, 912, 1, 940, 35, 976, 2, 981, 3, 985, 1, 987, 1, 989, 1, 991, 1, 993, 1, 995, 1, 997, 1, 999, 1, 1001, 1, 1003, 1, 1005, 1, 1007, 5, 1013, 1, 1016, 1, 1019, 2, 1072, 48, 1121, 1, 1123, 1, 1125, 1, 1127, 1, 1129, 1, 1131, 1, 1133, 1, 1135, 1, 1137, 1, 1139, 1, 1141, 1, 1143, 1, 1145, 1, 1147, 1, 1149, 1, 1151, 1, 1153, 1, 1163, 1, 1165, 1, 1167, 1, 1169, 1, 1171, 1, 1173, 1, 1175, 1, 1177, 1, 1179, 1, 1181, 1, 1183, 1, 1185, 1, 1187, 1, 1189, 1, 1191, 1, 1193, 1, 1195, 1, 1197, 1, 1199, 1, 1201, 1, 1203, 1, 1205, 1, 1207, 1, 1209, 1, 1211, 1, 1213, 1, 1215, 1, 1218, 1, 1220, 1, 1222, 1, 1224, 1, 1226, 1, 1228, 1, 1230, 2, 1233, 1, 1235, 1, 1237, 1, 1239, 1, 1241, 1, 1243, 1, 1245, 1, 1247, 1, 1249, 1, 1251, 1, 1253, 1, 1255, 1, 1257, 1, 1259, 1, 1261, 1, 1263, 1, 1265, 1, 1267, 1, 1269, 1, 1271, 1, 1273, 1, 1275, 1, 1277, 1, 1279, 1, 1281, 1, 1283, 1, 1285, 1, 1287, 1, 1289, 1, 1291, 1, 1293, 1, 1295, 1, 1297, 1, 1299, 1, 1377, 39, 7424, 44, 7522, 22, 7545, 34, 7681, 1, 7683, 1, 7685, 1, 7687, 1, 7689, 1, 7691, 1, 7693, 1, 7695, 1, 7697, 1, 7699, 1, 7701, 1, 7703, 1, 7705, 1, 7707, 1, 7709, 1, 7711, 1, 7713, 1, 7715, 1, 7717, 1, 7719, 1, 7721, 1, 7723, 1, 7725, 1, 7727, 1, 7729, 1, 7731, 1, 7733, 1, 7735, 1, 7737, 1, 7739, 1, 7741, 1, 7743, 1, 7745, 1, 7747, 1, 7749, 1, 7751, 1, 7753, 1, 7755, 1, 7757, 1, 7759, 1, 7761, 1, 7763, 1, 7765, 1, 7767, 1, 7769, 1, 7771, 1, 7773, 1, 7775, 1, 7777, 1, 7779, 1, 7781, 1, 7783, 1, 7785, 1, 7787, 1, 7789, 1, 7791, 1, 7793, 1, 7795, 1, 7797, 1, 7799, 1, 7801, 1, 7803, 1, 7805, 1, 7807, 1, 7809, 1, 7811, 1, 7813, 1, 7815, 1, 7817, 1, 7819, 1, 7821, 1, 7823, 1, 7825, 1, 7827, 1, 7829, 7, 7841, 1, 7843, 1, 7845, 1, 7847, 1, 7849, 1, 7851, 1, 7853, 1, 7855, 1, 7857, 1, 7859, 1, 7861, 1, 7863, 1, 7865, 1, 7867, 1, 7869, 1, 7871, 1, 7873, 1, 7875, 1, 7877, 1, 7879, 1, 7881, 1, 7883, 1, 7885, 1, 7887, 1, 7889, 1, 7891, 1, 7893, 1, 7895, 1, 7897, 1, 7899, 1, 7901, 1, 7903, 1, 7905, 1, 7907, 1, 7909, 1, 7911, 1, 7913, 1, 7915, 1, 7917, 1, 7919, 1, 7921, 1, 7923, 1, 7925, 1, 7927, 1, 7929, 1, 7936, 8, 7952, 6, 7968, 8, 7984, 8, 8000, 6, 8016, 8, 8032, 8, 8048, 14, 8064, 8, 8080, 8, 8096, 8, 8112, 5, 8118, 2, 8126, 1, 8130, 3, 8134, 2, 8144, 4, 8150, 2, 8160, 8, 8178, 3, 8182, 2, 8305, 1, 8319, 1, 8458, 1, 8462, 2, 8467, 1, 8495, 1, 8500, 1, 8505, 1, 8508, 2, 8518, 4, 8526, 1, 8580, 1, 11312, 47, 11361, 1, 11365, 2, 11368, 1, 11370, 1, 11372, 1, 11380, 1, 11382, 2, 11393, 1, 11395, 1, 11397, 1, 11399, 1, 11401, 1, 11403, 1, 11405, 1, 11407, 1, 11409, 1, 11411, 1, 11413, 1, 11415, 1, 11417, 1, 11419, 1, 11421, 1, 11423, 1, 11425, 1, 11427, 1, 11429, 1, 11431, 1, 11433, 1, 11435, 1, 11437, 1, 11439, 1, 11441, 1, 11443, 1, 11445, 1, 11447, 1, 11449, 1, 11451, 1, 11453, 1, 11455, 1, 11457, 1, 11459, 1, 11461, 1, 11463, 1, 11465, 1, 11467, 1, 11469, 1, 11471, 1, 11473, 1, 11475, 1, 11477, 1, 11479, 1, 11481, 1, 11483, 1, 11485, 1, 11487, 1, 11489, 1, 11491, 2, 11520, 38, 64256, 7, 64275, 5];
-nonBaseCharacterSet = [768, 112, 1155, 4, 1160, 2, 1425, 45, 1471, 1, 1473, 2, 1476, 2, 1479, 1, 1552, 6, 1611, 20, 1648, 1, 1750, 7, 1758, 7, 1767, 2, 1770, 4, 1809, 1, 1840, 27, 1958, 11, 2027, 9, 2305, 3, 2364, 1, 2366, 16, 2385, 4, 2402, 2, 2433, 3, 2492, 1, 2494, 7, 2503, 2, 2507, 3, 2519, 1, 2530, 2, 2561, 3, 2620, 1, 2622, 5, 2631, 2, 2635, 3, 2672, 2, 2689, 3, 2748, 1, 2750, 8, 2759, 3, 2763, 3, 2786, 2, 2817, 3, 2876, 1, 2878, 6, 2887, 2, 2891, 3, 2902, 2, 2946, 1, 3006, 5, 3014, 3, 3018, 4, 3031, 1, 3073, 3, 3134, 7, 3142, 3, 3146, 4, 3157, 2, 3202, 2, 3260, 1, 3262, 7, 3270, 3, 3274, 4, 3285, 2, 3298, 2, 3330, 2, 3390, 6, 3398, 3, 3402, 4, 3415, 1, 3458, 2, 3530, 1, 3535, 6, 3542, 1, 3544, 8, 3570, 2, 3633, 1, 3636, 7, 3655, 8, 3761, 1, 3764, 6, 3771, 2, 3784, 6, 3864, 2, 3893, 1, 3895, 1, 3897, 1, 3902, 2, 3953, 20, 3974, 2, 3984, 8, 3993, 36, 4038, 1, 4140, 7, 4150, 4, 4182, 4, 4959, 1, 5906, 3, 5938, 3, 5970, 2, 6002, 2, 6070, 30, 6109, 1, 6155, 3, 6313, 1, 6432, 12, 6448, 12, 6576, 17, 6600, 2, 6679, 5, 6912, 5, 6964, 17, 7019, 9, 7616, 11, 7678, 2, 8400, 32, 12330, 6, 12441, 2, 43010, 1, 43014, 1, 43019, 1, 43043, 5, 64286, 1, 65024, 16];
-punctuationCharacterSet = [33, 3, 37, 6, 44, 4, 58, 2, 63, 2, 91, 3, 95, 1, 123, 1, 125, 1, 161, 1, 171, 1, 183, 1, 187, 1, 191, 1, 894, 1, 903, 1, 1370, 6, 1417, 2, 1470, 1, 1472, 1, 1475, 1, 1478, 1, 1523, 2, 1548, 2, 1563, 1, 1566, 2, 1642, 4, 1748, 1, 1792, 14, 2039, 3, 2404, 2, 2416, 1, 3572, 1, 3663, 1, 3674, 2, 3844, 15, 3898, 4, 3973, 1, 4048, 2, 4170, 6, 4347, 1, 4961, 8, 5741, 2, 5787, 2, 5867, 3, 5941, 2, 6100, 3, 6104, 3, 6144, 11, 6468, 2, 6622, 2, 6686, 2, 7002, 7, 8208, 24, 8240, 20, 8261, 13, 8275, 12, 8317, 2, 8333, 2, 9001, 2, 10088, 14, 10181, 2, 10214, 6, 10627, 22, 10712, 4, 10748, 2, 11513, 4, 11518, 2, 11776, 24, 11804, 2, 12289, 3, 12296, 10, 12308, 12, 12336, 1, 12349, 1, 12448, 1, 12539, 1, 43124, 4, 64830, 2, 65040, 10, 65072, 35, 65108, 14, 65123, 1, 65128, 1, 65130, 2, 65281, 3, 65285, 6, 65292, 4, 65306, 2, 65311, 2, 65339, 3, 65343, 1, 65371, 1, 65373, 1];
-uppercaseLetterCharacterSet = [65, 26, 192, 23, 216, 7, 256, 1, 258, 1, 260, 1, 262, 1, 264, 1, 266, 1, 268, 1, 270, 1, 272, 1, 274, 1, 276, 1, 278, 1, 280, 1, 282, 1, 284, 1, 286, 1, 288, 1, 290, 1, 292, 1, 294, 1, 296, 1, 298, 1, 300, 1, 302, 1, 304, 1, 306, 1, 308, 1, 310, 1, 313, 1, 315, 1, 317, 1, 319, 1, 321, 1, 323, 1, 325, 1, 327, 1, 330, 1, 332, 1, 334, 1, 336, 1, 338, 1, 340, 1, 342, 1, 344, 1, 346, 1, 348, 1, 350, 1, 352, 1, 354, 1, 356, 1, 358, 1, 360, 1, 362, 1, 364, 1, 366, 1, 368, 1, 370, 1, 372, 1, 374, 1, 376, 2, 379, 1, 381, 1, 385, 2, 388, 1, 390, 2, 393, 3, 398, 4, 403, 2, 406, 3, 412, 2, 415, 2, 418, 1, 420, 1, 422, 2, 425, 1, 428, 1, 430, 2, 433, 3, 437, 1, 439, 2, 444, 1, 452, 2, 455, 2, 458, 2, 461, 1, 463, 1, 465, 1, 467, 1, 469, 1, 471, 1, 473, 1, 475, 1, 478, 1, 480, 1, 482, 1, 484, 1, 486, 1, 488, 1, 490, 1, 492, 1, 494, 1, 497, 2, 500, 1, 502, 3, 506, 1, 508, 1, 510, 1, 512, 1, 514, 1, 516, 1, 518, 1, 520, 1, 522, 1, 524, 1, 526, 1, 528, 1, 530, 1, 532, 1, 534, 1, 536, 1, 538, 1, 540, 1, 542, 1, 544, 1, 546, 1, 548, 1, 550, 1, 552, 1, 554, 1, 556, 1, 558, 1, 560, 1, 562, 1, 570, 2, 573, 2, 577, 1, 579, 4, 584, 1, 586, 1, 588, 1, 590, 1, 902, 1, 904, 3, 908, 1, 910, 2, 913, 17, 931, 9, 978, 3, 984, 1, 986, 1, 988, 1, 990, 1, 992, 1, 994, 1, 996, 1, 998, 1, 1000, 1, 1002, 1, 1004, 1, 1006, 1, 1012, 1, 1015, 1, 1017, 2, 1021, 51, 1120, 1, 1122, 1, 1124, 1, 1126, 1, 1128, 1, 1130, 1, 1132, 1, 1134, 1, 1136, 1, 1138, 1, 1140, 1, 1142, 1, 1144, 1, 1146, 1, 1148, 1, 1150, 1, 1152, 1, 1162, 1, 1164, 1, 1166, 1, 1168, 1, 1170, 1, 1172, 1, 1174, 1, 1176, 1, 1178, 1, 1180, 1, 1182, 1, 1184, 1, 1186, 1, 1188, 1, 1190, 1, 1192, 1, 1194, 1, 1196, 1, 1198, 1, 1200, 1, 1202, 1, 1204, 1, 1206, 1, 1208, 1, 1210, 1, 1212, 1, 1214, 1, 1216, 2, 1219, 1, 1221, 1, 1223, 1, 1225, 1, 1227, 1, 1229, 1, 1232, 1, 1234, 1, 1236, 1, 1238, 1, 1240, 1, 1242, 1, 1244, 1, 1246, 1, 1248, 1, 1250, 1, 1252, 1, 1254, 1, 1256, 1, 1258, 1, 1260, 1, 1262, 1, 1264, 1, 1266, 1, 1268, 1, 1270, 1, 1272, 1, 1274, 1, 1276, 1, 1278, 1, 1280, 1, 1282, 1, 1284, 1, 1286, 1, 1288, 1, 1290, 1, 1292, 1, 1294, 1, 1296, 1, 1298, 1, 1329, 38, 4256, 38, 7680, 1, 7682, 1, 7684, 1, 7686, 1, 7688, 1, 7690, 1, 7692, 1, 7694, 1, 7696, 1, 7698, 1, 7700, 1, 7702, 1, 7704, 1, 7706, 1, 7708, 1, 7710, 1, 7712, 1, 7714, 1, 7716, 1, 7718, 1, 7720, 1, 7722, 1, 7724, 1, 7726, 1, 7728, 1, 7730, 1, 7732, 1, 7734, 1, 7736, 1, 7738, 1, 7740, 1, 7742, 1, 7744, 1, 7746, 1, 7748, 1, 7750, 1, 7752, 1, 7754, 1, 7756, 1, 7758, 1, 7760, 1, 7762, 1, 7764, 1, 7766, 1, 7768, 1, 7770, 1, 7772, 1, 7774, 1, 7776, 1, 7778, 1, 7780, 1, 7782, 1, 7784, 1, 7786, 1, 7788, 1, 7790, 1, 7792, 1, 7794, 1, 7796, 1, 7798, 1, 7800, 1, 7802, 1, 7804, 1, 7806, 1, 7808, 1, 7810, 1, 7812, 1, 7814, 1, 7816, 1, 7818, 1, 7820, 1, 7822, 1, 7824, 1, 7826, 1, 7828, 1, 7840, 1, 7842, 1, 7844, 1, 7846, 1, 7848, 1, 7850, 1, 7852, 1, 7854, 1, 7856, 1, 7858, 1, 7860, 1, 7862, 1, 7864, 1, 7866, 1, 7868, 1, 7870, 1, 7872, 1, 7874, 1, 7876, 1, 7878, 1, 7880, 1, 7882, 1, 7884, 1, 7886, 1, 7888, 1, 7890, 1, 7892, 1, 7894, 1, 7896, 1, 7898, 1, 7900, 1, 7902, 1, 7904, 1, 7906, 1, 7908, 1, 7910, 1, 7912, 1, 7914, 1, 7916, 1, 7918, 1, 7920, 1, 7922, 1, 7924, 1, 7926, 1, 7928, 1, 7944, 8, 7960, 6, 7976, 8, 7992, 8, 8008, 6, 8025, 1, 8027, 1, 8029, 1, 8031, 1, 8040, 8, 8072, 8, 8088, 8, 8104, 8, 8120, 5, 8136, 5, 8152, 4, 8168, 5, 8184, 5, 8450, 1, 8455, 1, 8459, 3, 8464, 3, 8469, 1, 8473, 5, 8484, 1, 8486, 1, 8488, 1, 8490, 4, 8496, 4, 8510, 2, 8517, 1, 8579, 1, 11264, 47, 11360, 1, 11362, 3, 11367, 1, 11369, 1, 11371, 1, 11381, 1, 11392, 1, 11394, 1, 11396, 1, 11398, 1, 11400, 1, 11402, 1, 11404, 1, 11406, 1, 11408, 1, 11410, 1, 11412, 1, 11414, 1, 11416, 1, 11418, 1, 11420, 1, 11422, 1, 11424, 1, 11426, 1, 11428, 1, 11430, 1, 11432, 1, 11434, 1, 11436, 1, 11438, 1, 11440, 1, 11442, 1, 11444, 1, 11446, 1, 11448, 1, 11450, 1, 11452, 1, 11454, 1, 11456, 1, 11458, 1, 11460, 1, 11462, 1, 11464, 1, 11466, 1, 11468, 1, 11470, 1, 11472, 1, 11474, 1, 11476, 1, 11478, 1, 11480, 1, 11482, 1, 11484, 1, 11486, 1, 11488, 1, 11490, 1];
-whitespaceAndNewlineCharacterSet = [9, 5, 32, 1, 133, 1, 160, 1, 5760, 1, 8192, 12, 8232, 2, 8239, 1, 8287, 1];
-whitespaceCharacterSet = [9, 1, 32, 1, 160, 1, 5760, 1, 8192, 12, 8239, 1, 8287, 1];
-p;9;CPCoder.jt;2747;@STATIC;1.0;i;13;CPException.ji;10;CPObject.jt;2695;objj_executeFile("CPException.j", YES);objj_executeFile("CPObject.j", YES);{var the_class = objj_allocateClassPair(CPObject, "CPCoder"),
+}
+
+alphanumericCharacterSet = [
+48,10,
+65,26,
+97,26,
+170,1,
+178,2,
+181,1,
+185,2,
+188,3,
+192,23,
+216,31,
+248,458,
+710,12,
+736,5,
+750,1,
+768,112,
+890,4,
+902,1,
+904,3,
+908,1,
+910,20,
+931,44,
+976,38,
+1015,139,
+1155,4,
+1160,140,
+1329,38,
+1369,1,
+1377,39,
+1425,45,
+1471,1,
+1473,2,
+1476,2,
+1479,1,
+1488,27,
+1520,3,
+1552,6,
+1569,26,
+1600,31,
+1632,10,
+1646,102,
+1749,8,
+1758,11,
+1770,19,
+1791,1,
+1808,59,
+1869,33,
+1920,50,
+1984,54,
+2042,1,
+2305,57,
+2364,18,
+2384,5,
+2392,12,
+2406,10,
+2427,5,
+2433,3,
+2437,8,
+2447,2,
+2451,22,
+2474,7,
+2482,1,
+2486,4,
+2492,9,
+2503,2,
+2507,4,
+2519,1,
+2524,2,
+2527,5,
+2534,12,
+2548,6,
+2561,3,
+2565,6,
+2575,2,
+2579,22,
+2602,7,
+2610,2,
+2613,2,
+2616,2,
+2620,1,
+2622,5,
+2631,2,
+2635,3,
+2649,4,
+2654,1,
+2662,15,
+2689,3,
+2693,9,
+2703,3,
+2707,22,
+2730,7,
+2738,2,
+2741,5,
+2748,10,
+2759,3,
+2763,3,
+2768,1,
+2784,4,
+2790,10,
+2817,3,
+2821,8,
+2831,2,
+2835,22,
+2858,7,
+2866,2,
+2869,5,
+2876,8,
+2887,2,
+2891,3,
+2902,2,
+2908,2,
+2911,3,
+2918,10,
+2929,1,
+2946,2,
+2949,6,
+2958,3,
+2962,4,
+2969,2,
+2972,1,
+2974,2,
+2979,2,
+2984,3,
+2990,12,
+3006,5,
+3014,3,
+3018,4,
+3031,1,
+3046,13,
+3073,3,
+3077,8,
+3086,3,
+3090,23,
+3114,10,
+3125,5,
+3134,7,
+3142,3,
+3146,4,
+3157,2,
+3168,2,
+3174,10,
+3202,2,
+3205,8,
+3214,3,
+3218,23,
+3242,10,
+3253,5,
+3260,9,
+3270,3,
+3274,4,
+3285,2,
+3294,1,
+3296,4,
+3302,10,
+3330,2,
+3333,8,
+3342,3,
+3346,23,
+3370,16,
+3390,6,
+3398,3,
+3402,4,
+3415,1,
+3424,2,
+3430,10,
+3458,2,
+3461,18,
+3482,24,
+3507,9,
+3517,1,
+3520,7,
+3530,1,
+3535,6,
+3542,1,
+3544,8,
+3570,2,
+3585,58,
+3648,15,
+3664,10,
+3713,2,
+3716,1,
+3719,2,
+3722,1,
+3725,1,
+3732,4,
+3737,7,
+3745,3,
+3749,1,
+3751,1,
+3754,2,
+3757,13,
+3771,3,
+3776,5,
+3782,1,
+3784,6,
+3792,10,
+3804,2,
+3840,1,
+3864,2,
+3872,20,
+3893,1,
+3895,1,
+3897,1,
+3902,10,
+3913,34,
+3953,20,
+3974,6,
+3984,8,
+3993,36,
+4038,1,
+4096,34,
+4131,5,
+4137,2,
+4140,7,
+4150,4,
+4160,10,
+4176,10,
+4256,38,
+4304,43,
+4348,1,
+4352,90,
+4447,68,
+4520,82,
+4608,73,
+4682,4,
+4688,7,
+4696,1,
+4698,4,
+4704,41,
+4746,4,
+4752,33,
+4786,4,
+4792,7,
+4800,1,
+4802,4,
+4808,15,
+4824,57,
+4882,4,
+4888,67,
+4959,1,
+4969,20,
+4992,16,
+5024,85,
+5121,620,
+5743,8,
+5761,26,
+5792,75,
+5870,3,
+5888,13,
+5902,7,
+5920,21,
+5952,20,
+5984,13,
+5998,3,
+6002,2,
+6016,52,
+6070,30,
+6103,1,
+6108,2,
+6112,10,
+6128,10,
+6155,3,
+6160,10,
+6176,88,
+6272,42,
+6400,29,
+6432,12,
+6448,12,
+6470,40,
+6512,5,
+6528,42,
+6576,26,
+6608,10,
+6656,28,
+6912,76,
+6992,10,
+7019,9,
+7424,203,
+7678,158,
+7840,90,
+7936,22,
+7960,6,
+7968,38,
+8008,6,
+8016,8,
+8025,1,
+8027,1,
+8029,1,
+8031,31,
+8064,53,
+8118,7,
+8126,1,
+8130,3,
+8134,7,
+8144,4,
+8150,6,
+8160,13,
+8178,3,
+8182,7,
+8304,2,
+8308,6,
+8319,11,
+8336,5,
+8400,32,
+8450,1,
+8455,1,
+8458,10,
+8469,1,
+8473,5,
+8484,1,
+8486,1,
+8488,1,
+8490,4,
+8495,11,
+8508,4,
+8517,5,
+8526,1,
+8531,50,
+9312,60,
+9450,22,
+10102,30,
+11264,47,
+11312,47,
+11360,13,
+11380,4,
+11392,101,
+11517,1,
+11520,38,
+11568,54,
+11631,1,
+11648,23,
+11680,7,
+11688,7,
+11696,7,
+11704,7,
+11712,7,
+11720,7,
+11728,7,
+11736,7,
+12293,3,
+12321,15,
+12337,5,
+12344,5,
+12353,86,
+12441,2,
+12445,3,
+12449,90,
+12540,4,
+12549,40,
+12593,94,
+12690,4,
+12704,24,
+12784,16,
+12832,10,
+12881,15,
+12928,10,
+12977,15,
+13312,6582,
+19968,20924,
+40960,1165,
+42775,4,
+43008,40,
+43072,52,
+44032,11172,
+63744,302,
+64048,59,
+64112,106,
+64256,7,
+64275,5,
+64285,12,
+64298,13,
+64312,5,
+64318,1,
+64320,2,
+64323,2,
+64326,108,
+64467,363,
+64848,64,
+64914,54,
+65008,12,
+65024,16,
+65056,4,
+65136,5,
+65142,135,
+65296,10,
+65313,26,
+65345,26,
+65382,89,
+65474,6,
+65482,6,
+65490,6
+];
+
+controlCharacterSet = [
+0,32,
+127,33,
+173,1,
+1536,4,
+1757,1,
+1807,1,
+6068,2,
+8203,5,
+8234,5,
+8288,4,
+8298,6,
+65279,1
+];
+
+decimalDigitCharacterSet = [
+48,10,
+1632,10,
+1776,10,
+1984,10,
+2406,10,
+2534,10,
+2662,10,
+2790,10,
+2918,10,
+3046,10,
+3174,10,
+3302,10,
+3430,10,
+3664,10,
+3792,10,
+3872,10,
+4160,10,
+6112,10,
+6160,10,
+6470,10,
+6608,10,
+6992,10
+];
+
+decomposableCharacterSet = [
+192,6,
+199,9,
+209,6,
+217,5,
+224,6,
+231,9,
+241,6,
+249,5,
+255,17,
+274,20,
+296,9,
+308,4,
+313,6,
+323,6,
+332,6,
+340,18,
+360,23,
+416,2,
+431,2,
+461,16,
+478,6,
+486,11,
+500,2,
+504,36,
+542,2,
+550,14,
+832,2,
+835,2,
+884,1,
+894,1,
+901,6,
+908,1,
+910,3,
+938,7,
+970,5,
+979,2,
+1024,2,
+1027,1,
+1031,1,
+1036,3,
+1049,1,
+1081,1,
+1104,2,
+1107,1,
+1111,1,
+1116,3,
+1142,2,
+1217,2,
+1232,4,
+1238,2,
+1242,6,
+1250,6,
+1258,12,
+1272,2,
+1570,5,
+1728,1,
+1730,1,
+1747,1,
+2345,1,
+2353,1,
+2356,1,
+2392,8,
+2507,2,
+2524,2,
+2527,1,
+2611,1,
+2614,1,
+2649,3,
+2654,1,
+2888,1,
+2891,2,
+2908,2,
+2964,1,
+3018,3,
+3144,1,
+3264,1,
+3271,2,
+3274,2,
+3402,3,
+3546,1,
+3548,3,
+3907,1,
+3917,1,
+3922,1,
+3927,1,
+3932,1,
+3945,1,
+3955,1,
+3957,2,
+3960,1,
+3969,1,
+3987,1,
+3997,1,
+4002,1,
+4007,1,
+4012,1,
+4025,1,
+4134,1,
+6918,1,
+6920,1,
+6922,1,
+6924,1,
+6926,1,
+6930,1,
+6971,1,
+6973,1,
+6976,2,
+6979,1,
+7680,154,
+7835,1,
+7840,90,
+7936,22,
+7960,6,
+7968,38,
+8008,6,
+8016,8,
+8025,1,
+8027,1,
+8029,1,
+8031,31,
+8064,53,
+8118,7,
+8126,1,
+8129,4,
+8134,14,
+8150,6,
+8157,19,
+8178,3,
+8182,8,
+8192,2,
+8486,1,
+8490,2,
+8602,2,
+8622,1,
+8653,3,
+8708,1,
+8713,1,
+8716,1,
+8740,1,
+8742,1,
+8769,1,
+8772,1,
+8775,1,
+8777,1,
+8800,1,
+8802,1,
+8813,5,
+8820,2,
+8824,2,
+8832,2,
+8836,2,
+8840,2,
+8876,4,
+8928,4,
+8938,4,
+9001,2,
+10972,1,
+12364,1,
+12366,1,
+12368,1,
+12370,1,
+12372,1,
+12374,1,
+12376,1,
+12378,1,
+12380,1,
+12382,1,
+12384,1,
+12386,1,
+12389,1,
+12391,1,
+12393,1,
+12400,2,
+12403,2,
+12406,2,
+12409,2,
+12412,2,
+12436,1,
+12446,1,
+12460,1,
+12462,1,
+12464,1,
+12466,1,
+12468,1,
+12470,1,
+12472,1,
+12474,1,
+12476,1,
+12478,1,
+12480,1,
+12482,1,
+12485,1,
+12487,1,
+12489,1,
+12496,2,
+12499,2,
+12502,2,
+12505,2,
+12508,2,
+12532,1,
+12535,4,
+12542,1,
+44032,11172,
+63744,270,
+64016,1,
+64018,1,
+64021,10,
+64032,1,
+64034,1,
+64037,2,
+64042,4,
+64048,59,
+64112,106,
+64285,1,
+64287,1,
+64298,13,
+64312,5,
+64318,1,
+64320,2,
+64323,2
+];
+
+illegalCharacterSet = [
+880,4,
+886,4,
+895,5,
+907,1,
+909,1,
+930,1,
+975,1,
+1159,1,
+1300,29,
+1367,2,
+1376,1,
+1416,1,
+1419,6,
+1480,8,
+1515,5,
+1525,11,
+1540,7,
+1558,5,
+1564,2,
+1568,1,
+1595,5,
+1631,1,
+1806,1,
+1867,2,
+1902,18,
+1970,14,
+2043,262,
+2362,2,
+2382,2,
+2389,3,
+2417,10,
+2432,1,
+2436,1,
+2445,2,
+2449,2,
+2473,1,
+2481,1,
+2483,3,
+2490,2,
+2501,2,
+2505,2,
+2511,8,
+2520,4,
+2526,1,
+2532,2,
+2555,6,
+2564,1,
+2571,4,
+2577,2,
+2601,1,
+2609,1,
+2612,1,
+2615,1,
+2618,2,
+2621,1,
+2627,4,
+2633,2,
+2638,11,
+2653,1,
+2655,7,
+2677,12,
+2692,1,
+2702,1,
+2706,1,
+2729,1,
+2737,1,
+2740,1,
+2746,2,
+2758,1,
+2762,1,
+2766,2,
+2769,15,
+2788,2,
+2800,1,
+2802,15,
+2820,1,
+2829,2,
+2833,2,
+2857,1,
+2865,1,
+2868,1,
+2874,2,
+2884,3,
+2889,2,
+2894,8,
+2904,4,
+2910,1,
+2914,4,
+2930,16,
+2948,1,
+2955,3,
+2961,1,
+2966,3,
+2971,1,
+2973,1,
+2976,3,
+2981,3,
+2987,3,
+3002,4,
+3011,3,
+3017,1,
+3022,9,
+3032,14,
+3067,6,
+3076,1,
+3085,1,
+3089,1,
+3113,1,
+3124,1,
+3130,4,
+3141,1,
+3145,1,
+3150,7,
+3159,9,
+3170,4,
+3184,18,
+3204,1,
+3213,1,
+3217,1,
+3241,1,
+3252,1,
+3258,2,
+3269,1,
+3273,1,
+3278,7,
+3287,7,
+3295,1,
+3300,2,
+3312,1,
+3315,15,
+3332,1,
+3341,1,
+3345,1,
+3369,1,
+3386,4,
+3396,2,
+3401,1,
+3406,9,
+3416,8,
+3426,4,
+3440,18,
+3460,1,
+3479,3,
+3506,1,
+3516,1,
+3518,2,
+3527,3,
+3531,4,
+3541,1,
+3543,1,
+3552,18,
+3573,12,
+3643,4,
+3676,37,
+3715,1,
+3717,2,
+3721,1,
+3723,2,
+3726,6,
+3736,1,
+3744,1,
+3748,1,
+3750,1,
+3752,2,
+3756,1,
+3770,1,
+3774,2,
+3781,1,
+3783,1,
+3790,2,
+3802,2,
+3806,34,
+3912,1,
+3947,6,
+3980,4,
+3992,1,
+4029,1,
+4045,2,
+4050,46,
+4130,1,
+4136,1,
+4139,1,
+4147,3,
+4154,6,
+4186,70,
+4294,10,
+4349,3,
+4442,5,
+4515,5,
+4602,6,
+4681,1,
+4686,2,
+4695,1,
+4697,1,
+4702,2,
+4745,1,
+4750,2,
+4785,1,
+4790,2,
+4799,1,
+4801,1,
+4806,2,
+4823,1,
+4881,1,
+4886,2,
+4955,4,
+4989,3,
+5018,6,
+5109,12,
+5751,9,
+5789,3,
+5873,15,
+5901,1,
+5909,11,
+5943,9,
+5972,12,
+5997,1,
+6001,1,
+6004,12,
+6110,2,
+6122,6,
+6138,6,
+6159,1,
+6170,6,
+6264,8,
+6314,86,
+6429,3,
+6444,4,
+6460,4,
+6465,3,
+6510,2,
+6517,11,
+6570,6,
+6602,6,
+6618,4,
+6684,2,
+6688,224,
+6988,4,
+7037,387,
+7627,51,
+7836,4,
+7930,6,
+7958,2,
+7966,2,
+8006,2,
+8014,2,
+8024,1,
+8026,1,
+8028,1,
+8030,1,
+8062,2,
+8117,1,
+8133,1,
+8148,2,
+8156,1,
+8176,2,
+8181,1,
+8191,1,
+8292,6,
+8306,2,
+8335,1,
+8341,11,
+8374,26,
+8432,16,
+8527,4,
+8581,11,
+9192,24,
+9255,25,
+9291,21,
+9885,3,
+9907,78,
+9989,1,
+9994,2,
+10024,1,
+10060,1,
+10062,1,
+10067,3,
+10071,1,
+10079,2,
+10133,3,
+10160,1,
+10175,1,
+10187,5,
+10220,4,
+11035,5,
+11044,220,
+11311,1,
+11359,1,
+11373,7,
+11384,8,
+11499,14,
+11558,10,
+11622,9,
+11632,16,
+11671,9,
+11687,1,
+11695,1,
+11703,1,
+11711,1,
+11719,1,
+11727,1,
+11735,1,
+11743,33,
+11800,4,
+11806,98,
+11930,1,
+12020,12,
+12246,26,
+12284,4,
+12352,1,
+12439,2,
+12544,5,
+12589,4,
+12687,1,
+12728,8,
+12752,32,
+12831,1,
+12868,12,
+13055,1,
+19894,10,
+40892,68,
+42125,3,
+42183,569,
+42779,5,
+42786,222,
+43052,20,
+43128,904,
+55204,92,
+64046,2,
+64107,5,
+64218,38,
+64263,12,
+64280,5,
+64311,1,
+64317,1,
+64319,1,
+64322,1,
+64325,1,
+64434,33,
+64832,16,
+64912,2,
+64968,40,
+65022,2,
+65050,6,
+65060,12,
+65107,1,
+65127,1,
+65132,4,
+65141,1,
+65277,2,
+65280,1,
+65471,3,
+65480,2,
+65488,2,
+65496,2,
+65501,3,
+65511,1,
+65519,10
+];
+
+letterCharacterSet = [
+65,26,
+97,26,
+170,1,
+181,1,
+186,1,
+192,23,
+216,31,
+248,458,
+710,12,
+736,5,
+750,1,
+768,112,
+890,4,
+902,1,
+904,3,
+908,1,
+910,20,
+931,44,
+976,38,
+1015,139,
+1155,4,
+1160,140,
+1329,38,
+1369,1,
+1377,39,
+1425,45,
+1471,1,
+1473,2,
+1476,2,
+1479,1,
+1488,27,
+1520,3,
+1552,6,
+1569,26,
+1600,31,
+1646,102,
+1749,8,
+1758,11,
+1770,6,
+1786,3,
+1791,1,
+1808,59,
+1869,33,
+1920,50,
+1994,44,
+2042,1,
+2305,57,
+2364,18,
+2384,5,
+2392,12,
+2427,5,
+2433,3,
+2437,8,
+2447,2,
+2451,22,
+2474,7,
+2482,1,
+2486,4,
+2492,9,
+2503,2,
+2507,4,
+2519,1,
+2524,2,
+2527,5,
+2544,2,
+2561,3,
+2565,6,
+2575,2,
+2579,22,
+2602,7,
+2610,2,
+2613,2,
+2616,2,
+2620,1,
+2622,5,
+2631,2,
+2635,3,
+2649,4,
+2654,1,
+2672,5,
+2689,3,
+2693,9,
+2703,3,
+2707,22,
+2730,7,
+2738,2,
+2741,5,
+2748,10,
+2759,3,
+2763,3,
+2768,1,
+2784,4,
+2817,3,
+2821,8,
+2831,2,
+2835,22,
+2858,7,
+2866,2,
+2869,5,
+2876,8,
+2887,2,
+2891,3,
+2902,2,
+2908,2,
+2911,3,
+2929,1,
+2946,2,
+2949,6,
+2958,3,
+2962,4,
+2969,2,
+2972,1,
+2974,2,
+2979,2,
+2984,3,
+2990,12,
+3006,5,
+3014,3,
+3018,4,
+3031,1,
+3073,3,
+3077,8,
+3086,3,
+3090,23,
+3114,10,
+3125,5,
+3134,7,
+3142,3,
+3146,4,
+3157,2,
+3168,2,
+3202,2,
+3205,8,
+3214,3,
+3218,23,
+3242,10,
+3253,5,
+3260,9,
+3270,3,
+3274,4,
+3285,2,
+3294,1,
+3296,4,
+3330,2,
+3333,8,
+3342,3,
+3346,23,
+3370,16,
+3390,6,
+3398,3,
+3402,4,
+3415,1,
+3424,2,
+3458,2,
+3461,18,
+3482,24,
+3507,9,
+3517,1,
+3520,7,
+3530,1,
+3535,6,
+3542,1,
+3544,8,
+3570,2,
+3585,58,
+3648,15,
+3713,2,
+3716,1,
+3719,2,
+3722,1,
+3725,1,
+3732,4,
+3737,7,
+3745,3,
+3749,1,
+3751,1,
+3754,2,
+3757,13,
+3771,3,
+3776,5,
+3782,1,
+3784,6,
+3804,2,
+3840,1,
+3864,2,
+3893,1,
+3895,1,
+3897,1,
+3902,10,
+3913,34,
+3953,20,
+3974,6,
+3984,8,
+3993,36,
+4038,1,
+4096,34,
+4131,5,
+4137,2,
+4140,7,
+4150,4,
+4176,10,
+4256,38,
+4304,43,
+4348,1,
+4352,90,
+4447,68,
+4520,82,
+4608,73,
+4682,4,
+4688,7,
+4696,1,
+4698,4,
+4704,41,
+4746,4,
+4752,33,
+4786,4,
+4792,7,
+4800,1,
+4802,4,
+4808,15,
+4824,57,
+4882,4,
+4888,67,
+4959,1,
+4992,16,
+5024,85,
+5121,620,
+5743,8,
+5761,26,
+5792,75,
+5888,13,
+5902,7,
+5920,21,
+5952,20,
+5984,13,
+5998,3,
+6002,2,
+6016,52,
+6070,30,
+6103,1,
+6108,2,
+6155,3,
+6176,88,
+6272,42,
+6400,29,
+6432,12,
+6448,12,
+6480,30,
+6512,5,
+6528,42,
+6576,26,
+6656,28,
+6912,76,
+7019,9,
+7424,203,
+7678,158,
+7840,90,
+7936,22,
+7960,6,
+7968,38,
+8008,6,
+8016,8,
+8025,1,
+8027,1,
+8029,1,
+8031,31,
+8064,53,
+8118,7,
+8126,1,
+8130,3,
+8134,7,
+8144,4,
+8150,6,
+8160,13,
+8178,3,
+8182,7,
+8305,1,
+8319,1,
+8336,5,
+8400,32,
+8450,1,
+8455,1,
+8458,10,
+8469,1,
+8473,5,
+8484,1,
+8486,1,
+8488,1,
+8490,4,
+8495,11,
+8508,4,
+8517,5,
+8526,1,
+8579,2,
+11264,47,
+11312,47,
+11360,13,
+11380,4,
+11392,101,
+11520,38,
+11568,54,
+11631,1,
+11648,23,
+11680,7,
+11688,7,
+11696,7,
+11704,7,
+11712,7,
+11720,7,
+11728,7,
+11736,7,
+12293,2,
+12330,6,
+12337,5,
+12347,2,
+12353,86,
+12441,2,
+12445,3,
+12449,90,
+12540,4,
+12549,40,
+12593,94,
+12704,24,
+12784,16,
+13312,6582,
+19968,20924,
+40960,1165,
+42775,4,
+43008,40,
+43072,52,
+44032,11172,
+63744,302,
+64048,59,
+64112,106,
+64256,7,
+64275,5,
+64285,12,
+64298,13,
+64312,5,
+64318,1,
+64320,2,
+64323,2,
+64326,108,
+64467,363,
+64848,64,
+64914,54,
+65008,12,
+65024,16,
+65056,4,
+65136,5,
+65142,135,
+65313,26,
+65345,26,
+65382,89,
+65474,6,
+65482,6,
+65490,6
+];
+
+lowercaseLetterCharacterSet = [
+97,26,
+170,1,
+181,1,
+186,1,
+223,24,
+248,8,
+257,1,
+259,1,
+261,1,
+263,1,
+265,1,
+267,1,
+269,1,
+271,1,
+273,1,
+275,1,
+277,1,
+279,1,
+281,1,
+283,1,
+285,1,
+287,1,
+289,1,
+291,1,
+293,1,
+295,1,
+297,1,
+299,1,
+301,1,
+303,1,
+305,1,
+307,1,
+309,1,
+311,2,
+314,1,
+316,1,
+318,1,
+320,1,
+322,1,
+324,1,
+326,1,
+328,2,
+331,1,
+333,1,
+335,1,
+337,1,
+339,1,
+341,1,
+343,1,
+345,1,
+347,1,
+349,1,
+351,1,
+353,1,
+355,1,
+357,1,
+359,1,
+361,1,
+363,1,
+365,1,
+367,1,
+369,1,
+371,1,
+373,1,
+375,1,
+378,1,
+380,1,
+382,3,
+387,1,
+389,1,
+392,1,
+396,2,
+402,1,
+405,1,
+409,3,
+414,1,
+417,1,
+419,1,
+421,1,
+424,1,
+426,2,
+429,1,
+432,1,
+436,1,
+438,1,
+441,2,
+445,3,
+454,1,
+457,1,
+460,1,
+462,1,
+464,1,
+466,1,
+468,1,
+470,1,
+472,1,
+474,1,
+476,2,
+479,1,
+481,1,
+483,1,
+485,1,
+487,1,
+489,1,
+491,1,
+493,1,
+495,2,
+499,1,
+501,1,
+505,1,
+507,1,
+509,1,
+511,1,
+513,1,
+515,1,
+517,1,
+519,1,
+521,1,
+523,1,
+525,1,
+527,1,
+529,1,
+531,1,
+533,1,
+535,1,
+537,1,
+539,1,
+541,1,
+543,1,
+545,1,
+547,1,
+549,1,
+551,1,
+553,1,
+555,1,
+557,1,
+559,1,
+561,1,
+563,7,
+572,1,
+575,2,
+578,1,
+583,1,
+585,1,
+587,1,
+589,1,
+591,69,
+661,27,
+891,3,
+912,1,
+940,35,
+976,2,
+981,3,
+985,1,
+987,1,
+989,1,
+991,1,
+993,1,
+995,1,
+997,1,
+999,1,
+1001,1,
+1003,1,
+1005,1,
+1007,5,
+1013,1,
+1016,1,
+1019,2,
+1072,48,
+1121,1,
+1123,1,
+1125,1,
+1127,1,
+1129,1,
+1131,1,
+1133,1,
+1135,1,
+1137,1,
+1139,1,
+1141,1,
+1143,1,
+1145,1,
+1147,1,
+1149,1,
+1151,1,
+1153,1,
+1163,1,
+1165,1,
+1167,1,
+1169,1,
+1171,1,
+1173,1,
+1175,1,
+1177,1,
+1179,1,
+1181,1,
+1183,1,
+1185,1,
+1187,1,
+1189,1,
+1191,1,
+1193,1,
+1195,1,
+1197,1,
+1199,1,
+1201,1,
+1203,1,
+1205,1,
+1207,1,
+1209,1,
+1211,1,
+1213,1,
+1215,1,
+1218,1,
+1220,1,
+1222,1,
+1224,1,
+1226,1,
+1228,1,
+1230,2,
+1233,1,
+1235,1,
+1237,1,
+1239,1,
+1241,1,
+1243,1,
+1245,1,
+1247,1,
+1249,1,
+1251,1,
+1253,1,
+1255,1,
+1257,1,
+1259,1,
+1261,1,
+1263,1,
+1265,1,
+1267,1,
+1269,1,
+1271,1,
+1273,1,
+1275,1,
+1277,1,
+1279,1,
+1281,1,
+1283,1,
+1285,1,
+1287,1,
+1289,1,
+1291,1,
+1293,1,
+1295,1,
+1297,1,
+1299,1,
+1377,39,
+7424,44,
+7522,22,
+7545,34,
+7681,1,
+7683,1,
+7685,1,
+7687,1,
+7689,1,
+7691,1,
+7693,1,
+7695,1,
+7697,1,
+7699,1,
+7701,1,
+7703,1,
+7705,1,
+7707,1,
+7709,1,
+7711,1,
+7713,1,
+7715,1,
+7717,1,
+7719,1,
+7721,1,
+7723,1,
+7725,1,
+7727,1,
+7729,1,
+7731,1,
+7733,1,
+7735,1,
+7737,1,
+7739,1,
+7741,1,
+7743,1,
+7745,1,
+7747,1,
+7749,1,
+7751,1,
+7753,1,
+7755,1,
+7757,1,
+7759,1,
+7761,1,
+7763,1,
+7765,1,
+7767,1,
+7769,1,
+7771,1,
+7773,1,
+7775,1,
+7777,1,
+7779,1,
+7781,1,
+7783,1,
+7785,1,
+7787,1,
+7789,1,
+7791,1,
+7793,1,
+7795,1,
+7797,1,
+7799,1,
+7801,1,
+7803,1,
+7805,1,
+7807,1,
+7809,1,
+7811,1,
+7813,1,
+7815,1,
+7817,1,
+7819,1,
+7821,1,
+7823,1,
+7825,1,
+7827,1,
+7829,7,
+7841,1,
+7843,1,
+7845,1,
+7847,1,
+7849,1,
+7851,1,
+7853,1,
+7855,1,
+7857,1,
+7859,1,
+7861,1,
+7863,1,
+7865,1,
+7867,1,
+7869,1,
+7871,1,
+7873,1,
+7875,1,
+7877,1,
+7879,1,
+7881,1,
+7883,1,
+7885,1,
+7887,1,
+7889,1,
+7891,1,
+7893,1,
+7895,1,
+7897,1,
+7899,1,
+7901,1,
+7903,1,
+7905,1,
+7907,1,
+7909,1,
+7911,1,
+7913,1,
+7915,1,
+7917,1,
+7919,1,
+7921,1,
+7923,1,
+7925,1,
+7927,1,
+7929,1,
+7936,8,
+7952,6,
+7968,8,
+7984,8,
+8000,6,
+8016,8,
+8032,8,
+8048,14,
+8064,8,
+8080,8,
+8096,8,
+8112,5,
+8118,2,
+8126,1,
+8130,3,
+8134,2,
+8144,4,
+8150,2,
+8160,8,
+8178,3,
+8182,2,
+8305,1,
+8319,1,
+8458,1,
+8462,2,
+8467,1,
+8495,1,
+8500,1,
+8505,1,
+8508,2,
+8518,4,
+8526,1,
+8580,1,
+11312,47,
+11361,1,
+11365,2,
+11368,1,
+11370,1,
+11372,1,
+11380,1,
+11382,2,
+11393,1,
+11395,1,
+11397,1,
+11399,1,
+11401,1,
+11403,1,
+11405,1,
+11407,1,
+11409,1,
+11411,1,
+11413,1,
+11415,1,
+11417,1,
+11419,1,
+11421,1,
+11423,1,
+11425,1,
+11427,1,
+11429,1,
+11431,1,
+11433,1,
+11435,1,
+11437,1,
+11439,1,
+11441,1,
+11443,1,
+11445,1,
+11447,1,
+11449,1,
+11451,1,
+11453,1,
+11455,1,
+11457,1,
+11459,1,
+11461,1,
+11463,1,
+11465,1,
+11467,1,
+11469,1,
+11471,1,
+11473,1,
+11475,1,
+11477,1,
+11479,1,
+11481,1,
+11483,1,
+11485,1,
+11487,1,
+11489,1,
+11491,2,
+11520,38,
+64256,7,
+64275,5
+];
+
+nonBaseCharacterSet = [
+768,112,
+1155,4,
+1160,2,
+1425,45,
+1471,1,
+1473,2,
+1476,2,
+1479,1,
+1552,6,
+1611,20,
+1648,1,
+1750,7,
+1758,7,
+1767,2,
+1770,4,
+1809,1,
+1840,27,
+1958,11,
+2027,9,
+2305,3,
+2364,1,
+2366,16,
+2385,4,
+2402,2,
+2433,3,
+2492,1,
+2494,7,
+2503,2,
+2507,3,
+2519,1,
+2530,2,
+2561,3,
+2620,1,
+2622,5,
+2631,2,
+2635,3,
+2672,2,
+2689,3,
+2748,1,
+2750,8,
+2759,3,
+2763,3,
+2786,2,
+2817,3,
+2876,1,
+2878,6,
+2887,2,
+2891,3,
+2902,2,
+2946,1,
+3006,5,
+3014,3,
+3018,4,
+3031,1,
+3073,3,
+3134,7,
+3142,3,
+3146,4,
+3157,2,
+3202,2,
+3260,1,
+3262,7,
+3270,3,
+3274,4,
+3285,2,
+3298,2,
+3330,2,
+3390,6,
+3398,3,
+3402,4,
+3415,1,
+3458,2,
+3530,1,
+3535,6,
+3542,1,
+3544,8,
+3570,2,
+3633,1,
+3636,7,
+3655,8,
+3761,1,
+3764,6,
+3771,2,
+3784,6,
+3864,2,
+3893,1,
+3895,1,
+3897,1,
+3902,2,
+3953,20,
+3974,2,
+3984,8,
+3993,36,
+4038,1,
+4140,7,
+4150,4,
+4182,4,
+4959,1,
+5906,3,
+5938,3,
+5970,2,
+6002,2,
+6070,30,
+6109,1,
+6155,3,
+6313,1,
+6432,12,
+6448,12,
+6576,17,
+6600,2,
+6679,5,
+6912,5,
+6964,17,
+7019,9,
+7616,11,
+7678,2,
+8400,32,
+12330,6,
+12441,2,
+43010,1,
+43014,1,
+43019,1,
+43043,5,
+64286,1,
+65024,16
+];
+
+punctuationCharacterSet = [
+33,3,
+37,6,
+44,4,
+58,2,
+63,2,
+91,3,
+95,1,
+123,1,
+125,1,
+161,1,
+171,1,
+183,1,
+187,1,
+191,1,
+894,1,
+903,1,
+1370,6,
+1417,2,
+1470,1,
+1472,1,
+1475,1,
+1478,1,
+1523,2,
+1548,2,
+1563,1,
+1566,2,
+1642,4,
+1748,1,
+1792,14,
+2039,3,
+2404,2,
+2416,1,
+3572,1,
+3663,1,
+3674,2,
+3844,15,
+3898,4,
+3973,1,
+4048,2,
+4170,6,
+4347,1,
+4961,8,
+5741,2,
+5787,2,
+5867,3,
+5941,2,
+6100,3,
+6104,3,
+6144,11,
+6468,2,
+6622,2,
+6686,2,
+7002,7,
+8208,24,
+8240,20,
+8261,13,
+8275,12,
+8317,2,
+8333,2,
+9001,2,
+10088,14,
+10181,2,
+10214,6,
+10627,22,
+10712,4,
+10748,2,
+11513,4,
+11518,2,
+11776,24,
+11804,2,
+12289,3,
+12296,10,
+12308,12,
+12336,1,
+12349,1,
+12448,1,
+12539,1,
+43124,4,
+64830,2,
+65040,10,
+65072,35,
+65108,14,
+65123,1,
+65128,1,
+65130,2,
+65281,3,
+65285,6,
+65292,4,
+65306,2,
+65311,2,
+65339,3,
+65343,1,
+65371,1,
+65373,1
+];
+
+uppercaseLetterCharacterSet = [
+65,26,
+192,23,
+216,7,
+256,1,
+258,1,
+260,1,
+262,1,
+264,1,
+266,1,
+268,1,
+270,1,
+272,1,
+274,1,
+276,1,
+278,1,
+280,1,
+282,1,
+284,1,
+286,1,
+288,1,
+290,1,
+292,1,
+294,1,
+296,1,
+298,1,
+300,1,
+302,1,
+304,1,
+306,1,
+308,1,
+310,1,
+313,1,
+315,1,
+317,1,
+319,1,
+321,1,
+323,1,
+325,1,
+327,1,
+330,1,
+332,1,
+334,1,
+336,1,
+338,1,
+340,1,
+342,1,
+344,1,
+346,1,
+348,1,
+350,1,
+352,1,
+354,1,
+356,1,
+358,1,
+360,1,
+362,1,
+364,1,
+366,1,
+368,1,
+370,1,
+372,1,
+374,1,
+376,2,
+379,1,
+381,1,
+385,2,
+388,1,
+390,2,
+393,3,
+398,4,
+403,2,
+406,3,
+412,2,
+415,2,
+418,1,
+420,1,
+422,2,
+425,1,
+428,1,
+430,2,
+433,3,
+437,1,
+439,2,
+444,1,
+452,2,
+455,2,
+458,2,
+461,1,
+463,1,
+465,1,
+467,1,
+469,1,
+471,1,
+473,1,
+475,1,
+478,1,
+480,1,
+482,1,
+484,1,
+486,1,
+488,1,
+490,1,
+492,1,
+494,1,
+497,2,
+500,1,
+502,3,
+506,1,
+508,1,
+510,1,
+512,1,
+514,1,
+516,1,
+518,1,
+520,1,
+522,1,
+524,1,
+526,1,
+528,1,
+530,1,
+532,1,
+534,1,
+536,1,
+538,1,
+540,1,
+542,1,
+544,1,
+546,1,
+548,1,
+550,1,
+552,1,
+554,1,
+556,1,
+558,1,
+560,1,
+562,1,
+570,2,
+573,2,
+577,1,
+579,4,
+584,1,
+586,1,
+588,1,
+590,1,
+902,1,
+904,3,
+908,1,
+910,2,
+913,17,
+931,9,
+978,3,
+984,1,
+986,1,
+988,1,
+990,1,
+992,1,
+994,1,
+996,1,
+998,1,
+1000,1,
+1002,1,
+1004,1,
+1006,1,
+1012,1,
+1015,1,
+1017,2,
+1021,51,
+1120,1,
+1122,1,
+1124,1,
+1126,1,
+1128,1,
+1130,1,
+1132,1,
+1134,1,
+1136,1,
+1138,1,
+1140,1,
+1142,1,
+1144,1,
+1146,1,
+1148,1,
+1150,1,
+1152,1,
+1162,1,
+1164,1,
+1166,1,
+1168,1,
+1170,1,
+1172,1,
+1174,1,
+1176,1,
+1178,1,
+1180,1,
+1182,1,
+1184,1,
+1186,1,
+1188,1,
+1190,1,
+1192,1,
+1194,1,
+1196,1,
+1198,1,
+1200,1,
+1202,1,
+1204,1,
+1206,1,
+1208,1,
+1210,1,
+1212,1,
+1214,1,
+1216,2,
+1219,1,
+1221,1,
+1223,1,
+1225,1,
+1227,1,
+1229,1,
+1232,1,
+1234,1,
+1236,1,
+1238,1,
+1240,1,
+1242,1,
+1244,1,
+1246,1,
+1248,1,
+1250,1,
+1252,1,
+1254,1,
+1256,1,
+1258,1,
+1260,1,
+1262,1,
+1264,1,
+1266,1,
+1268,1,
+1270,1,
+1272,1,
+1274,1,
+1276,1,
+1278,1,
+1280,1,
+1282,1,
+1284,1,
+1286,1,
+1288,1,
+1290,1,
+1292,1,
+1294,1,
+1296,1,
+1298,1,
+1329,38,
+4256,38,
+7680,1,
+7682,1,
+7684,1,
+7686,1,
+7688,1,
+7690,1,
+7692,1,
+7694,1,
+7696,1,
+7698,1,
+7700,1,
+7702,1,
+7704,1,
+7706,1,
+7708,1,
+7710,1,
+7712,1,
+7714,1,
+7716,1,
+7718,1,
+7720,1,
+7722,1,
+7724,1,
+7726,1,
+7728,1,
+7730,1,
+7732,1,
+7734,1,
+7736,1,
+7738,1,
+7740,1,
+7742,1,
+7744,1,
+7746,1,
+7748,1,
+7750,1,
+7752,1,
+7754,1,
+7756,1,
+7758,1,
+7760,1,
+7762,1,
+7764,1,
+7766,1,
+7768,1,
+7770,1,
+7772,1,
+7774,1,
+7776,1,
+7778,1,
+7780,1,
+7782,1,
+7784,1,
+7786,1,
+7788,1,
+7790,1,
+7792,1,
+7794,1,
+7796,1,
+7798,1,
+7800,1,
+7802,1,
+7804,1,
+7806,1,
+7808,1,
+7810,1,
+7812,1,
+7814,1,
+7816,1,
+7818,1,
+7820,1,
+7822,1,
+7824,1,
+7826,1,
+7828,1,
+7840,1,
+7842,1,
+7844,1,
+7846,1,
+7848,1,
+7850,1,
+7852,1,
+7854,1,
+7856,1,
+7858,1,
+7860,1,
+7862,1,
+7864,1,
+7866,1,
+7868,1,
+7870,1,
+7872,1,
+7874,1,
+7876,1,
+7878,1,
+7880,1,
+7882,1,
+7884,1,
+7886,1,
+7888,1,
+7890,1,
+7892,1,
+7894,1,
+7896,1,
+7898,1,
+7900,1,
+7902,1,
+7904,1,
+7906,1,
+7908,1,
+7910,1,
+7912,1,
+7914,1,
+7916,1,
+7918,1,
+7920,1,
+7922,1,
+7924,1,
+7926,1,
+7928,1,
+7944,8,
+7960,6,
+7976,8,
+7992,8,
+8008,6,
+8025,1,
+8027,1,
+8029,1,
+8031,1,
+8040,8,
+8072,8,
+8088,8,
+8104,8,
+8120,5,
+8136,5,
+8152,4,
+8168,5,
+8184,5,
+8450,1,
+8455,1,
+8459,3,
+8464,3,
+8469,1,
+8473,5,
+8484,1,
+8486,1,
+8488,1,
+8490,4,
+8496,4,
+8510,2,
+8517,1,
+8579,1,
+11264,47,
+11360,1,
+11362,3,
+11367,1,
+11369,1,
+11371,1,
+11381,1,
+11392,1,
+11394,1,
+11396,1,
+11398,1,
+11400,1,
+11402,1,
+11404,1,
+11406,1,
+11408,1,
+11410,1,
+11412,1,
+11414,1,
+11416,1,
+11418,1,
+11420,1,
+11422,1,
+11424,1,
+11426,1,
+11428,1,
+11430,1,
+11432,1,
+11434,1,
+11436,1,
+11438,1,
+11440,1,
+11442,1,
+11444,1,
+11446,1,
+11448,1,
+11450,1,
+11452,1,
+11454,1,
+11456,1,
+11458,1,
+11460,1,
+11462,1,
+11464,1,
+11466,1,
+11468,1,
+11470,1,
+11472,1,
+11474,1,
+11476,1,
+11478,1,
+11480,1,
+11482,1,
+11484,1,
+11486,1,
+11488,1,
+11490,1
+];
+
+whitespaceAndNewlineCharacterSet = [
+9,5,
+32,1,
+133,1,
+160,1,
+5760,1,
+8192,12,
+8232,2,
+8239,1,
+8287,1
+];
+
+whitespaceCharacterSet = [
+9,1,
+32,1,
+160,1,
+5760,1,
+8192,12,
+8239,1,
+8287,1
+];p;9;CPCoder.jt;2747;@STATIC;1.0;i;13;CPException.ji;10;CPObject.jt;2695;objj_executeFile("CPException.j", YES);objj_executeFile("CPObject.j", YES);{var the_class = objj_allocateClassPair(CPObject, "CPCoder"),
 meta_class = the_class.isa;objj_registerClassPair(the_class);
 class_addMethods(the_class, [new objj_method(sel_getUid("allowsKeyedCoding"), function $CPCoder__allowsKeyedCoding(self, _cmd)
 {
     return NO;
 }
-,["BOOL"]), new objj_method(sel_getUid("encodeValueOfObjCType:at:"), function $CPCoder__encodeValueOfObjCType_at_(self, _cmd, aType, anObject)
+,["BOOL"]), new objj_method(sel_getUid("encodeValueOfObjJType:at:"), function $CPCoder__encodeValueOfObjJType_at_(self, _cmd, aType, anObject)
 {
     _CPRaiseInvalidAbstractInvocation(self, _cmd);
 }
@@ -2034,14 +5048,37 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     return self;
 }
 ,["id","CPCoder"])]);
-}p;14;CPCountedSet.jt;2066;@STATIC;1.0;i;10;CPObject.ji;23;_CPConcreteMutableSet.jt;2004;objj_executeFile("CPObject.j", YES);objj_executeFile("_CPConcreteMutableSet.j", YES);{var the_class = objj_allocateClassPair(_CPConcreteMutableSet, "CPCountedSet"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_counts")]);objj_registerClassPair(the_class);
+}p;14;CPCountedSet.jt;1970;@STATIC;1.0;i;10;CPObject.ji;23;_CPConcreteMutableSet.jt;1908;
+objj_executeFile("CPObject.j", YES);
+objj_executeFile("_CPConcreteMutableSet.j", YES);
+
+
+
+
+
+
+
+{var the_class = objj_allocateClassPair(_CPConcreteMutableSet, "CPCountedSet"),
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_counts")]);
+
+
+
+
+
+
+
+
+
+objj_registerClassPair(the_class);
 class_addMethods(the_class, [new objj_method(sel_getUid("addObject:"), function $CPCountedSet__addObject_(self, _cmd, anObject)
 {
     if (!self._counts)
         self._counts = {};
+
     objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPCountedSet").super_class }, "addObject:", anObject);
-    var UID = (anObject == null ? null : anObject.isa.objj_msgSend0(anObject, "UID"));
+
+    var UID = objj_msgSend(anObject, "UID");
+
     if (self._counts[UID] === undefined)
         self._counts[UID] = 1;
     else
@@ -2051,12 +5088,16 @@ class_addMethods(the_class, [new objj_method(sel_getUid("addObject:"), function 
 {
     if (!self._counts)
         return;
-    var UID = (anObject == null ? null : anObject.isa.objj_msgSend0(anObject, "UID"));
+
+    var UID = objj_msgSend(anObject, "UID");
+
     if (self._counts[UID] === undefined)
         return;
+
     else
     {
         --self._counts[UID];
+
         if (self._counts[UID] === 0)
         {
             delete self._counts[UID];
@@ -2073,40 +5114,97 @@ class_addMethods(the_class, [new objj_method(sel_getUid("addObject:"), function 
 {
     if (!self._counts)
         self._counts = {};
-    var UID = (anObject == null ? null : anObject.isa.objj_msgSend0(anObject, "UID"));
+
+    var UID = objj_msgSend(anObject, "UID");
+
     if (self._counts[UID] === undefined)
         return 0;
+
     return self._counts[UID];
 }
 ,["unsigned","id"])]);
-}p;8;CPData.jt;7401;@STATIC;1.0;i;10;CPObject.ji;10;CPString.jt;7352;objj_executeFile("CPObject.j", YES);objj_executeFile("CPString.j", YES);{var the_class = objj_allocateClassPair(CPObject, "CPData"),
-meta_class = the_class.isa;objj_registerClassPair(the_class);
+}p;8;CPData.jt;6668;@STATIC;1.0;i;10;CPObject.ji;10;CPString.jt;6619;
+objj_executeFile("CPObject.j", YES);
+objj_executeFile("CPString.j", YES);
+
+
+
+
+
+
+
+{var the_class = objj_allocateClassPair(CPObject, "CPData"),
+meta_class = the_class.isa;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+objj_registerClassPair(the_class);
 class_addMethods(the_class, [new objj_method(sel_getUid("initWithRawString:"), function $CPData__initWithRawString_(self, _cmd, aString)
 {
     self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPData").super_class }, "init");
+
     if (self)
-        (self == null ? null : self.isa.objj_msgSend1(self, "setRawString:", aString));
+        objj_msgSend(self, "setRawString:", aString);
+
     return self;
 }
 ,["id","CPString"]), new objj_method(sel_getUid("initWithPlistObject:"), function $CPData__initWithPlistObject_(self, _cmd, aPlistObject)
 {
     self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPData").super_class }, "init");
+
     if (self)
-        (self == null ? null : self.isa.objj_msgSend1(self, "setPlistObject:", aPlistObject));
+        objj_msgSend(self, "setPlistObject:", aPlistObject);
+
     return self;
 }
 ,["id","id"]), new objj_method(sel_getUid("initWithPlistObject:format:"), function $CPData__initWithPlistObject_format_(self, _cmd, aPlistObject, aFormat)
 {
     self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPData").super_class }, "init");
+
     if (self)
-        (self == null ? null : self.isa.objj_msgSend2(self, "setPlistObject:format:", aPlistObject, aFormat));
+        objj_msgSend(self, "setPlistObject:format:", aPlistObject, aFormat);
+
     return self;
 }
-,["id","id","id"]), new objj_method(sel_getUid("initWithJSONObject:"), function $CPData__initWithJSONObject_(self, _cmd, anObject)
+,["id","id",null]), new objj_method(sel_getUid("initWithJSONObject:"), function $CPData__initWithJSONObject_(self, _cmd, anObject)
 {
     self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPData").super_class }, "init");
+
     if (self)
-        (self == null ? null : self.isa.objj_msgSend1(self, "setJSONObject:", anObject));
+        objj_msgSend(self, "setJSONObject:", anObject);
+
     return self;
 }
 ,["id","Object"]), new objj_method(sel_getUid("rawString"), function $CPData__rawString(self, _cmd)
@@ -2131,8 +5229,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithRawString:"), f
 }
 ,["CPString"]), new objj_method(sel_getUid("length"), function $CPData__length(self, _cmd)
 {
-    return ((___r1 = self.isa.objj_msgSend0(self, "rawString")), ___r1 == null ? null : ___r1.isa.objj_msgSend0(___r1, "length"));
-    var ___r1;
+    return objj_msgSend(objj_msgSend(self, "rawString"), "length");
 }
 ,["int"]), new objj_method(sel_getUid("description"), function $CPData__description(self, _cmd)
 {
@@ -2142,53 +5239,56 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithRawString:"), f
 class_addMethods(meta_class, [new objj_method(sel_getUid("alloc"), function $CPData__alloc(self, _cmd)
 {
     var result = new CFMutableData();
-    result.isa = self.isa.objj_msgSend0(self, "class");
+    result.isa = objj_msgSend(self, "class");
     return result;
 }
 ,["id"]), new objj_method(sel_getUid("data"), function $CPData__data(self, _cmd)
 {
-    return ((___r1 = self.isa.objj_msgSend0(self, "alloc")), ___r1 == null ? null : ___r1.isa.objj_msgSend0(___r1, "init"));
-    var ___r1;
+    return objj_msgSend(objj_msgSend(self, "alloc"), "init");
 }
 ,["CPData"]), new objj_method(sel_getUid("dataWithRawString:"), function $CPData__dataWithRawString_(self, _cmd, aString)
 {
-    return ((___r1 = self.isa.objj_msgSend0(self, "alloc")), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "initWithRawString:", aString));
-    var ___r1;
+    return objj_msgSend(objj_msgSend(self, "alloc"), "initWithRawString:", aString);
 }
 ,["CPData","CPString"]), new objj_method(sel_getUid("dataWithPlistObject:"), function $CPData__dataWithPlistObject_(self, _cmd, aPlistObject)
 {
-    return ((___r1 = self.isa.objj_msgSend0(self, "alloc")), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "initWithPlistObject:", aPlistObject));
-    var ___r1;
+    return objj_msgSend(objj_msgSend(self, "alloc"), "initWithPlistObject:", aPlistObject);
 }
 ,["CPData","id"]), new objj_method(sel_getUid("dataWithPlistObject:format:"), function $CPData__dataWithPlistObject_format_(self, _cmd, aPlistObject, aFormat)
 {
-    return ((___r1 = self.isa.objj_msgSend0(self, "alloc")), ___r1 == null ? null : ___r1.isa.objj_msgSend2(___r1, "initWithPlistObject:format:", aPlistObject, aFormat));
-    var ___r1;
+    return objj_msgSend(objj_msgSend(self, "alloc"), "initWithPlistObject:format:", aPlistObject, aFormat);
 }
 ,["CPData","id","CPPropertyListFormat"]), new objj_method(sel_getUid("dataWithJSONObject:"), function $CPData__dataWithJSONObject_(self, _cmd, anObject)
 {
-    return ((___r1 = self.isa.objj_msgSend0(self, "alloc")), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "initWithJSONObject:", anObject));
-    var ___r1;
+    return objj_msgSend(objj_msgSend(self, "alloc"), "initWithJSONObject:", anObject);
 }
 ,["CPData","Object"]), new objj_method(sel_getUid("dataWithBytes:"), function $CPData__dataWithBytes_(self, _cmd, bytesArray)
 {
-    var data = ((___r1 = self.isa.objj_msgSend0(self, "alloc")), ___r1 == null ? null : ___r1.isa.objj_msgSend0(___r1, "init"));
+    var data = objj_msgSend(objj_msgSend(self, "alloc"), "init");
     data.setBytes(bytesArray);
+
     return data;
-    var ___r1;
 }
 ,["CPData","CPArray"]), new objj_method(sel_getUid("dataWithBase64:"), function $CPData__dataWithBase64_(self, _cmd, aString)
 {
-    var data = ((___r1 = self.isa.objj_msgSend0(self, "alloc")), ___r1 == null ? null : ___r1.isa.objj_msgSend0(___r1, "init"));
+    var data = objj_msgSend(objj_msgSend(self, "alloc"), "init");
     data.setBase64String(aString);
+
     return data;
-    var ___r1;
 }
 ,["CPData","CPString"])]);
-}{
+}
+
+{
 var the_class = objj_getClass("CPData")
 if(!the_class) throw new SyntaxError("*** Could not find definition for class \"CPData\"");
-var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_getUid("setRawString:"), function $CPData__setRawString_(self, _cmd, aString)
+var meta_class = the_class.isa;
+
+
+
+
+
+class_addMethods(the_class, [new objj_method(sel_getUid("setRawString:"), function $CPData__setRawString_(self, _cmd, aString)
 {
     self.setRawString(aString);
 }
@@ -2205,53 +5305,74 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     self.setJSONObject(anObject);
 }
 ,["void","Object"])]);
-}{
+}
+
+{
 var the_class = objj_getClass("CPData")
 if(!the_class) throw new SyntaxError("*** Could not find definition for class \"CPData\"");
-var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_getUid("initWithString:"), function $CPData__initWithString_(self, _cmd, aString)
+var meta_class = the_class.isa;
+
+
+
+
+
+class_addMethods(the_class, [new objj_method(sel_getUid("initWithString:"), function $CPData__initWithString_(self, _cmd, aString)
 {
     _CPReportLenientDeprecation(self, _cmd, sel_getUid("initWithRawString:"));
-    return self.isa.objj_msgSend1(self, "initWithRawString:", aString);
+
+    return objj_msgSend(self, "initWithRawString:", aString);
 }
 ,["id","CPString"]), new objj_method(sel_getUid("setString:"), function $CPData__setString_(self, _cmd, aString)
 {
     _CPReportLenientDeprecation(self, _cmd, sel_getUid("setRawString:"));
-    self.isa.objj_msgSend1(self, "setRawString:", aString);
+
+    objj_msgSend(self, "setRawString:", aString);
 }
 ,["void","CPString"]), new objj_method(sel_getUid("string"), function $CPData__string(self, _cmd)
 {
     _CPReportLenientDeprecation(self, _cmd, sel_getUid("rawString"));
-    return self.isa.objj_msgSend0(self, "rawString");
+
+    return objj_msgSend(self, "rawString");
 }
 ,["CPString"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("dataWithString:"), function $CPData__dataWithString_(self, _cmd, aString)
 {
     _CPReportLenientDeprecation(self, _cmd, sel_getUid("dataWithRawString:"));
-    return self.isa.objj_msgSend1(self, "dataWithRawString:", aString);
+
+    return objj_msgSend(self, "dataWithRawString:", aString);
 }
 ,["id","CPString"])]);
-}CFData.prototype.isa = CPData;
-CFMutableData.prototype.isa = CPData;
-p;8;CPDate.jt;9502;@STATIC;1.0;i;10;CPObject.ji;10;CPString.ji;13;CPException.jt;9435;objj_executeFile("CPObject.j", YES);objj_executeFile("CPString.j", YES);objj_executeFile("CPException.j", YES);var CPDateReferenceDate = new Date(Date.UTC(2001, 0, 1, 0, 0, 0, 0));
+}
+
+CFData.prototype.isa = CPData;
+CFMutableData.prototype.isa = CPData;p;8;CPDate.jt;10219;@STATIC;1.0;i;10;CPObject.ji;10;CPString.ji;13;CPException.jt;10151;objj_executeFile("CPObject.j", YES);objj_executeFile("CPString.j", YES);objj_executeFile("CPException.j", YES);var CPDateReferenceDate = new Date(Date.UTC(2001, 0, 1, 0, 0, 0, 0));
 {var the_class = objj_allocateClassPair(CPObject, "CPDate"),
 meta_class = the_class.isa;objj_registerClassPair(the_class);
 class_addMethods(the_class, [new objj_method(sel_getUid("initWithTimeIntervalSinceNow:"), function $CPDate__initWithTimeIntervalSinceNow_(self, _cmd, seconds)
 {
+    if (!_isNumberType(seconds))
+        CPLog.warn("The parameter of the method initWithTimeIntervalSinceNow: should be an integer or a float");
     self = new Date((new Date()).getTime() + seconds * 1000);
     return self;
 }
 ,["id","CPTimeInterval"]), new objj_method(sel_getUid("initWithTimeIntervalSince1970:"), function $CPDate__initWithTimeIntervalSince1970_(self, _cmd, seconds)
 {
+    if (!_isNumberType(seconds))
+        CPLog.warn("The parameter of the method initWithTimeIntervalSince1970: should be an integer or a float");
     self = new Date(seconds * 1000);
     return self;
 }
 ,["id","CPTimeInterval"]), new objj_method(sel_getUid("initWithTimeIntervalSinceReferenceDate:"), function $CPDate__initWithTimeIntervalSinceReferenceDate_(self, _cmd, seconds)
 {
+    if (!_isNumberType(seconds))
+        CPLog.warn("The parameter of the method initWithTimeIntervalSinceReferenceDate: should be an integer or a float");
     self = (self == null ? null : self.isa.objj_msgSend2(self, "initWithTimeInterval:sinceDate:", seconds, CPDateReferenceDate));
     return self;
 }
 ,["id","CPTimeInterval"]), new objj_method(sel_getUid("initWithTimeInterval:sinceDate:"), function $CPDate__initWithTimeInterval_sinceDate_(self, _cmd, seconds, refDate)
 {
+    if (!_isNumberType(seconds))
+        CPLog.warn("The parameter of the method initWithTimeInterval:sinceDate: should be an integer or a float");
     self = new Date(refDate.getTime() + seconds * 1000);
     return self;
 }
@@ -2414,12 +5535,23 @@ Date.parseISO8601 = function(date)
     return timestamp;
 };
 Date.prototype.isa = CPDate;
-p;17;CPDateFormatter.jt;91221;@STATIC;1.0;i;9;CPArray.ji;8;CPDate.ji;10;CPString.ji;13;CPFormatter.ji;12;CPTimeZone.ji;10;CPLocale.jt;91111;objj_executeFile("CPArray.j", YES);objj_executeFile("CPDate.j", YES);objj_executeFile("CPString.j", YES);objj_executeFile("CPFormatter.j", YES);objj_executeFile("CPTimeZone.j", YES);objj_executeFile("CPLocale.j", YES);CPDateFormatterNoStyle = 0;
+_isNumberType = function(value)
+{
+    if (typeof value === 'number')
+        return YES;
+    else
+        return NO;
+}
+p;17;CPDateFormatter.jt;91426;@STATIC;1.0;i;9;CPArray.ji;8;CPDate.ji;10;CPString.ji;13;CPFormatter.ji;12;CPTimeZone.ji;10;CPLocale.jt;91316;objj_executeFile("CPArray.j", YES);objj_executeFile("CPDate.j", YES);objj_executeFile("CPString.j", YES);objj_executeFile("CPFormatter.j", YES);objj_executeFile("CPTimeZone.j", YES);objj_executeFile("CPLocale.j", YES);{var the_typedef = objj_allocateTypeDef("CPDateFormatterStyle");
+objj_registerTypeDef(the_typedef);
+}CPDateFormatterNoStyle = 0;
 CPDateFormatterShortStyle = 1;
 CPDateFormatterMediumStyle = 2;
 CPDateFormatterLongStyle = 3;
 CPDateFormatterFullStyle = 4;
-CPDateFormatterBehaviorDefault = 0;
+{var the_typedef = objj_allocateTypeDef("CPDateFormatterBehavior");
+objj_registerTypeDef(the_typedef);
+}CPDateFormatterBehaviorDefault = 0;
 CPDateFormatterBehavior10_0 = 1000;
 CPDateFormatterBehavior10_4 = 1040;
 var defaultDateFormatterBehavior = CPDateFormatterBehavior10_4,
@@ -3956,7 +7088,9 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     self.setSeconds(self.getSeconds() + (aTimeZone == null ? null : aTimeZone.isa.objj_msgSend0(aTimeZone, "secondsFromGMT")));
 }
 ,["void","CPTimeZone"])]);
-}p;11;CPDecimal.jt;28435;@STATIC;1.0;i;9;CPArray.ji;10;CPNumber.jt;28387;objj_executeFile("CPArray.j", YES);objj_executeFile("CPNumber.j", YES);CPDecimalMaxDigits = 38;
+}p;11;CPDecimal.jt;28620;@STATIC;1.0;i;9;CPArray.ji;10;CPNumber.jt;28572;objj_executeFile("CPArray.j", YES);objj_executeFile("CPNumber.j", YES);{var the_typedef = objj_allocateTypeDef("CPDecimal");
+objj_registerTypeDef(the_typedef);
+}CPDecimalMaxDigits = 38;
 CPDecimalMaxExponent = 127;
 CPDecimalMinExponent = -128;
 CPDecimalNoScale = 128;
@@ -3965,7 +7099,9 @@ CPCalculationLossOfPrecision = 1;
 CPCalculationOverflow = 2;
 CPCalculationUnderflow = 3;
 CPCalculationDivideByZero = 4;
-CPRoundPlain = 1;
+{var the_typedef = objj_allocateTypeDef("CPRoundingMode");
+objj_registerTypeDef(the_typedef);
+}CPRoundPlain = 1;
 CPRoundDown = 2;
 CPRoundUp = 3;
 CPRoundBankers = 4;
@@ -4955,7 +8091,8 @@ CPDecimalString = function(dcm, locale)
     }
     return string;
 }
-p;17;CPDecimalNumber.jt;37416;@STATIC;1.0;i;11;CPDecimal.ji;13;CPException.ji;10;CPNumber.ji;10;CPObject.ji;10;CPString.jt;37317;objj_executeFile("CPDecimal.j", YES);objj_executeFile("CPException.j", YES);objj_executeFile("CPNumber.j", YES);objj_executeFile("CPObject.j", YES);objj_executeFile("CPString.j", YES);var CPDefaultDcmHandler = nil;
+p;17;CPDecimalNumber.jt;37762;@STATIC;1.0;i;11;CPDecimal.ji;13;CPException.ji;10;CPNumber.ji;10;CPObject.ji;10;CPString.jt;37663;objj_executeFile("CPDecimal.j", YES);objj_executeFile("CPException.j", YES);objj_executeFile("CPNumber.j", YES);objj_executeFile("CPObject.j", YES);objj_executeFile("CPString.j", YES);var CPDefaultDcmHandler = nil,
+    CPDecimalNumberUIDs = new CFMutableDictionary();
 {var the_class = objj_allocateClassPair(CPObject, "CPDecimalNumberHandler"),
 meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_roundingMode"), new objj_ivar("_scale"), new objj_ivar("_raiseOnExactness"), new objj_ivar("_raiseOnOverflow"), new objj_ivar("_raiseOnUnderflow"), new objj_ivar("_raiseOnDivideByZero")]);objj_registerClassPair(the_class);
 class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPDecimalNumberHandler__init(self, _cmd)
@@ -5103,7 +8240,17 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPDec
     }
     return self;
 }
-,["id","CPString","CPDictionary"]), new objj_method(sel_getUid("decimalNumberByAdding:"), function $CPDecimalNumber__decimalNumberByAdding_(self, _cmd, decimalNumber)
+,["id","CPString","CPDictionary"]), new objj_method(sel_getUid("UID"), function $CPDecimalNumber__UID(self, _cmd)
+{
+    var UID = CPDecimalNumberUIDs.valueForKey(self);
+    if (!UID)
+    {
+        UID = objj_generateObjectUID();
+        CPDecimalNumberUIDs.setValueForKey(self, UID);
+    }
+    return UID + "";
+}
+,["CPString"]), new objj_method(sel_getUid("decimalNumberByAdding:"), function $CPDecimalNumber__decimalNumberByAdding_(self, _cmd, decimalNumber)
 {
     return self.isa.objj_msgSend2(self, "decimalNumberByAdding:withBehavior:", decimalNumber, CPDecimalNumber.isa.objj_msgSend0(CPDecimalNumber, "defaultBehavior"));
 }
@@ -5500,8 +8647,19 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     (aCoder == null ? null : aCoder.isa.objj_msgSend2(aCoder, "encodeObject:forKey:", self._data._mantissa, CPDecimalNumberDecimalMantissa));
 }
 ,["void","CPCoder"])]);
-}p;18;CPDelayedPerform.jt;7182;@STATIC;1.0;i;10;CPObject.ji;11;CPRunLoop.ji;10;CPString.jt;7117;objj_executeFile("CPObject.j", YES);objj_executeFile("CPRunLoop.j", YES);objj_executeFile("CPString.j", YES);{var the_class = objj_allocateClassPair(CPObject, "CPDelayedPerform"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_object"), new objj_ivar("_selector"), new objj_ivar("_argument")]);objj_registerClassPair(the_class);
+}p;18;CPDelayedPerform.jt;6109;@STATIC;1.0;i;10;CPObject.ji;11;CPRunLoop.ji;10;CPString.jt;6044;
+objj_executeFile("CPObject.j", YES);
+objj_executeFile("CPRunLoop.j", YES);
+objj_executeFile("CPString.j", YES);
+
+{var the_class = objj_allocateClassPair(CPObject, "CPDelayedPerform"),
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_object"), new objj_ivar("_selector"), new objj_ivar("_argument")]);
+
+
+
+
+
+objj_registerClassPair(the_class);
 class_addMethods(the_class, [new objj_method(sel_getUid("initWithObject:selector:argument:"), function $CPDelayedPerform__initWithObject_selector_argument_(self, _cmd, anObject, aSelector, anArgument)
 {
     if (self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPDelayedPerform").super_class }, "init"))
@@ -5510,39 +8668,48 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithObject:selector
         self._selector = aSelector;
         self._argument = anArgument;
     }
+
     return self;
 }
 ,["id","id","SEL","id"]), new objj_method(sel_getUid("isEqualToPerform:"), function $CPDelayedPerform__isEqualToPerform_(self, _cmd, anOther)
 {
     if (!anOther || !anOther.isa)
         return NO;
+
     if (self._object !== anOther._object)
         return NO;
+
     if (!self._selector || !anOther._selector)
         return YES;
+
     if (self._selector !== anOther._selector)
         return NO;
+
     if (self._argument !== anOther._argument)
         return NO;
-    return YES;
+
+   return YES;
 }
 ,["BOOL","CPDelayedPerform"]), new objj_method(sel_getUid("perform"), function $CPDelayedPerform__perform(self, _cmd)
 {
-    try    {
-        ((___r1 = self._object), ___r1 == null ? null : ___r1.isa.objj_msgSend2(___r1, "performSelector:withObject:", self._selector, self._argument));
+    try
+    {
+        objj_msgSend(self._object, "performSelector:withObject:", self._selector, self._argument);
     }
-    catch(ex)     {
+    catch(ex)
+    {
         CPLog("exception %@ raised during delayed perform", ex);
-    }    var ___r1;
+    }
 }
 ,["void"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("delayedPerformWithObject:selector:argument:"), function $CPDelayedPerform__delayedPerformWithObject_selector_argument_(self, _cmd, anObject, aSelector, anArgument)
 {
-    return ((___r1 = self.isa.objj_msgSend0(self, "alloc")), ___r1 == null ? null : ___r1.isa.objj_msgSend3(___r1, "initWithObject:selector:argument:", anObject, aSelector, anArgument));
-    var ___r1;
+    return objj_msgSend(objj_msgSend(self, "alloc"), "initWithObject:selector:argument:", anObject, aSelector, anArgument);
 }
-,["CPDelayedPerform","id","SEL","id"])]);
-}{
+,["CPDelayedPerform",null,"SEL",null])]);
+}
+
+{
 var the_class = objj_getClass("CPRunLoop")
 if(!the_class) throw new SyntaxError("*** Could not find definition for class \"CPRunLoop\"");
 var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_getUid("invalidateTimerWithDelayedPerform:"), function $CPRunLoop__invalidateTimerWithDelayedPerform_(self, _cmd, aDelayedPerform)
@@ -5551,81 +8718,72 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     {
         if (!self._timersForModes.hasOwnProperty(aKey))
             continue;
+
         var timersForMode = self._timersForModes[aKey];
-        for (var i = 0, count = (timersForMode == null ? null : timersForMode.isa.objj_msgSend0(timersForMode, "count")); i < count; i++)
+        for (var i = 0, count = objj_msgSend(timersForMode, "count"); i < count; i++)
         {
-            var aTimer = (timersForMode == null ? null : timersForMode.isa.objj_msgSend1(timersForMode, "objectAtIndex:", i)),
-                userInfo = (aTimer == null ? null : aTimer.isa.objj_msgSend0(aTimer, "userInfo"));
-            if ((userInfo == null ? null : userInfo.isa.objj_msgSend1(userInfo, "isKindOfClass:", CPDelayedPerform)) && (userInfo == null ? null : userInfo.isa.objj_msgSend1(userInfo, "isEqualToPerform:", aDelayedPerform)))
-                (aTimer == null ? null : aTimer.isa.objj_msgSend0(aTimer, "invalidate"));
+            var aTimer = objj_msgSend(timersForMode, "objectAtIndex:", i),
+                userInfo = objj_msgSend(aTimer, "userInfo");
+
+            if (objj_msgSend(userInfo, "isKindOfClass:", CPDelayedPerform) && objj_msgSend(userInfo, "isEqualToPerform:", aDelayedPerform))
+                objj_msgSend(aTimer, "invalidate");
         }
     }
 }
 ,["void","CPDelayedPerform"])]);
-}{
+}
+
+{
 var the_class = objj_getClass("CPObject")
 if(!the_class) throw new SyntaxError("*** Could not find definition for class \"CPObject\"");
-var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_getUid("performSelector:withObject:afterDelay:"), function $CPObject__performSelector_withObject_afterDelay_(self, _cmd, selector, object, delay)
+var meta_class = the_class.isa;
+
+
+
+
+
+
+
+
+
+class_addMethods(the_class, [new objj_method(sel_getUid("performSelector:withObject:afterDelay:"), function $CPObject__performSelector_withObject_afterDelay_(self, _cmd, selector, object, delay)
 {
-    ((___r1 = self.isa.objj_msgSend0(self, "class")), ___r1 == null ? null : ___r1.isa.objj_msgSend(___r1, "object:performSelector:withObject:afterDelay:inModes:", self, selector, object, delay, CPArray.isa.objj_msgSend1(CPArray, "arrayWithObject:", CPDefaultRunLoopMode)));
-    var ___r1;
+    objj_msgSend(objj_msgSend(self, "class"), "object:performSelector:withObject:afterDelay:inModes:", self, selector, object, delay, objj_msgSend(CPArray, "arrayWithObject:", CPDefaultRunLoopMode));
 }
-,["void","SEL","id","CPTimeInterval"]), new objj_method(sel_getUid("performSelector:withObject:afterDelay:inModes:"), function $CPObject__performSelector_withObject_afterDelay_inModes_(self, _cmd, selector, object, delay, modes)
+,["void","SEL",null,"CPTimeInterval"]), new objj_method(sel_getUid("performSelector:withObject:afterDelay:inModes:"), function $CPObject__performSelector_withObject_afterDelay_inModes_(self, _cmd, selector, object, delay, modes)
 {
-    ((___r1 = self.isa.objj_msgSend0(self, "class")), ___r1 == null ? null : ___r1.isa.objj_msgSend(___r1, "object:performSelector:withObject:afterDelay:inModes:", self, selector, object, delay, modes));
-    var ___r1;
+    objj_msgSend(objj_msgSend(self, "class"), "object:performSelector:withObject:afterDelay:inModes:", self, selector, object, delay, modes);
 }
-,["void","SEL","id","CPTimeInterval","CPArray"])]);
+,["void","SEL",null,"CPTimeInterval","CPArray"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("cancelPreviousPerformRequestsWithTarget:selector:object:"), function $CPObject__cancelPreviousPerformRequestsWithTarget_selector_object_(self, _cmd, target, selector, argument)
 {
-    var aDelayedPerform = CPDelayedPerform.isa.objj_msgSend3(CPDelayedPerform, "delayedPerformWithObject:selector:argument:", target, selector, argument);
-    ((___r1 = CPRunLoop.isa.objj_msgSend0(CPRunLoop, "currentRunLoop")), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "invalidateTimerWithDelayedPerform:", aDelayedPerform));
-    var ___r1;
+    var aDelayedPerform = objj_msgSend(CPDelayedPerform, "delayedPerformWithObject:selector:argument:", target, selector, argument);
+
+    objj_msgSend(objj_msgSend(CPRunLoop, "currentRunLoop"), "invalidateTimerWithDelayedPerform:", aDelayedPerform);
 }
-,["void","id","SEL","id"]), new objj_method(sel_getUid("cancelPreviousPerformRequestsWithTarget:"), function $CPObject__cancelPreviousPerformRequestsWithTarget_(self, _cmd, target)
+,["void",null,"SEL",null]), new objj_method(sel_getUid("cancelPreviousPerformRequestsWithTarget:"), function $CPObject__cancelPreviousPerformRequestsWithTarget_(self, _cmd, target)
 {
-    var aDelayedPerform = CPDelayedPerform.isa.objj_msgSend3(CPDelayedPerform, "delayedPerformWithObject:selector:argument:", target, NULL, nil);
-    ((___r1 = CPRunLoop.isa.objj_msgSend0(CPRunLoop, "currentRunLoop")), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "invalidateTimerWithDelayedPerform:", aDelayedPerform));
-    var ___r1;
+    var aDelayedPerform = objj_msgSend(CPDelayedPerform, "delayedPerformWithObject:selector:argument:", target, NULL, nil);
+
+    objj_msgSend(objj_msgSend(CPRunLoop, "currentRunLoop"), "invalidateTimerWithDelayedPerform:", aDelayedPerform);
 }
-,["void","id"]), new objj_method(sel_getUid("_delayedPerform:"), function $CPObject___delayedPerform_(self, _cmd, aTimer)
+,["void",null]), new objj_method(sel_getUid("_delayedPerform:"), function $CPObject___delayedPerform_(self, _cmd, aTimer)
 {
-    var aDelayedPerform = (aTimer == null ? null : aTimer.isa.objj_msgSend0(aTimer, "userInfo"));
-    (aDelayedPerform == null ? null : aDelayedPerform.isa.objj_msgSend0(aDelayedPerform, "perform"));
+    var aDelayedPerform = objj_msgSend(aTimer, "userInfo");
+
+    objj_msgSend(aDelayedPerform, "perform");
 }
 ,["void","CPTimer"]), new objj_method(sel_getUid("object:performSelector:withObject:afterDelay:inModes:"), function $CPObject__object_performSelector_withObject_afterDelay_inModes_(self, _cmd, object, selector, argument, delay, modes)
 {
-    var aDelayedPerform = CPDelayedPerform.isa.objj_msgSend3(CPDelayedPerform, "delayedPerformWithObject:selector:argument:", object, selector, argument),
-        aTimer = (CPTimer == null ? null : CPTimer.isa.objj_msgSend(CPTimer, "timerWithTimeInterval:target:selector:userInfo:repeats:", delay, CPObject.isa.objj_msgSend0(CPObject, "class"), sel_getUid("_delayedPerform:"), aDelayedPerform, NO));
-    for (var i = 0, count = (modes == null ? null : modes.isa.objj_msgSend0(modes, "count")); i < count; i++)
-        ((___r1 = CPRunLoop.isa.objj_msgSend0(CPRunLoop, "currentRunLoop")), ___r1 == null ? null : ___r1.isa.objj_msgSend2(___r1, "addTimer:forMode:", aTimer, (modes == null ? null : modes.isa.objj_msgSend1(modes, "objectAtIndex:", i))));
-    var ___r1;
+    var aDelayedPerform = objj_msgSend(CPDelayedPerform, "delayedPerformWithObject:selector:argument:", object, selector, argument),
+        aTimer = objj_msgSend(CPTimer, "timerWithTimeInterval:target:selector:userInfo:repeats:", delay, objj_msgSend(CPObject, "class"), sel_getUid("_delayedPerform:"), aDelayedPerform, NO);
+
+    for (var i = 0, count = objj_msgSend(modes, "count"); i < count; i++)
+        objj_msgSend(objj_msgSend(CPRunLoop, "currentRunLoop"), "addTimer:forMode:", aTimer, objj_msgSend(modes, "objectAtIndex:", i));
 }
-,["void","id","SEL","id","CPTimeInterval","CPArray"])]);
-}p;14;CPDictionary.jt;21326;@STATIC;1.0;i;9;CPArray.ji;14;CPEnumerator.ji;13;CPException.ji;8;CPNull.ji;10;CPObject.jt;21229;objj_executeFile("CPArray.j", YES);objj_executeFile("CPEnumerator.j", YES);objj_executeFile("CPException.j", YES);objj_executeFile("CPNull.j", YES);objj_executeFile("CPObject.j", YES);var CPDictionaryShowNilDeprecationMessage = YES,
-    CPDictionaryMaxDescriptionRecursion = 10;
-{var the_class = objj_allocateClassPair(CPEnumerator, "_CPDictionaryValueEnumerator"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_keyEnumerator"), new objj_ivar("_dictionary")]);objj_registerClassPair(the_class);
-class_addMethods(the_class, [new objj_method(sel_getUid("initWithDictionary:"), function $_CPDictionaryValueEnumerator__initWithDictionary_(self, _cmd, aDictionary)
-{
-    self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("_CPDictionaryValueEnumerator").super_class }, "init");
-    if (self)
-    {
-        self._keyEnumerator = (aDictionary == null ? null : aDictionary.isa.objj_msgSend0(aDictionary, "keyEnumerator"));
-        self._dictionary = aDictionary;
-    }
-    return self;
-}
-,["id","CPDictionary"]), new objj_method(sel_getUid("nextObject"), function $_CPDictionaryValueEnumerator__nextObject(self, _cmd)
-{
-    var key = ((___r1 = self._keyEnumerator), ___r1 == null ? null : ___r1.isa.objj_msgSend0(___r1, "nextObject"));
-    if (key === nil)
-        return nil;
-    return ((___r1 = self._dictionary), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "objectForKey:", key));
-    var ___r1;
-}
-,["id"])]);
-}{var the_class = objj_allocateClassPair(CPObject, "CPDictionary"),
+,["void",null,"SEL",null,"CPTimeInterval","CPArray"])]);
+}p;14;CPDictionary.jt;19731;@STATIC;1.0;i;9;CPArray.ji;14;CPEnumerator.ji;13;CPException.ji;8;CPNull.ji;10;CPObject.jt;19634;objj_executeFile("CPArray.j", YES);objj_executeFile("CPEnumerator.j", YES);objj_executeFile("CPException.j", YES);objj_executeFile("CPNull.j", YES);objj_executeFile("CPObject.j", YES);var CPDictionaryMaxDescriptionRecursion = 10;
+{var the_class = objj_allocateClassPair(CPObject, "CPDictionary"),
 meta_class = the_class.isa;objj_registerClassPair(the_class);
 class_addMethods(the_class, [new objj_method(sel_getUid("initWithDictionary:"), function $CPDictionary__initWithDictionary_(self, _cmd, aDictionary)
 {
@@ -5649,19 +8807,9 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithDictionary:"), 
             var value = objects[i],
                 key = keyArray[i];
             if (value === nil)
-            {
-                CPDictionaryShowNilDeprecationMessage = NO;
-                CPLog.warn(CPString.isa.objj_msgSend(CPString, "stringWithFormat:", "[%s %s] DEPRECATED: Attempt to insert nil object from objects[%d]", (self == null ? null : self.isa.objj_msgSend0(self, "className")), _cmd, i));
-                if (typeof objj_backtrace_print === "function")
-                    objj_backtrace_print(CPLog.warn);
-            }
+                CPException.isa.objj_msgSend2(CPException, "raise:reason:", CPInvalidArgumentException, "Attempt to insert nil object from objects[" + i + "]");
             if (key === nil)
-            {
-                CPDictionaryShowNilDeprecationMessage = NO;
-                CPLog.warn(CPString.isa.objj_msgSend(CPString, "stringWithFormat:", "[%s %s] DEPRECATED: Attempt to insert nil key from keys[%d]", (self == null ? null : self.isa.objj_msgSend0(self, "className")), _cmd, i));
-                if (typeof objj_backtrace_print === "function")
-                    objj_backtrace_print(CPLog.warn);
-            }
+                CPException.isa.objj_msgSend2(CPException, "raise:reason:", CPInvalidArgumentException, "Attempt to insert nil key from keys[" + i + "]");
             (self == null ? null : self.isa.objj_msgSend2(self, "setObject:forKey:", value, key));
         }
     }
@@ -5681,19 +8829,9 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithDictionary:"), 
             var value = arguments[index],
                 key = arguments[index + 1];
             if (value === nil)
-            {
-                CPDictionaryShowNilDeprecationMessage = NO;
-                CPLog.warn(CPString.isa.objj_msgSend(CPString, "stringWithFormat:", "[%s %s] DEPRECATED: Attempt to insert nil object from objects[%d]", (self == null ? null : self.isa.objj_msgSend0(self, "className")), _cmd, index / 2 - 1));
-                if (typeof objj_backtrace_print === "function")
-                    objj_backtrace_print(CPLog.warn);
-            }
+                CPException.isa.objj_msgSend2(CPException, "raise:reason:", CPInvalidArgumentException, "Attempt to insert nil object from objects[" + (index / 2 - 1) + "]");
             if (key === nil)
-            {
-                CPDictionaryShowNilDeprecationMessage = NO;
-                CPLog.warn(CPString.isa.objj_msgSend(CPString, "stringWithFormat:", "[%s %s] DEPRECATED: Attempt to insert nil key from keys[%d]", (self == null ? null : self.isa.objj_msgSend0(self, "className")), _cmd, index / 2 - 1));
-                if (typeof objj_backtrace_print === "function")
-                    objj_backtrace_print(CPLog.warn);
-            }
+                CPException.isa.objj_msgSend2(CPException, "raise:reason:", CPInvalidArgumentException, "Attempt to insert nil key from keys[" + (index / 2 - 1) + "]");
             (self == null ? null : self.isa.objj_msgSend2(self, "setObject:forKey:", value, key));
         }
     }
@@ -5802,7 +8940,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithDictionary:"), 
 }
 ,["CPEnumerator"]), new objj_method(sel_getUid("objectEnumerator"), function $CPDictionary__objectEnumerator(self, _cmd)
 {
-    return ((___r1 = _CPDictionaryValueEnumerator.isa.objj_msgSend0(_CPDictionaryValueEnumerator, "alloc")), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "initWithDictionary:", self));
+    return ((___r1 = (_CPDictionaryValueEnumerator == null ? null : _CPDictionaryValueEnumerator.isa.objj_msgSend0(_CPDictionaryValueEnumerator, "alloc"))), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "initWithDictionary:", self));
     var ___r1;
 }
 ,["CPEnumerator"]), new objj_method(sel_getUid("isEqualToDictionary:"), function $CPDictionary__isEqualToDictionary_(self, _cmd, aDictionary)
@@ -5856,23 +8994,10 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithDictionary:"), 
 }
 ,["void","CPArray"]), new objj_method(sel_getUid("setObject:forKey:"), function $CPDictionary__setObject_forKey_(self, _cmd, anObject, aKey)
 {
-    if (CPDictionaryShowNilDeprecationMessage)
-    {
-        if (aKey === nil)
-        {
-            CPLog.warn(CPString.isa.objj_msgSend3(CPString, "stringWithFormat:", "[%s %s] DEPRECATED: key cannot be nil", self.isa.objj_msgSend0(self, "className"), _cmd));
-            if (typeof objj_backtrace_print === "function")
-                objj_backtrace_print(CPLog.warn);
-        }
-        if (anObject === nil)
-        {
-            CPLog.warn(CPString.isa.objj_msgSend(CPString, "stringWithFormat:", "[%s %s] DEPRECATED: object cannot be nil (key: %s)", self.isa.objj_msgSend0(self, "className"), _cmd, aKey));
-            if (typeof objj_backtrace_print === "function")
-                objj_backtrace_print(CPLog.warn);
-        }
-    }
-    else
-        CPDictionaryShowNilDeprecationMessage = YES;
+    if (aKey === nil)
+        CPException.isa.objj_msgSend2(CPException, "raise:reason:", CPInvalidArgumentException, "key cannot be nil");
+    if (anObject === nil)
+        CPException.isa.objj_msgSend2(CPException, "raise:reason:", CPInvalidArgumentException, "object cannot be nil (key: " + aKey + ")");
     self.setValueForKey(aKey, anObject);
 }
 ,["void","id","id"]), new objj_method(sel_getUid("addEntriesFromDictionary:"), function $CPDictionary__addEntriesFromDictionary_(self, _cmd, aDictionary)
@@ -6024,12 +9149,41 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     (aCoder == null ? null : aCoder.isa.objj_msgSend2(aCoder, "_encodeDictionaryOfObjects:forKey:", self, "CP.objects"));
 }
 ,["void","CPCoder"])]);
+}{var the_class = objj_allocateClassPair(CPEnumerator, "_CPDictionaryValueEnumerator"),
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_keyEnumerator"), new objj_ivar("_dictionary")]);objj_registerClassPair(the_class);
+class_addMethods(the_class, [new objj_method(sel_getUid("initWithDictionary:"), function $_CPDictionaryValueEnumerator__initWithDictionary_(self, _cmd, aDictionary)
+{
+    self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("_CPDictionaryValueEnumerator").super_class }, "init");
+    if (self)
+    {
+        self._keyEnumerator = (aDictionary == null ? null : aDictionary.isa.objj_msgSend0(aDictionary, "keyEnumerator"));
+        self._dictionary = aDictionary;
+    }
+    return self;
+}
+,["id","CPDictionary"]), new objj_method(sel_getUid("nextObject"), function $_CPDictionaryValueEnumerator__nextObject(self, _cmd)
+{
+    var key = ((___r1 = self._keyEnumerator), ___r1 == null ? null : ___r1.isa.objj_msgSend0(___r1, "nextObject"));
+    if (key === nil)
+        return nil;
+    return ((___r1 = self._dictionary), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "objectForKey:", key));
+    var ___r1;
+}
+,["id"])]);
 }{var the_class = objj_allocateClassPair(CPDictionary, "CPMutableDictionary"),
 meta_class = the_class.isa;objj_registerClassPair(the_class);
 }CFDictionary.prototype.isa = CPDictionary;
 CFMutableDictionary.prototype.isa = CPMutableDictionary;
-p;14;CPEnumerator.jt;472;@STATIC;1.0;i;10;CPObject.jt;439;objj_executeFile("CPObject.j", YES);{var the_class = objj_allocateClassPair(CPObject, "CPEnumerator"),
-meta_class = the_class.isa;objj_registerClassPair(the_class);
+p;14;CPEnumerator.jt;480;@STATIC;1.0;i;10;CPObject.jt;447;
+objj_executeFile("CPObject.j", YES);
+{var the_class = objj_allocateClassPair(CPObject, "CPEnumerator"),
+meta_class = the_class.isa;
+
+
+
+
+
+objj_registerClassPair(the_class);
 class_addMethods(the_class, [new objj_method(sel_getUid("nextObject"), function $CPEnumerator__nextObject(self, _cmd)
 {
     return nil;
@@ -6039,78 +9193,101 @@ class_addMethods(the_class, [new objj_method(sel_getUid("nextObject"), function 
     return [];
 }
 ,["CPArray"])]);
-}p;9;CPError.jt;4049;@STATIC;1.0;i;14;CPDictionary.ji;10;CPObject.ji;10;CPString.jt;3981;objj_executeFile("CPDictionary.j", YES);objj_executeFile("CPObject.j", YES);objj_executeFile("CPString.j", YES);CPCappuccinoErrorDomain = CPCocoaErrorDomain = "CPCappuccinoErrorDomain";
-CPUnderlyingErrorKey = "CPUnderlyingErrorKey";
-CPLocalizedDescriptionKey = "CPLocalizedDescriptionKey";
-CPLocalizedFailureReasonErrorKey = "CPLocalizedFailureReasonErrorKey";
-CPLocalizedRecoverySuggestionErrorKey = "CPLocalizedRecoverySuggestionErrorKey";
+}p;9;CPError.jt;5053;@STATIC;1.0;i;14;CPDictionary.ji;10;CPObject.ji;10;CPString.jt;4985;objj_executeFile("CPDictionary.j", YES);objj_executeFile("CPObject.j", YES);objj_executeFile("CPString.j", YES);CPCappuccinoErrorDomain = kCFErrorDomainCappuccino;
+CPCocoaErrorDomain = kCFErrorDomainCappuccino;
+CPUnderlyingErrorKey = kCFErrorUnderlyingErrorKey;
+CPLocalizedDescriptionKey = kCFErrorLocalizedDescriptionKey;
+CPLocalizedFailureReasonErrorKey = kCFErrorLocalizedFailureReasonKey;
+CPLocalizedRecoverySuggestionErrorKey = kCFErrorLocalizedRecoverySuggestionKey;
 CPLocalizedRecoveryOptionsErrorKey = "CPLocalizedRecoveryOptionsErrorKey";
 CPRecoveryAttempterErrorKey = "CPRecoveryAttempterErrorKey";
 CPHelpAnchorErrorKey = "CPHelpAnchorErrorKey";
 CPStringEncodingErrorKey = "CPStringEncodingErrorKey";
-CPURLErrorKey = "CPURLErrorKey";
-CPFilePathErrorKey = "CPFilePathErrorKey";
+CPURLErrorKey = kCFErrorURLKey;
+CPFilePathErrorKey = kCFErrorFilePathKey;
 {var the_class = objj_allocateClassPair(CPObject, "CPError"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_code"), new objj_ivar("_domain"), new objj_ivar("_userInfo")]);objj_registerClassPair(the_class);
-class_addMethods(the_class, [new objj_method(sel_getUid("code"), function $CPError__code(self, _cmd)
+meta_class = the_class.isa;objj_registerClassPair(the_class);
+class_addMethods(the_class, [new objj_method(sel_getUid("initWithDomain:code:userInfo:"), function $CPError__initWithDomain_code_userInfo_(self, _cmd, aDomain, aCode, aDict)
 {
-    return self._code;
+    var result = new CFError(aDomain, aCode, aDict);
+    result.isa = self.isa.objj_msgSend0(self, "class");
+    return result;
 }
-,["CPInteger"]), new objj_method(sel_getUid("domain"), function $CPError__domain(self, _cmd)
+,["id","CPString","CPInteger","CPDictionary"]), new objj_method(sel_getUid("code"), function $CPError__code(self, _cmd)
 {
-    return self._domain;
+    return self.code();
 }
-,["CPString"]), new objj_method(sel_getUid("userInfo"), function $CPError__userInfo(self, _cmd)
+,["CPInteger"]), new objj_method(sel_getUid("userInfo"), function $CPError__userInfo(self, _cmd)
 {
-    return self._userInfo;
+    return self.userInfo();
 }
-,["CPDictionary"]), new objj_method(sel_getUid("initWithDomain:code:userInfo:"), function $CPError__initWithDomain_code_userInfo_(self, _cmd, aDomain, aCode, aDict)
+,["CPString"]), new objj_method(sel_getUid("domain"), function $CPError__domain(self, _cmd)
 {
-    if (self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPError").super_class }, "init"))
-    {
-        self._domain = aDomain;
-        self._code = aCode;
-        self._userInfo = aDict;
-    }
-    return self;
+    return self.domain();
 }
-,["id","CPString","CPInteger","CPDictionary"]), new objj_method(sel_getUid("localizedDescription"), function $CPError__localizedDescription(self, _cmd)
+,["CPString"]), new objj_method(sel_getUid("localizedDescription"), function $CPError__localizedDescription(self, _cmd)
 {
-    return ((___r1 = self._userInfo), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "objectForKey:", CPLocalizedDescriptionKey));
-    var ___r1;
+    return self.description();
 }
 ,["CPString"]), new objj_method(sel_getUid("localizedFailureReason"), function $CPError__localizedFailureReason(self, _cmd)
 {
-    return ((___r1 = self._userInfo), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "objectForKey:", CPLocalizedFailureReasonErrorKey));
-    var ___r1;
+    return self.failureReason();
 }
 ,["CPString"]), new objj_method(sel_getUid("localizedRecoveryOptions"), function $CPError__localizedRecoveryOptions(self, _cmd)
 {
-    return ((___r1 = self._userInfo), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "objectForKey:", CPLocalizedRecoveryOptionsErrorKey));
-    var ___r1;
+    var userInfo = self.userInfo(),
+        recoveryOptions = userInfo.valueForKey(CPLocalizedRecoveryOptionsErrorKey);
+    return recoveryOptions;
 }
 ,["CPArray"]), new objj_method(sel_getUid("localizedRecoverySuggestion"), function $CPError__localizedRecoverySuggestion(self, _cmd)
 {
-    return ((___r1 = self._userInfo), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "objectForKey:", CPLocalizedRecoverySuggestionErrorKey));
-    var ___r1;
+    return self.recoverySuggestion();
 }
 ,["CPString"]), new objj_method(sel_getUid("recoveryAttempter"), function $CPError__recoveryAttempter(self, _cmd)
 {
-    return ((___r1 = self._userInfo), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "objectForKey:", CPRecoveryAttempterErrorKey));
-    var ___r1;
+    var userInfo = self.userInfo(),
+        recoveryAttempter = userInfo.valueForKey(CPRecoveryAttempterErrorKey);
+    return recoveryAttempter;
 }
 ,["id"]), new objj_method(sel_getUid("description"), function $CPError__description(self, _cmd)
 {
-    return CPString.isa.objj_msgSend(CPString, "stringWithFormat:", "Error Domain=%@ Code=%d UserInfo=%p %@", self._domain, self._code, self._userInfo, self.isa.objj_msgSend0(self, "localizedDescription"));
+    return CPString.isa.objj_msgSend(CPString, "stringWithFormat:", "Error Domain=%@ Code=%d \"%@\" UserInfo=%@", self.domain(), self.code(), self.description(), self.userInfo());
 }
 ,["CPString"])]);
-class_addMethods(meta_class, [new objj_method(sel_getUid("errorWithDomain:code:userInfo:"), function $CPError__errorWithDomain_code_userInfo_(self, _cmd, aDomain, aCode, aDict)
+class_addMethods(meta_class, [new objj_method(sel_getUid("alloc"), function $CPError__alloc(self, _cmd)
+{
+    var obj = new CFError();
+    obj.isa = self.isa.objj_msgSend0(self, "class");
+    return obj;
+}
+,["id"]), new objj_method(sel_getUid("errorWithDomain:code:userInfo:"), function $CPError__errorWithDomain_code_userInfo_(self, _cmd, aDomain, aCode, aDict)
 {
     return ((___r1 = CPError.isa.objj_msgSend0(CPError, "alloc")), ___r1 == null ? null : ___r1.isa.objj_msgSend3(___r1, "initWithDomain:code:userInfo:", aDomain, aCode, aDict));
     var ___r1;
 }
 ,["id","CPString","CPInteger","CPDictionary"])]);
-}p;13;CPException.jt;7581;@STATIC;1.0;i;9;CPCoder.ji;10;CPObject.ji;10;CPString.jt;7519;objj_executeFile("CPCoder.j", YES);objj_executeFile("CPObject.j", YES);objj_executeFile("CPString.j", YES);CPInvalidArgumentException = "CPInvalidArgumentException";
+}var CPErrorCodeKey = "CPErrorCodeKey",
+    CPErrorDomainKey = "CPErrorDomainKey",
+    CPErrorUserInfoKey = "CPErrorUserInfoKey";
+{
+var the_class = objj_getClass("CPError")
+if(!the_class) throw new SyntaxError("*** Could not find definition for class \"CPError\"");
+var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_getUid("initWithCoder:"), function $CPError__initWithCoder_(self, _cmd, aCoder)
+{
+    var code = (aCoder == null ? null : aCoder.isa.objj_msgSend1(aCoder, "decodeIntForKey:", CPErrorCodeKey)),
+        domain = (aCoder == null ? null : aCoder.isa.objj_msgSend1(aCoder, "decodeObjectForKey:", CPErrorDomainKey)),
+        userInfo = (aCoder == null ? null : aCoder.isa.objj_msgSend1(aCoder, "decodeObjectForKey:", CPErrorUserInfoKey));
+    return self.isa.objj_msgSend3(self, "initWithDomain:code:userInfo:", domain, code, userInfo);
+}
+,["id","CPCoder"]), new objj_method(sel_getUid("encodeWithCoder:"), function $CPError__encodeWithCoder_(self, _cmd, aCoder)
+{
+    (aCoder == null ? null : aCoder.isa.objj_msgSend2(aCoder, "encodeObject:forKey:", self.domain(), CPErrorDomainKey));
+    (aCoder == null ? null : aCoder.isa.objj_msgSend2(aCoder, "encodeObject:forKey:", self.code(), CPErrorCodeKey));
+    (aCoder == null ? null : aCoder.isa.objj_msgSend2(aCoder, "encodeObject:forKey:", self.userInfo(), CPErrorUserInfoKey));
+}
+,["void","CPCoder"])]);
+}CFError.prototype.isa = CPError;
+p;13;CPException.jt;7581;@STATIC;1.0;i;9;CPCoder.ji;10;CPObject.ji;10;CPString.jt;7519;objj_executeFile("CPCoder.j", YES);objj_executeFile("CPObject.j", YES);objj_executeFile("CPString.j", YES);CPInvalidArgumentException = "CPInvalidArgumentException";
 CPUnsupportedMethodException = "CPUnsupportedMethodException";
 CPRangeException = "CPRangeException";
 CPInternalInconsistencyException = "CPInternalInconsistencyException";
@@ -6232,8 +9409,20 @@ _CPReportLenientDeprecation = function(aClass, oldSelector, newSelector)
 {
     CPLog.warn("[" + CPStringFromClass(aClass) + " " + CPStringFromSelector(oldSelector) + "] is deprecated, using " + CPStringFromSelector(newSelector) + " instead.");
 }
-p;13;CPFormatter.jt;2569;@STATIC;1.0;i;13;CPException.ji;10;CPObject.jt;2517;objj_executeFile("CPException.j", YES);objj_executeFile("CPObject.j", YES);{var the_class = objj_allocateClassPair(CPObject, "CPFormatter"),
-meta_class = the_class.isa;objj_registerClassPair(the_class);
+p;13;CPFormatter.jt;2557;@STATIC;1.0;i;13;CPException.ji;10;CPObject.jt;2505;
+objj_executeFile("CPException.j", YES);
+objj_executeFile("CPObject.j", YES);
+
+{var the_class = objj_allocateClassPair(CPObject, "CPFormatter"),
+meta_class = the_class.isa;
+
+
+
+
+
+
+
+objj_registerClassPair(the_class);
 class_addMethods(the_class, [new objj_method(sel_getUid("stringForObjectValue:"), function $CPFormatter__stringForObjectValue_(self, _cmd, anObject)
 {
     _CPRaiseInvalidAbstractInvocation(self, _cmd);
@@ -6241,7 +9430,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("stringForObjectValue:")
 }
 ,["CPString","id"]), new objj_method(sel_getUid("editingStringForObjectValue:"), function $CPFormatter__editingStringForObjectValue_(self, _cmd, anObject)
 {
-    return self.isa.objj_msgSend1(self, "stringForObjectValue:", anObject);
+    return objj_msgSend(self, "stringForObjectValue:", anObject);
 }
 ,["CPString","id"]), new objj_method(sel_getUid("getObjectValue:forString:errorDescription:"), function $CPFormatter__getObjectValue_forString_errorDescription_(self, _cmd, anObject, aString, anError)
 {
@@ -6251,49 +9440,82 @@ class_addMethods(the_class, [new objj_method(sel_getUid("stringForObjectValue:")
 ,["BOOL","idRef","CPString","CPStringRef"]), new objj_method(sel_getUid("isPartialStringValid:newEditingString:errorDescription:"), function $CPFormatter__isPartialStringValid_newEditingString_errorDescription_(self, _cmd, aPartialString, aNewString, anError)
 {
     (aPartialString)(nil);
+
     if (anError)
         (anError)(nil);
+
     return YES;
 }
 ,["BOOL","CPString","CPStringRef","CPStringRef"]), new objj_method(sel_getUid("isPartialStringValid:proposedSelectedRange:originalString:originalSelectedRange:errorDescription:"), function $CPFormatter__isPartialStringValid_proposedSelectedRange_originalString_originalSelectedRange_errorDescription_(self, _cmd, aPartialStringRef, aProposedSelectedRangeRef, originalString, originalSelectedRange, anError)
 {
     var newString = nil,
-        valid = self.isa.objj_msgSend3(self, "isPartialStringValid:newEditingString:errorDescription:", aPartialStringRef, function(__input) { if (arguments.length) return newString = __input; return newString; }, anError);
+        valid = objj_msgSend(self, "isPartialStringValid:newEditingString:errorDescription:", aPartialStringRef, function(__input) { if (arguments.length) return newString = __input; return newString; }, anError);
+
     if (!valid)
     {
         (aPartialStringRef)(newString);
+
+
         if (newString !== nil)
             (aProposedSelectedRangeRef)(CPMakeRange(newString.length, 0));
     }
+
     return valid;
 }
 ,["BOOL","CPStringRef","CPRangeRef","CPString","CPRange","CPStringRef"]), new objj_method(sel_getUid("initWithCoder:"), function $CPFormatter__initWithCoder_(self, _cmd, aCoder)
 {
-    return self.isa.objj_msgSend0(self, "init");
+    return objj_msgSend(self, "init");
 }
 ,["id","CPCoder"]), new objj_method(sel_getUid("encodeWithCoder:"), function $CPFormatter__encodeWithCoder_(self, _cmd, aCoder)
 {
 }
 ,["void","CPCoder"])]);
-}p;21;CPFunctionOperation.jt;2237;@STATIC;1.0;i;9;CPArray.ji;10;CPObject.ji;13;CPOperation.jt;2172;objj_executeFile("CPArray.j", YES);objj_executeFile("CPObject.j", YES);objj_executeFile("CPOperation.j", YES);{var the_class = objj_allocateClassPair(CPOperation, "CPFunctionOperation"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_functions")]);objj_registerClassPair(the_class);
+}p;21;CPFunctionOperation.jt;1885;@STATIC;1.0;i;9;CPArray.ji;10;CPObject.ji;13;CPOperation.jt;1820;
+objj_executeFile("CPArray.j", YES);
+objj_executeFile("CPObject.j", YES);
+objj_executeFile("CPOperation.j", YES);
+
+
+
+
+
+{var the_class = objj_allocateClassPair(CPOperation, "CPFunctionOperation"),
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_functions")]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+objj_registerClassPair(the_class);
 class_addMethods(the_class, [new objj_method(sel_getUid("main"), function $CPFunctionOperation__main(self, _cmd)
 {
-    if (self._functions && ((___r1 = self._functions), ___r1 == null ? null : ___r1.isa.objj_msgSend0(___r1, "count")) > 0)
+    if (self._functions && objj_msgSend(self._functions, "count") > 0)
     {
         var i = 0,
-            count = ((___r1 = self._functions), ___r1 == null ? null : ___r1.isa.objj_msgSend0(___r1, "count"));
+            count = objj_msgSend(self._functions, "count");
+
         for (; i < count; i++)
         {
-            var func = ((___r1 = self._functions), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "objectAtIndex:", i));
+            var func = objj_msgSend(self._functions, "objectAtIndex:", i);
             func();
         }
     }
-    var ___r1;
 }
 ,["void"]), new objj_method(sel_getUid("init"), function $CPFunctionOperation__init(self, _cmd)
 {
     self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPFunctionOperation").super_class }, "init");
+
     if (self)
     {
         self._functions = [];
@@ -6302,8 +9524,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("main"), function $CPFun
 }
 ,["id"]), new objj_method(sel_getUid("addExecutionFunction:"), function $CPFunctionOperation__addExecutionFunction_(self, _cmd, jsFunction)
 {
-    ((___r1 = self._functions), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "addObject:", jsFunction));
-    var ___r1;
+    objj_msgSend(self._functions, "addObject:", jsFunction);
 }
 ,["void","JSObject"]), new objj_method(sel_getUid("executionFunctions"), function $CPFunctionOperation__executionFunctions(self, _cmd)
 {
@@ -6312,13 +9533,15 @@ class_addMethods(the_class, [new objj_method(sel_getUid("main"), function $CPFun
 ,["CPArray"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("functionOperationWithFunction:"), function $CPFunctionOperation__functionOperationWithFunction_(self, _cmd, jsFunction)
 {
-    functionOp = ((___r1 = CPFunctionOperation.isa.objj_msgSend0(CPFunctionOperation, "alloc")), ___r1 == null ? null : ___r1.isa.objj_msgSend0(___r1, "init"));
-    (functionOp == null ? null : functionOp.isa.objj_msgSend1(functionOp, "addExecutionFunction:", jsFunction));
+    functionOp = objj_msgSend(objj_msgSend(CPFunctionOperation, "alloc"), "init");
+    objj_msgSend(functionOp, "addExecutionFunction:", jsFunction);
+
     return functionOp;
-    var ___r1;
 }
 ,["id","JSObject"])]);
-}p;12;CPGeometry.jt;1650;@STATIC;1.0;i;13;_CGGeometry.jt;1613;objj_executeFile("_CGGeometry.j", YES);CPMinXEdge = 0;
+}p;12;CPGeometry.jt;1741;@STATIC;1.0;i;13;_CGGeometry.jt;1704;objj_executeFile("_CGGeometry.j", YES);{var the_typedef = objj_allocateTypeDef("CPRectEdge");
+objj_registerTypeDef(the_typedef);
+}CPMinXEdge = 0;
 CPMinYEdge = 1;
 CPMaxXEdge = 2;
 CPMaxYEdge = 3;
@@ -6368,28 +9591,74 @@ CPPointFromEvent = CGPointFromEvent;
 CPSizeMakeZero = CGSizeMakeZero;
 CPRectMakeZero = CGRectMakeZero;
 CPPointMakeZero = CGPointMakeZero;
-p;13;CPIndexPath.jt;6959;@STATIC;1.0;i;9;CPArray.ji;13;CPException.ji;10;CPObject.ji;9;CPRange.ji;18;CPSortDescriptor.jt;6858;objj_executeFile("CPArray.j", YES);objj_executeFile("CPException.j", YES);objj_executeFile("CPObject.j", YES);objj_executeFile("CPRange.j", YES);objj_executeFile("CPSortDescriptor.j", YES);{var the_class = objj_allocateClassPair(CPObject, "CPIndexPath"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_indexes")]);objj_registerClassPair(the_class);
+p;13;CPIndexPath.jt;5883;@STATIC;1.0;i;9;CPArray.ji;13;CPException.ji;10;CPObject.ji;9;CPRange.ji;18;CPSortDescriptor.jt;5782;
+objj_executeFile("CPArray.j", YES);
+objj_executeFile("CPException.j", YES);
+objj_executeFile("CPObject.j", YES);
+objj_executeFile("CPRange.j", YES);
+objj_executeFile("CPSortDescriptor.j", YES);
+
+{var the_class = objj_allocateClassPair(CPObject, "CPIndexPath"),
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_indexes")]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+objj_registerClassPair(the_class);
 class_addMethods(the_class, [new objj_method(sel_getUid("indexes"), function $CPIndexPath__indexes(self, _cmd)
 {
-    return self._indexes;
+return self._indexes;
 }
 ,["CPArray"]), new objj_method(sel_getUid("setIndexes:"), function $CPIndexPath__setIndexes_(self, _cmd, newValue)
 {
-    self._indexes = newValue;
+self._indexes = newValue;
 }
 ,["void","CPArray"]), new objj_method(sel_getUid("initWithIndexes:length:"), function $CPIndexPath__initWithIndexes_length_(self, _cmd, indexes, length)
 {
     self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPIndexPath").super_class }, "init");
+
     if (self)
-        self._indexes = (indexes == null ? null : indexes.isa.objj_msgSend1(indexes, "subarrayWithRange:", CPMakeRange(0, length)));
+        self._indexes = objj_msgSend(indexes, "subarrayWithRange:", CPMakeRange(0, length));
+
     return self;
 }
 ,["id","CPArray","int"]), new objj_method(sel_getUid("initWithIndexes:"), function $CPIndexPath__initWithIndexes_(self, _cmd, indexes)
 {
     self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPIndexPath").super_class }, "init");
+
     if (self)
-        self._indexes = (indexes == null ? null : indexes.isa.objj_msgSend0(indexes, "copy"));
+        self._indexes = objj_msgSend(indexes, "copy");
+
     return self;
 }
 ,["id","CPArray"]), new objj_method(sel_getUid("description"), function $CPIndexPath__description(self, _cmd)
@@ -6398,98 +9667,106 @@ class_addMethods(the_class, [new objj_method(sel_getUid("indexes"), function $CP
 }
 ,["CPString"]), new objj_method(sel_getUid("length"), function $CPIndexPath__length(self, _cmd)
 {
-    return ((___r1 = self._indexes), ___r1 == null ? null : ___r1.isa.objj_msgSend0(___r1, "count"));
-    var ___r1;
+    return objj_msgSend(self._indexes, "count");
 }
 ,["id"]), new objj_method(sel_getUid("indexAtPosition:"), function $CPIndexPath__indexAtPosition_(self, _cmd, position)
 {
-    return ((___r1 = self._indexes), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "objectAtIndex:", position));
-    var ___r1;
+    return objj_msgSend(self._indexes, "objectAtIndex:", position);
 }
 ,["int","int"]), new objj_method(sel_getUid("setIndexes:"), function $CPIndexPath__setIndexes_(self, _cmd, theIndexes)
 {
-    self._indexes = (theIndexes == null ? null : theIndexes.isa.objj_msgSend0(theIndexes, "copy"));
+    self._indexes = objj_msgSend(theIndexes, "copy");
 }
 ,["void","CPArray"]), new objj_method(sel_getUid("indexes"), function $CPIndexPath__indexes(self, _cmd)
 {
-    return ((___r1 = self._indexes), ___r1 == null ? null : ___r1.isa.objj_msgSend0(___r1, "copy"));
-    var ___r1;
+    return objj_msgSend(self._indexes, "copy");
 }
 ,["CPArray"]), new objj_method(sel_getUid("indexPathByAddingIndex:"), function $CPIndexPath__indexPathByAddingIndex_(self, _cmd, index)
 {
-    return CPIndexPath.isa.objj_msgSend1(CPIndexPath, "indexPathWithIndexes:", ((___r1 = self._indexes), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "arrayByAddingObject:", index)));
-    var ___r1;
+    return objj_msgSend(CPIndexPath, "indexPathWithIndexes:", objj_msgSend(self._indexes, "arrayByAddingObject:", index));
 }
 ,["CPIndexPath","int"]), new objj_method(sel_getUid("indexPathByRemovingLastIndex"), function $CPIndexPath__indexPathByRemovingLastIndex(self, _cmd)
 {
-    return CPIndexPath.isa.objj_msgSend2(CPIndexPath, "indexPathWithIndexes:length:", self._indexes, self.isa.objj_msgSend0(self, "length") - 1);
+    return objj_msgSend(CPIndexPath, "indexPathWithIndexes:length:", self._indexes, objj_msgSend(self, "length") - 1);
 }
 ,["CPIndexPath"]), new objj_method(sel_getUid("isEqual:"), function $CPIndexPath__isEqual_(self, _cmd, anObject)
 {
     if (anObject === self)
         return YES;
-    if ((anObject == null ? null : anObject.isa.objj_msgSend0(anObject, "class")) !== CPIndexPath.isa.objj_msgSend0(CPIndexPath, "class"))
+
+    if (objj_msgSend(anObject, "class") !== objj_msgSend(CPIndexPath, "class"))
         return NO;
-    return ((___r1 = self._indexes), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "isEqualToArray:", (anObject == null ? null : anObject.isa.objj_msgSend0(anObject, "indexes"))));
-    var ___r1;
+
+    return objj_msgSend(self._indexes, "isEqualToArray:", objj_msgSend(anObject, "indexes"));
 }
 ,["BOOL","id"]), new objj_method(sel_getUid("compare:"), function $CPIndexPath__compare_(self, _cmd, anIndexPath)
 {
     if (!anIndexPath)
-        CPException.isa.objj_msgSend2(CPException, "raise:reason:", CPInvalidArgumentException, "indexPath to " + self + " was nil");
-    var lhsIndexes = self.isa.objj_msgSend0(self, "indexes"),
-        rhsIndexes = (anIndexPath == null ? null : anIndexPath.isa.objj_msgSend0(anIndexPath, "indexes")),
-        lhsCount = (lhsIndexes == null ? null : lhsIndexes.isa.objj_msgSend0(lhsIndexes, "count")),
-        rhsCount = (rhsIndexes == null ? null : rhsIndexes.isa.objj_msgSend0(rhsIndexes, "count"));
+        objj_msgSend(CPException, "raise:reason:", CPInvalidArgumentException, "indexPath to " + self + " was nil");
+
+    var lhsIndexes = objj_msgSend(self, "indexes"),
+        rhsIndexes = objj_msgSend(anIndexPath, "indexes"),
+        lhsCount = objj_msgSend(lhsIndexes, "count"),
+        rhsCount = objj_msgSend(rhsIndexes, "count");
+
     var index = 0,
         count = MIN(lhsCount, rhsCount);
+
     for (; index < count; ++index)
     {
         var lhs = lhsIndexes[index],
             rhs = rhsIndexes[index];
+
         if (lhs < rhs)
             return CPOrderedAscending;
+
         else if (lhs > rhs)
             return CPOrderedDescending;
     }
+
     if (lhsCount === rhsCount)
         return CPOrderedSame;
+
     if (lhsCount === count)
         return CPOrderedAscending;
+
     return CPOrderedDescending;
 }
 ,["CPComparisonResult","CPIndexPath"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("indexPathWithIndex:"), function $CPIndexPath__indexPathWithIndex_(self, _cmd, index)
 {
-    return ((___r1 = self.isa.objj_msgSend0(self, "alloc")), ___r1 == null ? null : ___r1.isa.objj_msgSend2(___r1, "initWithIndexes:length:", [index], 1));
-    var ___r1;
+    return objj_msgSend(objj_msgSend(self, "alloc"), "initWithIndexes:length:", [index], 1);
 }
 ,["id","int"]), new objj_method(sel_getUid("indexPathWithIndexes:length:"), function $CPIndexPath__indexPathWithIndexes_length_(self, _cmd, indexes, length)
 {
-    return ((___r1 = self.isa.objj_msgSend0(self, "alloc")), ___r1 == null ? null : ___r1.isa.objj_msgSend2(___r1, "initWithIndexes:length:", indexes, length));
-    var ___r1;
+    return objj_msgSend(objj_msgSend(self, "alloc"), "initWithIndexes:length:", indexes, length);
 }
 ,["id","CPArray","int"]), new objj_method(sel_getUid("indexPathWithIndexes:"), function $CPIndexPath__indexPathWithIndexes_(self, _cmd, indexes)
 {
-    return ((___r1 = self.isa.objj_msgSend0(self, "alloc")), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "initWithIndexes:", indexes));
-    var ___r1;
+    return objj_msgSend(objj_msgSend(self, "alloc"), "initWithIndexes:", indexes);
 }
 ,["id","CPArray"])]);
-}var CPIndexPathIndexesKey = "CPIndexPathIndexes";
+}
+
+var CPIndexPathIndexesKey = "CPIndexPathIndexes";
+
 {
 var the_class = objj_getClass("CPIndexPath")
 if(!the_class) throw new SyntaxError("*** Could not find definition for class \"CPIndexPath\"");
-var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_getUid("initWithCoder:"), function $CPIndexPath__initWithCoder_(self, _cmd, theCoder)
+var meta_class = the_class.isa;
+
+class_addMethods(the_class, [new objj_method(sel_getUid("initWithCoder:"), function $CPIndexPath__initWithCoder_(self, _cmd, theCoder)
 {
-    if (self = (self == null ? null : self.isa.objj_msgSend0(self, "init")))
+    if (self = objj_msgSend(self, "init"))
     {
-        self._indexes = (theCoder == null ? null : theCoder.isa.objj_msgSend1(theCoder, "decodeObjectForKey:", CPIndexPathIndexesKey));
+        self._indexes = objj_msgSend(theCoder, "decodeObjectForKey:", CPIndexPathIndexesKey);
     }
+
     return self;
 }
 ,["id","CPCoder"]), new objj_method(sel_getUid("encodeWithCoder:"), function $CPIndexPath__encodeWithCoder_(self, _cmd, theCoder)
 {
-    (theCoder == null ? null : theCoder.isa.objj_msgSend2(theCoder, "encodeObject:forKey:", self._indexes, CPIndexPathIndexesKey));
+    objj_msgSend(theCoder, "encodeObject:forKey:", self._indexes, CPIndexPathIndexesKey);
 }
 ,["void","CPCoder"])]);
 }p;12;CPIndexSet.jt;30167;@STATIC;1.0;i;9;CPArray.ji;10;CPObject.ji;9;CPRange.jt;30106;objj_executeFile("CPArray.j", YES);objj_executeFile("CPObject.j", YES);objj_executeFile("CPRange.j", YES);{var the_class = objj_allocateClassPair(CPObject, "CPIndexSet"),
@@ -7211,7 +10488,7 @@ var assumedPositionOfIndex = function(ranges, anIndex)
     }
     return CPNotFound;
 };
-p;14;CPInvocation.jt;4089;@STATIC;1.0;i;10;CPObject.jt;4055;objj_executeFile("CPObject.j", YES);{var the_class = objj_allocateClassPair(CPObject, "CPInvocation"),
+p;14;CPInvocation.jt;4137;@STATIC;1.0;i;10;CPObject.ji;9;CPArray.jt;4090;objj_executeFile("CPObject.j", YES);objj_executeFile("CPArray.j", YES);{var the_class = objj_allocateClassPair(CPObject, "CPInvocation"),
 meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_returnValue"), new objj_ivar("_arguments"), new objj_ivar("_methodSignature")]);objj_registerClassPair(the_class);
 class_addMethods(the_class, [new objj_method(sel_getUid("initWithMethodSignature:"), function $CPInvocation__initWithMethodSignature_(self, _cmd, aMethodSignature)
 {
@@ -7292,15 +10569,49 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     (aCoder == null ? null : aCoder.isa.objj_msgSend2(aCoder, "encodeObject:forKey:", self._arguments, CPInvocationArguments));
 }
 ,["void","CPCoder"])]);
-}p;23;CPInvocationOperation.jt;2415;@STATIC;1.0;i;14;CPInvocation.ji;10;CPObject.ji;13;CPOperation.jt;2344;objj_executeFile("CPInvocation.j", YES);objj_executeFile("CPObject.j", YES);objj_executeFile("CPOperation.j", YES);{var the_class = objj_allocateClassPair(CPOperation, "CPInvocationOperation"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_invocation")]);objj_registerClassPair(the_class);
+}p;23;CPInvocationOperation.jt;2081;@STATIC;1.0;i;14;CPInvocation.ji;10;CPObject.ji;13;CPOperation.jt;2010;
+objj_executeFile("CPInvocation.j", YES);
+objj_executeFile("CPObject.j", YES);
+objj_executeFile("CPOperation.j", YES);
+
+
+
+
+
+{var the_class = objj_allocateClassPair(CPOperation, "CPInvocationOperation"),
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_invocation")]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+objj_registerClassPair(the_class);
 class_addMethods(the_class, [new objj_method(sel_getUid("main"), function $CPInvocationOperation__main(self, _cmd)
 {
     if (self._invocation)
     {
-        ((___r1 = self._invocation), ___r1 == null ? null : ___r1.isa.objj_msgSend0(___r1, "invoke"));
+        objj_msgSend(self._invocation, "invoke");
     }
-    var ___r1;
 }
 ,["void"]), new objj_method(sel_getUid("init"), function $CPInvocationOperation__init(self, _cmd)
 {
@@ -7312,20 +10623,21 @@ class_addMethods(the_class, [new objj_method(sel_getUid("main"), function $CPInv
 }
 ,["id"]), new objj_method(sel_getUid("initWithInvocation:"), function $CPInvocationOperation__initWithInvocation_(self, _cmd, inv)
 {
-    if (self = (self == null ? null : self.isa.objj_msgSend0(self, "init")))
+    if (self = objj_msgSend(self, "init"))
     {
         self._invocation = inv;
     }
+
     return self;
 }
 ,["id","CPInvocation"]), new objj_method(sel_getUid("initWithTarget:selector:object:"), function $CPInvocationOperation__initWithTarget_selector_object_(self, _cmd, target, sel, arg)
 {
-    var inv = ((___r1 = CPInvocation.isa.objj_msgSend0(CPInvocation, "alloc")), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "initWithMethodSignature:", nil));
-    (inv == null ? null : inv.isa.objj_msgSend1(inv, "setTarget:", target));
-    (inv == null ? null : inv.isa.objj_msgSend1(inv, "setSelector:", sel));
-    (inv == null ? null : inv.isa.objj_msgSend2(inv, "setArgument:atIndex:", arg, 2));
-    return self.isa.objj_msgSend1(self, "initWithInvocation:", inv);
-    var ___r1;
+    var inv = objj_msgSend(objj_msgSend(CPInvocation, "alloc"), "initWithMethodSignature:", nil);
+    objj_msgSend(inv, "setTarget:", target);
+    objj_msgSend(inv, "setSelector:", sel);
+    objj_msgSend(inv, "setArgument:atIndex:", arg, 2);
+
+    return objj_msgSend(self, "initWithInvocation:", inv);
 }
 ,["id","id","SEL","id"]), new objj_method(sel_getUid("invocation"), function $CPInvocationOperation__invocation(self, _cmd)
 {
@@ -7333,15 +10645,15 @@ class_addMethods(the_class, [new objj_method(sel_getUid("main"), function $CPInv
 }
 ,["CPInvocation"]), new objj_method(sel_getUid("result"), function $CPInvocationOperation__result(self, _cmd)
 {
-    if (self.isa.objj_msgSend0(self, "isFinished") && self._invocation)
+    if (objj_msgSend(self, "isFinished") && self._invocation)
     {
-        return ((___r1 = self._invocation), ___r1 == null ? null : ___r1.isa.objj_msgSend0(___r1, "returnValue"));
+        return objj_msgSend(self._invocation, "returnValue");
     }
+
     return nil;
-    var ___r1;
 }
 ,["id"])]);
-}p;19;CPJSONPConnection.jt;6358;@STATIC;1.0;i;13;CPException.ji;10;CPObject.ji;11;CPRunLoop.jt;6290;objj_executeFile("CPException.j", YES);objj_executeFile("CPObject.j", YES);objj_executeFile("CPRunLoop.j", YES);CPJSONPConnectionCallbacks = {};
+}p;19;CPJSONPConnection.jt;6417;@STATIC;1.0;i;13;CPException.ji;10;CPObject.ji;11;CPRunLoop.ji;14;CPURLRequest.jt;6330;objj_executeFile("CPException.j", YES);objj_executeFile("CPObject.j", YES);objj_executeFile("CPRunLoop.j", YES);objj_executeFile("CPURLRequest.j", YES);CPJSONPConnectionCallbacks = {};
 CPJSONPCallbackReplacementString = "${JSONP_CALLBACK}";
 {var the_class = objj_allocateClassPair(CPObject, "CPJSONPConnection"),
 meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_request"), new objj_ivar("_delegate"), new objj_ivar("_callbackParameter"), new objj_ivar("_scriptTag")]);objj_registerClassPair(the_class);
@@ -7427,67 +10739,228 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("sendRequest:callback:d
     var ___r1, ___r2;
 }
 ,["CPJSONPConnection","CPURLRequest","CPString","id"])]);
-}p;17;CPKeyedArchiver.jt;21215;@STATIC;1.0;i;9;CPArray.ji;9;CPCoder.ji;8;CPData.ji;14;CPDictionary.ji;10;CPNumber.ji;10;CPString.ji;9;CPValue.ji;13;_CGGeometry.jt;21077;objj_executeFile("CPArray.j", YES);objj_executeFile("CPCoder.j", YES);objj_executeFile("CPData.j", YES);objj_executeFile("CPDictionary.j", YES);objj_executeFile("CPNumber.j", YES);objj_executeFile("CPString.j", YES);objj_executeFile("CPValue.j", YES);objj_executeFile("_CGGeometry.j", YES);var CPArchiverReplacementClassNames = nil;
+}p;17;CPKeyedArchiver.jt;17313;@STATIC;1.0;i;9;CPArray.ji;9;CPCoder.ji;8;CPData.ji;14;CPDictionary.ji;10;CPNumber.ji;10;CPString.ji;9;CPValue.ji;13;_CGGeometry.jt;17175;
+objj_executeFile("CPArray.j", YES);
+objj_executeFile("CPCoder.j", YES);
+objj_executeFile("CPData.j", YES);
+objj_executeFile("CPDictionary.j", YES);
+objj_executeFile("CPNumber.j", YES);
+objj_executeFile("CPString.j", YES);
+objj_executeFile("CPValue.j", YES);
+objj_executeFile("_CGGeometry.j", YES);
+
+var CPArchiverReplacementClassNames = nil;
+
 var _CPKeyedArchiverDidEncodeObjectSelector = 1,
     _CPKeyedArchiverWillEncodeObjectSelector = 2,
     _CPKeyedArchiverWillReplaceObjectWithObjectSelector = 4,
     _CPKeyedArchiverDidFinishEncodingSelector = 8,
     _CPKeyedArchiverWillFinishEncodingSelector = 16;
+
 var _CPKeyedArchiverNullString = "$null",
     _CPKeyedArchiverNullReference = nil,
+
     _CPKeyedArchiverUIDKey = "CP$UID",
+
     _CPKeyedArchiverTopKey = "$top",
     _CPKeyedArchiverObjectsKey = "$objects",
     _CPKeyedArchiverArchiverKey = "$archiver",
     _CPKeyedArchiverVersionKey = "$version",
+
     _CPKeyedArchiverClassNameKey = "$classname",
     _CPKeyedArchiverClassesKey = "$classes",
     _CPKeyedArchiverClassKey = "$class";
+
 var _CPKeyedArchiverStringClass = Nil,
     _CPKeyedArchiverNumberClass = Nil;
+
+
 {var the_class = objj_allocateClassPair(CPValue, "_CPKeyedArchiverValue"),
 meta_class = the_class.isa;objj_registerClassPair(the_class);
-}{var the_class = objj_allocateClassPair(CPCoder, "CPKeyedArchiver"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_delegate"), new objj_ivar("_delegateSelectors"), new objj_ivar("_data"), new objj_ivar("_objects"), new objj_ivar("_UIDs"), new objj_ivar("_conditionalUIDs"), new objj_ivar("_replacementObjects"), new objj_ivar("_replacementClassNames"), new objj_ivar("_plistObject"), new objj_ivar("_plistObjects"), new objj_ivar("_outputFormat")]);objj_registerClassPair(the_class);
+}
+{var the_class = objj_allocateClassPair(CPCoder, "CPKeyedArchiver"),
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_delegate"), new objj_ivar("_delegateSelectors"), new objj_ivar("_data"), new objj_ivar("_objects"), new objj_ivar("_UIDs"), new objj_ivar("_conditionalUIDs"), new objj_ivar("_replacementObjects"), new objj_ivar("_replacementClassNames"), new objj_ivar("_plistObject"), new objj_ivar("_plistObjects"), new objj_ivar("_outputFormat")]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+objj_registerClassPair(the_class);
 class_addMethods(the_class, [new objj_method(sel_getUid("initForWritingWithMutableData:"), function $CPKeyedArchiver__initForWritingWithMutableData_(self, _cmd, data)
 {
     self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPKeyedArchiver").super_class }, "init");
+
     if (self)
     {
         self._data = data;
+
         self._objects = [];
+
         self._UIDs = objj_msgSend(objj_msgSend(CPDictionary, "alloc"), "init");
         self._conditionalUIDs = objj_msgSend(objj_msgSend(CPDictionary, "alloc"), "init");
+
         self._replacementObjects = objj_msgSend(objj_msgSend(CPDictionary, "alloc"), "init");
+
         self._plistObject = objj_msgSend(objj_msgSend(CPDictionary, "alloc"), "init");
-        self._plistObjects = CPArray.isa.objj_msgSend1(CPArray, "arrayWithObject:", _CPKeyedArchiverNullString);
+        self._plistObjects = objj_msgSend(CPArray, "arrayWithObject:", _CPKeyedArchiverNullString);
     }
+
     return self;
 }
 ,["id","CPMutableData"]), new objj_method(sel_getUid("finishEncoding"), function $CPKeyedArchiver__finishEncoding(self, _cmd)
 {
     if (self._delegate && self._delegateSelectors & _CPKeyedArchiverDidFinishEncodingSelector)
-        ((___r1 = self._delegate), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "archiverWillFinish:", self));
+        objj_msgSend(self._delegate, "archiverWillFinish:", self);
+
     var i = 0,
         topObject = self._plistObject,
         classes = [];
+
     for (; i < self._objects.length; ++i)
     {
         var object = self._objects[i];
-        self._plistObject = self._plistObjects[((___r1 = self._UIDs), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "objectForKey:", (object == null ? null : object.isa.objj_msgSend0(object, "UID"))))];
-        (object == null ? null : object.isa.objj_msgSend1(object, "encodeWithCoder:", self));
+
+
+
+
+        self._plistObject = self._plistObjects[objj_msgSend(self._UIDs, "objectForKey:", objj_msgSend(object, "UID"))];
+        objj_msgSend(object, "encodeWithCoder:", self);
+
         if (self._delegate && self._delegateSelectors & _CPKeyedArchiverDidEncodeObjectSelector)
-            ((___r1 = self._delegate), ___r1 == null ? null : ___r1.isa.objj_msgSend2(___r1, "archiver:didEncodeObject:", self, object));
+            objj_msgSend(self._delegate, "archiver:didEncodeObject:", self, object);
     }
+
     self._plistObject = objj_msgSend(objj_msgSend(CPDictionary, "alloc"), "init");
-    ((___r1 = self._plistObject), ___r1 == null ? null : ___r1.isa.objj_msgSend2(___r1, "setObject:forKey:", topObject, _CPKeyedArchiverTopKey));
-    ((___r1 = self._plistObject), ___r1 == null ? null : ___r1.isa.objj_msgSend2(___r1, "setObject:forKey:", self._plistObjects, _CPKeyedArchiverObjectsKey));
-    ((___r1 = self._plistObject), ___r1 == null ? null : ___r1.isa.objj_msgSend2(___r1, "setObject:forKey:", self.isa.objj_msgSend0(self, "className"), _CPKeyedArchiverArchiverKey));
-    ((___r1 = self._plistObject), ___r1 == null ? null : ___r1.isa.objj_msgSend2(___r1, "setObject:forKey:", "100000", _CPKeyedArchiverVersionKey));
-    ((___r1 = self._data), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "setPlistObject:", self._plistObject));
+
+    objj_msgSend(self._plistObject, "setObject:forKey:", topObject, _CPKeyedArchiverTopKey);
+    objj_msgSend(self._plistObject, "setObject:forKey:", self._plistObjects, _CPKeyedArchiverObjectsKey);
+    objj_msgSend(self._plistObject, "setObject:forKey:", objj_msgSend(self, "className"), _CPKeyedArchiverArchiverKey);
+    objj_msgSend(self._plistObject, "setObject:forKey:", "100000", _CPKeyedArchiverVersionKey);
+
+    objj_msgSend(self._data, "setPlistObject:", self._plistObject);
+
     if (self._delegate && self._delegateSelectors & _CPKeyedArchiverDidFinishEncodingSelector)
-        ((___r1 = self._delegate), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "archiverDidFinish:", self));
-    var ___r1;
+        objj_msgSend(self._delegate, "archiverDidFinish:", self);
 }
 ,["void"]), new objj_method(sel_getUid("outputFormat"), function $CPKeyedArchiver__outputFormat(self, _cmd)
 {
@@ -7499,38 +10972,39 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initForWritingWithMutab
 }
 ,["void","CPPropertyListFormat"]), new objj_method(sel_getUid("encodeBool:forKey:"), function $CPKeyedArchiver__encodeBool_forKey_(self, _cmd, aBOOL, aKey)
 {
-    ((___r1 = self._plistObject), ___r1 == null ? null : ___r1.isa.objj_msgSend2(___r1, "setObject:forKey:", _CPKeyedArchiverEncodeObject(self, aBOOL, NO), aKey));
-    var ___r1;
+    objj_msgSend(self._plistObject, "setObject:forKey:", _CPKeyedArchiverEncodeObject(self, aBOOL, NO), aKey);
 }
 ,["void","BOOL","CPString"]), new objj_method(sel_getUid("encodeDouble:forKey:"), function $CPKeyedArchiver__encodeDouble_forKey_(self, _cmd, aDouble, aKey)
 {
-    ((___r1 = self._plistObject), ___r1 == null ? null : ___r1.isa.objj_msgSend2(___r1, "setObject:forKey:", _CPKeyedArchiverEncodeObject(self, aDouble, NO), aKey));
-    var ___r1;
+    objj_msgSend(self._plistObject, "setObject:forKey:", _CPKeyedArchiverEncodeObject(self, aDouble, NO), aKey);
 }
 ,["void","double","CPString"]), new objj_method(sel_getUid("encodeFloat:forKey:"), function $CPKeyedArchiver__encodeFloat_forKey_(self, _cmd, aFloat, aKey)
 {
-    ((___r1 = self._plistObject), ___r1 == null ? null : ___r1.isa.objj_msgSend2(___r1, "setObject:forKey:", _CPKeyedArchiverEncodeObject(self, aFloat, NO), aKey));
-    var ___r1;
+    objj_msgSend(self._plistObject, "setObject:forKey:", _CPKeyedArchiverEncodeObject(self, aFloat, NO), aKey);
 }
 ,["void","float","CPString"]), new objj_method(sel_getUid("encodeInt:forKey:"), function $CPKeyedArchiver__encodeInt_forKey_(self, _cmd, anInt, aKey)
 {
-    ((___r1 = self._plistObject), ___r1 == null ? null : ___r1.isa.objj_msgSend2(___r1, "setObject:forKey:", _CPKeyedArchiverEncodeObject(self, anInt, NO), aKey));
-    var ___r1;
+    objj_msgSend(self._plistObject, "setObject:forKey:", _CPKeyedArchiverEncodeObject(self, anInt, NO), aKey);
 }
 ,["void","float","CPString"]), new objj_method(sel_getUid("setDelegate:"), function $CPKeyedArchiver__setDelegate_(self, _cmd, aDelegate)
 {
     self._delegate = aDelegate;
-    if (((___r1 = self._delegate), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "respondsToSelector:", sel_getUid("archiver:didEncodeObject:"))))
+
+    if (objj_msgSend(self._delegate, "respondsToSelector:", sel_getUid("archiver:didEncodeObject:")))
         self._delegateSelectors |= _CPKeyedArchiverDidEncodeObjectSelector;
-    if (((___r1 = self._delegate), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "respondsToSelector:", sel_getUid("archiver:willEncodeObject:"))))
+
+    if (objj_msgSend(self._delegate, "respondsToSelector:", sel_getUid("archiver:willEncodeObject:")))
         self._delegateSelectors |= _CPKeyedArchiverWillEncodeObjectSelector;
-    if (((___r1 = self._delegate), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "respondsToSelector:", sel_getUid("archiver:willReplaceObject:withObject:"))))
+
+    if (objj_msgSend(self._delegate, "respondsToSelector:", sel_getUid("archiver:willReplaceObject:withObject:")))
         self._delegateSelectors |= _CPKeyedArchiverWillReplaceObjectWithObjectSelector;
-    if (((___r1 = self._delegate), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "respondsToSelector:", sel_getUid("archiver:didFinishEncoding:"))))
+
+    if (objj_msgSend(self._delegate, "respondsToSelector:", sel_getUid("archiver:didFinishEncoding:")))
         self._delegateSelectors |= _CPKeyedArchiverDidFinishEncodingSelector;
-    if (((___r1 = self._delegate), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "respondsToSelector:", sel_getUid("archiver:willFinishEncoding:"))))
+
+    if (objj_msgSend(self._delegate, "respondsToSelector:", sel_getUid("archiver:willFinishEncoding:")))
         self._delegateSelectors |= _CPKeyedArchiverWillFinishEncodingSelector;
-    var ___r1;
+
 }
 ,["void","id"]), new objj_method(sel_getUid("delegate"), function $CPKeyedArchiver__delegate(self, _cmd)
 {
@@ -7538,76 +11012,75 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initForWritingWithMutab
 }
 ,["id"]), new objj_method(sel_getUid("encodePoint:forKey:"), function $CPKeyedArchiver__encodePoint_forKey_(self, _cmd, aPoint, aKey)
 {
-    ((___r1 = self._plistObject), ___r1 == null ? null : ___r1.isa.objj_msgSend2(___r1, "setObject:forKey:", _CPKeyedArchiverEncodeObject(self, CGStringFromPoint(aPoint), NO), aKey));
-    var ___r1;
+    objj_msgSend(self._plistObject, "setObject:forKey:", _CPKeyedArchiverEncodeObject(self, CGStringFromPoint(aPoint), NO), aKey);
 }
 ,["void","CGPoint","CPString"]), new objj_method(sel_getUid("encodeRect:forKey:"), function $CPKeyedArchiver__encodeRect_forKey_(self, _cmd, aRect, aKey)
 {
-    ((___r1 = self._plistObject), ___r1 == null ? null : ___r1.isa.objj_msgSend2(___r1, "setObject:forKey:", _CPKeyedArchiverEncodeObject(self, CGStringFromRect(aRect), NO), aKey));
-    var ___r1;
+    objj_msgSend(self._plistObject, "setObject:forKey:", _CPKeyedArchiverEncodeObject(self, CGStringFromRect(aRect), NO), aKey);
 }
 ,["void","CGRect","CPString"]), new objj_method(sel_getUid("encodeSize:forKey:"), function $CPKeyedArchiver__encodeSize_forKey_(self, _cmd, aSize, aKey)
 {
-    ((___r1 = self._plistObject), ___r1 == null ? null : ___r1.isa.objj_msgSend2(___r1, "setObject:forKey:", _CPKeyedArchiverEncodeObject(self, CGStringFromSize(aSize), NO), aKey));
-    var ___r1;
+    objj_msgSend(self._plistObject, "setObject:forKey:", _CPKeyedArchiverEncodeObject(self, CGStringFromSize(aSize), NO), aKey);
 }
 ,["void","CGSize","CPString"]), new objj_method(sel_getUid("encodeConditionalObject:forKey:"), function $CPKeyedArchiver__encodeConditionalObject_forKey_(self, _cmd, anObject, aKey)
 {
-    ((___r1 = self._plistObject), ___r1 == null ? null : ___r1.isa.objj_msgSend2(___r1, "setObject:forKey:", _CPKeyedArchiverEncodeObject(self, anObject, YES), aKey));
-    var ___r1;
+    objj_msgSend(self._plistObject, "setObject:forKey:", _CPKeyedArchiverEncodeObject(self, anObject, YES), aKey);
 }
 ,["void","id","CPString"]), new objj_method(sel_getUid("encodeNumber:forKey:"), function $CPKeyedArchiver__encodeNumber_forKey_(self, _cmd, aNumber, aKey)
 {
-    ((___r1 = self._plistObject), ___r1 == null ? null : ___r1.isa.objj_msgSend2(___r1, "setObject:forKey:", _CPKeyedArchiverEncodeObject(self, aNumber, NO), aKey));
-    var ___r1;
+    objj_msgSend(self._plistObject, "setObject:forKey:", _CPKeyedArchiverEncodeObject(self, aNumber, NO), aKey);
 }
 ,["void","CPNumber","CPString"]), new objj_method(sel_getUid("encodeObject:forKey:"), function $CPKeyedArchiver__encodeObject_forKey_(self, _cmd, anObject, aKey)
 {
-    ((___r1 = self._plistObject), ___r1 == null ? null : ___r1.isa.objj_msgSend2(___r1, "setObject:forKey:", _CPKeyedArchiverEncodeObject(self, anObject, NO), aKey));
-    var ___r1;
+    objj_msgSend(self._plistObject, "setObject:forKey:", _CPKeyedArchiverEncodeObject(self, anObject, NO), aKey);
 }
 ,["void","id","CPString"]), new objj_method(sel_getUid("_encodeArrayOfObjects:forKey:"), function $CPKeyedArchiver___encodeArrayOfObjects_forKey_(self, _cmd, objects, aKey)
 {
     var i = 0,
         count = objects.length,
         references = [];
+
     for (; i < count; ++i)
-        (references == null ? null : references.isa.objj_msgSend1(references, "addObject:", _CPKeyedArchiverEncodeObject(self, objects[i], NO)));
-    ((___r1 = self._plistObject), ___r1 == null ? null : ___r1.isa.objj_msgSend2(___r1, "setObject:forKey:", references, aKey));
-    var ___r1;
+        objj_msgSend(references, "addObject:", _CPKeyedArchiverEncodeObject(self, objects[i], NO));
+
+    objj_msgSend(self._plistObject, "setObject:forKey:", references, aKey);
 }
 ,["void","CPArray","CPString"]), new objj_method(sel_getUid("_encodeDictionaryOfObjects:forKey:"), function $CPKeyedArchiver___encodeDictionaryOfObjects_forKey_(self, _cmd, aDictionary, aKey)
 {
     var key,
-        keys = (aDictionary == null ? null : aDictionary.isa.objj_msgSend0(aDictionary, "keyEnumerator")),
+        keys = objj_msgSend(aDictionary, "keyEnumerator"),
         references = objj_msgSend(objj_msgSend(CPDictionary, "alloc"), "init");
-    while ((key = (keys == null ? null : keys.isa.objj_msgSend0(keys, "nextObject"))) !== nil)
-        (references == null ? null : references.isa.objj_msgSend2(references, "setObject:forKey:", _CPKeyedArchiverEncodeObject(self, (aDictionary == null ? null : aDictionary.isa.objj_msgSend1(aDictionary, "objectForKey:", key)), NO), key));
-    ((___r1 = self._plistObject), ___r1 == null ? null : ___r1.isa.objj_msgSend2(___r1, "setObject:forKey:", references, aKey));
-    var ___r1;
+
+    while ((key = objj_msgSend(keys, "nextObject")) !== nil)
+        objj_msgSend(references, "setObject:forKey:", _CPKeyedArchiverEncodeObject(self, objj_msgSend(aDictionary, "objectForKey:", key), NO), key);
+
+    objj_msgSend(self._plistObject, "setObject:forKey:", references, aKey);
 }
 ,["void","CPDictionary","CPString"]), new objj_method(sel_getUid("setClassName:forClass:"), function $CPKeyedArchiver__setClassName_forClass_(self, _cmd, aClassName, aClass)
 {
     if (!self._replacementClassNames)
         self._replacementClassNames = objj_msgSend(objj_msgSend(CPDictionary, "alloc"), "init");
-    ((___r1 = self._replacementClassNames), ___r1 == null ? null : ___r1.isa.objj_msgSend2(___r1, "setObject:forKey:", aClassName, CPStringFromClass(aClass)));
-    var ___r1;
+
+    objj_msgSend(self._replacementClassNames, "setObject:forKey:", aClassName, CPStringFromClass(aClass));
 }
 ,["void","CPString","Class"]), new objj_method(sel_getUid("classNameForClass:"), function $CPKeyedArchiver__classNameForClass_(self, _cmd, aClass)
 {
     if (!self._replacementClassNames)
         return aClass.name;
-    var className = ((___r1 = self._replacementClassNames), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "objectForKey:", CPStringFromClass(aClass)));
+
+    var className = objj_msgSend(self._replacementClassNames, "objectForKey:", CPStringFromClass(aClass));
+
     return className ? className : aClass.name;
-    var ___r1;
 }
 ,["CPString","Class"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("initialize"), function $CPKeyedArchiver__initialize(self, _cmd)
 {
-    if (self !== CPKeyedArchiver.isa.objj_msgSend0(CPKeyedArchiver, "class"))
+    if (self !== objj_msgSend(CPKeyedArchiver, "class"))
         return;
-    _CPKeyedArchiverStringClass = CPString.isa.objj_msgSend0(CPString, "class");
-    _CPKeyedArchiverNumberClass = CPNumber.isa.objj_msgSend0(CPNumber, "class");
+
+    _CPKeyedArchiverStringClass = objj_msgSend(CPString, "class");
+    _CPKeyedArchiverNumberClass = objj_msgSend(CPNumber, "class");
+
     _CPKeyedArchiverNullReference = objj_msgSend(objj_msgSend(CPDictionary, "alloc"), "initWithObjectsAndKeys:", 0, _CPKeyedArchiverUIDKey);
 }
 ,["void"]), new objj_method(sel_getUid("allowsKeyedCoding"), function $CPKeyedArchiver__allowsKeyedCoding(self, _cmd)
@@ -7616,116 +11089,163 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("initialize"), function
 }
 ,["BOOL"]), new objj_method(sel_getUid("archivedDataWithRootObject:"), function $CPKeyedArchiver__archivedDataWithRootObject_(self, _cmd, anObject)
 {
-    var data = CPData.isa.objj_msgSend1(CPData, "dataWithPlistObject:", nil),
-        archiver = ((___r1 = self.isa.objj_msgSend0(self, "alloc")), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "initForWritingWithMutableData:", data));
-    (archiver == null ? null : archiver.isa.objj_msgSend2(archiver, "encodeObject:forKey:", anObject, "root"));
-    (archiver == null ? null : archiver.isa.objj_msgSend0(archiver, "finishEncoding"));
+    var data = objj_msgSend(CPData, "dataWithPlistObject:", nil),
+        archiver = objj_msgSend(objj_msgSend(self, "alloc"), "initForWritingWithMutableData:", data);
+
+    objj_msgSend(archiver, "encodeObject:forKey:", anObject, "root");
+    objj_msgSend(archiver, "finishEncoding");
+
     return data;
-    var ___r1;
 }
 ,["CPData","id"]), new objj_method(sel_getUid("setClassName:forClass:"), function $CPKeyedArchiver__setClassName_forClass_(self, _cmd, aClassName, aClass)
 {
     if (!CPArchiverReplacementClassNames)
         CPArchiverReplacementClassNames = objj_msgSend(objj_msgSend(CPDictionary, "alloc"), "init");
-    (CPArchiverReplacementClassNames == null ? null : CPArchiverReplacementClassNames.isa.objj_msgSend2(CPArchiverReplacementClassNames, "setObject:forKey:", aClassName, CPStringFromClass(aClass)));
+
+    objj_msgSend(CPArchiverReplacementClassNames, "setObject:forKey:", aClassName, CPStringFromClass(aClass));
 }
 ,["void","CPString","Class"]), new objj_method(sel_getUid("classNameForClass:"), function $CPKeyedArchiver__classNameForClass_(self, _cmd, aClass)
 {
     if (!CPArchiverReplacementClassNames)
         return aClass.name;
-    var className = (CPArchiverReplacementClassNames == null ? null : CPArchiverReplacementClassNames.isa.objj_msgSend1(CPArchiverReplacementClassNames, "objectForKey:", CPStringFromClass(aClass)));
+
+    var className = objj_msgSend(CPArchiverReplacementClassNames, "objectForKey:", CPStringFromClass(aClass));
+
     return className ? className : aClass.name;
 }
 ,["CPString","Class"])]);
-}var _CPKeyedArchiverEncodeObject = function(self, anObject, isConditional)
+}
+
+var _CPKeyedArchiverEncodeObject = function(self, anObject, isConditional)
 {
+
+
+
     if (anObject !== nil && anObject !== undefined && !anObject.isa)
-        anObject = _CPKeyedArchiverValue.isa.objj_msgSend1(_CPKeyedArchiverValue, "valueWithJSObject:", anObject);
-    var GUID = (anObject == null ? null : anObject.isa.objj_msgSend0(anObject, "UID")),
-        object = ((___r1 = self._replacementObjects), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "objectForKey:", GUID));
+        anObject = objj_msgSend(_CPKeyedArchiverValue, "valueWithJSObject:", anObject);
+
+
+    var GUID = objj_msgSend(anObject, "UID"),
+        object = objj_msgSend(self._replacementObjects, "objectForKey:", GUID);
+
+
+
     if (object === nil)
     {
-        object = (anObject == null ? null : anObject.isa.objj_msgSend1(anObject, "replacementObjectForKeyedArchiver:", self));
+        object = objj_msgSend(anObject, "replacementObjectForKeyedArchiver:", self);
+
+
         if (self._delegate)
         {
             if (object !== anObject && self._delegateSelectors & _CPKeyedArchiverWillReplaceObjectWithObjectSelector)
-                ((___r1 = self._delegate), ___r1 == null ? null : ___r1.isa.objj_msgSend3(___r1, "archiver:willReplaceObject:withObject:", self, anObject, object));
+                objj_msgSend(self._delegate, "archiver:willReplaceObject:withObject:", self, anObject, object);
+
             if (self._delegateSelectors & _CPKeyedArchiverWillEncodeObjectSelector)
             {
-                anObject = ((___r1 = self._delegate), ___r1 == null ? null : ___r1.isa.objj_msgSend2(___r1, "archiver:willEncodeObject:", self, object));
+                anObject = objj_msgSend(self._delegate, "archiver:willEncodeObject:", self, object);
+
                 if (anObject !== object && self._delegateSelectors & _CPKeyedArchiverWillReplaceObjectWithObjectSelector)
-                    ((___r1 = self._delegate), ___r1 == null ? null : ___r1.isa.objj_msgSend3(___r1, "archiver:willReplaceObject:withObject:", self, object, anObject));
+                    objj_msgSend(self._delegate, "archiver:willReplaceObject:withObject:", self, object, anObject);
+
                 object = anObject;
             }
         }
+
         if (object != nil && GUID != nil)
-            ((___r1 = self._replacementObjects), ___r1 == null ? null : ___r1.isa.objj_msgSend2(___r1, "setObject:forKey:", object, GUID));
+            objj_msgSend(self._replacementObjects, "setObject:forKey:", object, GUID);
     }
+
+
+
+
     if (object === nil)
         return _CPKeyedArchiverNullReference;
-    var UID = ((___r1 = self._UIDs), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "objectForKey:", GUID = (object == null ? null : object.isa.objj_msgSend0(object, "UID"))));
+
+
+    var UID = objj_msgSend(self._UIDs, "objectForKey:", GUID = objj_msgSend(object, "UID"));
+
+
+
+
     if (UID === nil)
     {
+
         if (isConditional)
         {
-            if ((UID = ((___r1 = self._conditionalUIDs), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "objectForKey:", GUID))) === nil)
+
+            if ((UID = objj_msgSend(self._conditionalUIDs, "objectForKey:", GUID)) === nil)
             {
-                ((___r1 = self._conditionalUIDs), ___r1 == null ? null : ___r1.isa.objj_msgSend2(___r1, "setObject:forKey:", UID = ((___r2 = self._plistObjects), ___r2 == null ? null : ___r2.isa.objj_msgSend0(___r2, "count")), GUID));
-                ((___r1 = self._plistObjects), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "addObject:", _CPKeyedArchiverNullString));
+
+                objj_msgSend(self._conditionalUIDs, "setObject:forKey:", UID = objj_msgSend(self._plistObjects, "count"), GUID);
+                objj_msgSend(self._plistObjects, "addObject:", _CPKeyedArchiverNullString);
             }
         }
         else
         {
-            var theClass = (object == null ? null : object.isa.objj_msgSend0(object, "classForKeyedArchiver")),
+            var theClass = objj_msgSend(object, "classForKeyedArchiver"),
                 plistObject = nil;
-            if (theClass === _CPKeyedArchiverStringClass || theClass === _CPKeyedArchiverNumberClass)
+
+            if ((theClass === _CPKeyedArchiverStringClass) || (theClass === _CPKeyedArchiverNumberClass))
                 plistObject = object;
             else
             {
+
                 plistObject = objj_msgSend(objj_msgSend(CPDictionary, "alloc"), "init");
-                ((___r1 = self._objects), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "addObject:", object));
-                var className = (self == null ? null : self.isa.objj_msgSend1(self, "classNameForClass:", theClass));
+
+                objj_msgSend(self._objects, "addObject:", object);
+
+                var className = objj_msgSend(self, "classNameForClass:", theClass);
+
                 if (!className)
-                    className = ((___r1 = (self == null ? null : self.isa.objj_msgSend0(self, "class"))), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "classNameForClass:", theClass));
+                    className = objj_msgSend(objj_msgSend(self, "class"), "classNameForClass:", theClass);
+
                 if (!className)
                     className = theClass.name;
                 else
                     theClass = CPClassFromString(className);
-                var classUID = ((___r1 = self._UIDs), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "objectForKey:", className));
+
+                var classUID = objj_msgSend(self._UIDs, "objectForKey:", className);
+
                 if (!classUID)
                 {
                     var plistClass = objj_msgSend(objj_msgSend(CPDictionary, "alloc"), "init"),
                         hierarchy = [];
-                    (plistClass == null ? null : plistClass.isa.objj_msgSend2(plistClass, "setObject:forKey:", className, _CPKeyedArchiverClassNameKey));
+
+                    objj_msgSend(plistClass, "setObject:forKey:", className, _CPKeyedArchiverClassNameKey);
+
                     do
                     {
-                        (hierarchy == null ? null : hierarchy.isa.objj_msgSend1(hierarchy, "addObject:", CPStringFromClass(theClass)));
-                    }
-                    while (theClass = (theClass == null ? null : theClass.isa.objj_msgSend0(theClass, "superclass")));
-                    (plistClass == null ? null : plistClass.isa.objj_msgSend2(plistClass, "setObject:forKey:", hierarchy, _CPKeyedArchiverClassesKey));
-                    classUID = ((___r1 = self._plistObjects), ___r1 == null ? null : ___r1.isa.objj_msgSend0(___r1, "count"));
-                    ((___r1 = self._plistObjects), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "addObject:", plistClass));
-                    ((___r1 = self._UIDs), ___r1 == null ? null : ___r1.isa.objj_msgSend2(___r1, "setObject:forKey:", classUID, className));
+                        objj_msgSend(hierarchy, "addObject:", CPStringFromClass(theClass));
+                    } while (theClass = objj_msgSend(theClass, "superclass"));
+
+                    objj_msgSend(plistClass, "setObject:forKey:", hierarchy, _CPKeyedArchiverClassesKey);
+
+                    classUID = objj_msgSend(self._plistObjects, "count");
+                    objj_msgSend(self._plistObjects, "addObject:", plistClass);
+                    objj_msgSend(self._UIDs, "setObject:forKey:", classUID, className);
                 }
-                (plistObject == null ? null : plistObject.isa.objj_msgSend2(plistObject, "setObject:forKey:", objj_msgSend(objj_msgSend(CPDictionary, "alloc"), "initWithObjectsAndKeys:", classUID, _CPKeyedArchiverUIDKey), _CPKeyedArchiverClassKey));
+
+                objj_msgSend(plistObject, "setObject:forKey:", objj_msgSend(objj_msgSend(CPDictionary, "alloc"), "initWithObjectsAndKeys:", classUID, _CPKeyedArchiverUIDKey), _CPKeyedArchiverClassKey);
             }
-            UID = ((___r1 = self._conditionalUIDs), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "objectForKey:", GUID));
+
+            UID = objj_msgSend(self._conditionalUIDs, "objectForKey:", GUID);
+
+
             if (UID !== nil)
             {
-                ((___r1 = self._UIDs), ___r1 == null ? null : ___r1.isa.objj_msgSend2(___r1, "setObject:forKey:", UID, GUID));
-                ((___r1 = self._plistObjects), ___r1 == null ? null : ___r1.isa.objj_msgSend2(___r1, "replaceObjectAtIndex:withObject:", UID, plistObject));
+                objj_msgSend(self._UIDs, "setObject:forKey:", UID, GUID);
+                objj_msgSend(self._plistObjects, "replaceObjectAtIndex:withObject:", UID, plistObject);
             }
             else
             {
-                ((___r1 = self._UIDs), ___r1 == null ? null : ___r1.isa.objj_msgSend2(___r1, "setObject:forKey:", UID = ((___r2 = self._plistObjects), ___r2 == null ? null : ___r2.isa.objj_msgSend0(___r2, "count")), GUID));
-                ((___r1 = self._plistObjects), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "addObject:", plistObject));
+                objj_msgSend(self._UIDs, "setObject:forKey:", UID = objj_msgSend(self._plistObjects, "count"), GUID);
+                objj_msgSend(self._plistObjects, "addObject:", plistObject);
             }
         }
     }
+
     return objj_msgSend(objj_msgSend(CPDictionary, "alloc"), "initWithObjectsAndKeys:", UID, _CPKeyedArchiverUIDKey);
-    var ___r1, ___r2;
-};
-p;19;CPKeyedUnarchiver.jt;16477;@STATIC;1.0;i;9;CPArray.ji;9;CPCoder.ji;8;CPData.ji;14;CPDictionary.ji;13;CPException.ji;17;CPKeyedArchiver.ji;8;CPNull.ji;10;CPNumber.ji;10;CPString.jt;16318;objj_executeFile("CPArray.j", YES);objj_executeFile("CPCoder.j", YES);objj_executeFile("CPData.j", YES);objj_executeFile("CPDictionary.j", YES);objj_executeFile("CPException.j", YES);objj_executeFile("CPKeyedArchiver.j", YES);objj_executeFile("CPNull.j", YES);objj_executeFile("CPNumber.j", YES);objj_executeFile("CPString.j", YES);CPInvalidUnarchiveOperationException = "CPInvalidUnarchiveOperationException";
+};p;19;CPKeyedUnarchiver.jt;16477;@STATIC;1.0;i;9;CPArray.ji;9;CPCoder.ji;8;CPData.ji;14;CPDictionary.ji;13;CPException.ji;17;CPKeyedArchiver.ji;8;CPNull.ji;10;CPNumber.ji;10;CPString.jt;16318;objj_executeFile("CPArray.j", YES);objj_executeFile("CPCoder.j", YES);objj_executeFile("CPData.j", YES);objj_executeFile("CPDictionary.j", YES);objj_executeFile("CPException.j", YES);objj_executeFile("CPKeyedArchiver.j", YES);objj_executeFile("CPNull.j", YES);objj_executeFile("CPNumber.j", YES);objj_executeFile("CPString.j", YES);CPInvalidUnarchiveOperationException = "CPInvalidUnarchiveOperationException";
 var _CPKeyedUnarchiverCannotDecodeObjectOfClassNameOriginalClassesSelector = 1 << 0,
     _CPKeyedUnarchiverDidDecodeObjectSelector = 1 << 1,
     _CPKeyedUnarchiverWillReplaceObjectWithObjectSelector = 1 << 2,
@@ -8288,7 +11808,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithObjects:count:"
     return CPSet.isa.objj_msgSend1(CPSet, "setWithSet:", self);
 }
 ,["id"])]);
-}objj_executeFile("CPKeyValueObserving.j", YES);p;21;CPKeyValueObserving.jt;55452;@STATIC;1.0;i;9;CPArray.ji;14;CPDictionary.ji;13;CPException.ji;12;CPIndexSet.ji;8;CPNull.ji;10;CPObject.ji;7;CPSet.ji;13;CPArray+KVO.ji;11;CPSet+KVO.jt;55293;objj_executeFile("CPArray.j", YES);objj_executeFile("CPDictionary.j", YES);objj_executeFile("CPException.j", YES);objj_executeFile("CPIndexSet.j", YES);objj_executeFile("CPNull.j", YES);objj_executeFile("CPObject.j", YES);objj_executeFile("CPSet.j", YES);{
+}objj_executeFile("CPKeyValueObserving.j", YES);p;21;CPKeyValueObserving.jt;58500;@STATIC;1.0;i;9;CPArray.ji;14;CPDictionary.ji;13;CPException.ji;12;CPIndexSet.ji;8;CPNull.ji;10;CPObject.ji;7;CPSet.ji;13;CPArray+KVO.ji;11;CPSet+KVO.jt;58341;objj_executeFile("CPArray.j", YES);objj_executeFile("CPDictionary.j", YES);objj_executeFile("CPException.j", YES);objj_executeFile("CPIndexSet.j", YES);objj_executeFile("CPNull.j", YES);objj_executeFile("CPObject.j", YES);objj_executeFile("CPSet.j", YES);{
 var the_class = objj_getClass("CPObject")
 if(!the_class) throw new SyntaxError("*** Could not find definition for class \"CPObject\"");
 var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_getUid("willChangeValueForKey:"), function $CPObject__willChangeValueForKey_(self, _cmd, aKey)
@@ -8507,7 +12027,7 @@ var kvoNewAndOld = CPKeyValueObservingOptionNew | CPKeyValueObservingOptionOld,
     DependentKeysKey = "$KVODEPENDENT",
     KVOProxyKey = "$KVOPROXY";
 {var the_class = objj_allocateClassPair(CPObject, "_CPKVOProxy"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_targetObject"), new objj_ivar("_nativeClass"), new objj_ivar("_changesForKey"), new objj_ivar("_nestingForKey"), new objj_ivar("_observersForKey"), new objj_ivar("_observersForKeyLength"), new objj_ivar("_replacedKeys"), new objj_ivar("_adding")]);objj_registerClassPair(the_class);
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_targetObject"), new objj_ivar("_nativeClass"), new objj_ivar("_changesForKey"), new objj_ivar("_nestingForKey"), new objj_ivar("_minOptionsForKey"), new objj_ivar("_observersForKey"), new objj_ivar("_observersForKeyLength"), new objj_ivar("_replacedKeys"), new objj_ivar("_adding")]);objj_registerClassPair(the_class);
 class_addMethods(the_class, [new objj_method(sel_getUid("adding"), function $_CPKVOProxy__adding(self, _cmd)
 {
     return self._adding;
@@ -8525,6 +12045,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("adding"), function $_CP
         self._observersForKey = {};
         self._changesForKey = {};
         self._nestingForKey = {};
+        self._minOptionsForKey = {};
         self._observersForKeyLength = 0;
         (self == null ? null : self.isa.objj_msgSend0(self, "_replaceClass"));
         aTarget[KVOProxyKey] = self;
@@ -8781,10 +12302,18 @@ class_addMethods(the_class, [new objj_method(sel_getUid("adding"), function $_CP
     (observers == null ? null : observers.isa.objj_msgSend2(observers, "setObject:forKey:", _CPKVOInfoMake(anObserver, options, aContext, forwarder), (anObserver == null ? null : anObserver.isa.objj_msgSend0(anObserver, "UID"))));
     if (options & CPKeyValueObservingOptionInitial)
     {
-        var newValue = ((___r1 = self._targetObject), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "valueForKeyPath:", aPath));
-        if (newValue === nil || newValue === undefined)
-            newValue = CPNull.isa.objj_msgSend0(CPNull, "null");
-        var changes = objj_msgSend(objj_msgSend(CPDictionary, "alloc"), "initWithObjectsAndKeys:", newValue, CPKeyValueChangeNewKey);
+        var changes;
+        if (options & CPKeyValueObservingOptionNew)
+        {
+            var newValue = ((___r1 = self._targetObject), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "valueForKeyPath:", aPath));
+            if (newValue == nil)
+                newValue = CPNull.isa.objj_msgSend0(CPNull, "null");
+            changes = objj_msgSend(objj_msgSend(CPDictionary, "alloc"), "initWithObjectsAndKeys:", CPKeyValueChangeSetting, CPKeyValueChangeKindKey, newValue, CPKeyValueChangeNewKey);
+        }
+        else
+        {
+            changes = objj_msgSend(objj_msgSend(CPDictionary, "alloc"), "initWithObjectsAndKeys:", CPKeyValueChangeSetting, CPKeyValueChangeKindKey);
+        }
         (anObserver == null ? null : anObserver.isa.objj_msgSend(anObserver, "observeValueForKeyPath:ofObject:change:context:", aPath, self._targetObject, changes, aContext));
     }
     var ___r1;
@@ -8818,7 +12347,9 @@ class_addMethods(the_class, [new objj_method(sel_getUid("adding"), function $_CP
 }
 ,["void","id","CPString"]), new objj_method(sel_getUid("_sendNotificationsForKey:changeOptions:isBefore:"), function $_CPKVOProxy___sendNotificationsForKey_changeOptions_isBefore_(self, _cmd, aKey, changeOptions, isBefore)
 {
-    var changes = self._changesForKey[aKey];
+    var changes = self._changesForKey[aKey],
+        observers = ((___r1 = self._observersForKey[aKey]), ___r1 == null ? null : ___r1.isa.objj_msgSend0(___r1, "allValues")),
+        observersMinimumOptions = 0;
     if (isBefore)
     {
         if (changes)
@@ -8830,47 +12361,58 @@ class_addMethods(the_class, [new objj_method(sel_getUid("adding"), function $_CP
             return;
         }
         self._nestingForKey[aKey] = 1;
+        var count = observers ? observers.length : 0;
+        while (count--)
+        {
+            var observerInfo = observers[count];
+            observersMinimumOptions |= observerInfo.options & kvoNewAndOld;
+        }
+        self._minOptionsForKey[aKey] = observersMinimumOptions;
         changes = changeOptions;
-        var indexes = (changes == null ? null : changes.isa.objj_msgSend1(changes, "objectForKey:", CPKeyValueChangeIndexesKey)),
-            setMutationKind = changes[_CPKeyValueChangeSetMutationKindKey];
-        if (setMutationKind)
+        if (observersMinimumOptions & CPKeyValueObservingOptionOld)
         {
-            var setMutationObjects = ((___r1 = changes[_CPKeyValueChangeSetMutationObjectsKey]), ___r1 == null ? null : ___r1.isa.objj_msgSend0(___r1, "copy")),
-                setExistingObjects = ((___r1 = ((___r2 = self._targetObject), ___r2 == null ? null : ___r2.isa.objj_msgSend1(___r2, "valueForKey:", aKey))), ___r1 == null ? null : ___r1.isa.objj_msgSend0(___r1, "copy"));
-            if (setMutationKind == CPKeyValueMinusSetMutation)
+            var indexes = (changes == null ? null : changes.isa.objj_msgSend1(changes, "objectForKey:", CPKeyValueChangeIndexesKey)),
+                setMutationKind = changes[_CPKeyValueChangeSetMutationKindKey];
+            if (setMutationKind)
             {
-                (setExistingObjects == null ? null : setExistingObjects.isa.objj_msgSend1(setExistingObjects, "intersectSet:", setMutationObjects));
-                (changes == null ? null : changes.isa.objj_msgSend2(changes, "setValue:forKey:", setExistingObjects, CPKeyValueChangeOldKey));
+                var setMutationObjects = ((___r1 = changes[_CPKeyValueChangeSetMutationObjectsKey]), ___r1 == null ? null : ___r1.isa.objj_msgSend0(___r1, "copy")),
+                    setExistingObjects = ((___r1 = ((___r2 = self._targetObject), ___r2 == null ? null : ___r2.isa.objj_msgSend1(___r2, "valueForKey:", aKey))), ___r1 == null ? null : ___r1.isa.objj_msgSend0(___r1, "copy"));
+                if (setMutationKind == CPKeyValueMinusSetMutation)
+                {
+                    (setExistingObjects == null ? null : setExistingObjects.isa.objj_msgSend1(setExistingObjects, "intersectSet:", setMutationObjects));
+                    (changes == null ? null : changes.isa.objj_msgSend2(changes, "setValue:forKey:", setExistingObjects, CPKeyValueChangeOldKey));
+                }
+                else if (setMutationKind === CPKeyValueIntersectSetMutation || setMutationKind === CPKeyValueSetSetMutation)
+                {
+                    (setExistingObjects == null ? null : setExistingObjects.isa.objj_msgSend1(setExistingObjects, "minusSet:", setMutationObjects));
+                    (changes == null ? null : changes.isa.objj_msgSend2(changes, "setValue:forKey:", setExistingObjects, CPKeyValueChangeOldKey));
+                }
+                if (setMutationKind === CPKeyValueUnionSetMutation || setMutationKind === CPKeyValueSetSetMutation)
+                {
+                    (setMutationObjects == null ? null : setMutationObjects.isa.objj_msgSend1(setMutationObjects, "minusSet:", setExistingObjects));
+                    changes[_CPKeyValueChangeSetMutationNewValueKey] = setMutationObjects;
+                }
             }
-            else if (setMutationKind === CPKeyValueIntersectSetMutation || setMutationKind === CPKeyValueSetSetMutation)
+            else if (indexes)
             {
-                (setExistingObjects == null ? null : setExistingObjects.isa.objj_msgSend1(setExistingObjects, "minusSet:", setMutationObjects));
-                (changes == null ? null : changes.isa.objj_msgSend2(changes, "setValue:forKey:", setExistingObjects, CPKeyValueChangeOldKey));
+                var type = (changes == null ? null : changes.isa.objj_msgSend1(changes, "objectForKey:", CPKeyValueChangeKindKey));
+                if (type === CPKeyValueChangeReplacement || type === CPKeyValueChangeRemoval)
+                {
+                    var newValues = ((___r1 = ((___r2 = self._targetObject), ___r2 == null ? null : ___r2.isa.objj_msgSend1(___r2, "mutableArrayValueForKeyPath:", aKey))), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "objectsAtIndexes:", indexes));
+                    (changes == null ? null : changes.isa.objj_msgSend2(changes, "setValue:forKey:", newValues, CPKeyValueChangeOldKey));
+                }
             }
-            if (setMutationKind === CPKeyValueUnionSetMutation || setMutationKind === CPKeyValueSetSetMutation)
+            else
             {
-                (setMutationObjects == null ? null : setMutationObjects.isa.objj_msgSend1(setMutationObjects, "minusSet:", setExistingObjects));
-                changes[_CPKeyValueChangeSetMutationNewValueKey] = setMutationObjects;
+                var oldValue = ((___r1 = self._targetObject), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "valueForKey:", aKey));
+                if (oldValue === nil || oldValue === undefined)
+                    oldValue = CPNull.isa.objj_msgSend0(CPNull, "null");
+                (changes == null ? null : changes.isa.objj_msgSend2(changes, "setObject:forKey:", oldValue, CPKeyValueChangeOldKey));
             }
-        }
-        else if (indexes)
-        {
-            var type = (changes == null ? null : changes.isa.objj_msgSend1(changes, "objectForKey:", CPKeyValueChangeKindKey));
-            if (type === CPKeyValueChangeReplacement || type === CPKeyValueChangeRemoval)
-            {
-                var newValues = ((___r1 = ((___r2 = self._targetObject), ___r2 == null ? null : ___r2.isa.objj_msgSend1(___r2, "mutableArrayValueForKeyPath:", aKey))), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "objectsAtIndexes:", indexes));
-                (changes == null ? null : changes.isa.objj_msgSend2(changes, "setValue:forKey:", newValues, CPKeyValueChangeOldKey));
-            }
-        }
-        else
-        {
-            var oldValue = ((___r1 = self._targetObject), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "valueForKey:", aKey));
-            if (oldValue === nil || oldValue === undefined)
-                oldValue = CPNull.isa.objj_msgSend0(CPNull, "null");
-            (changes == null ? null : changes.isa.objj_msgSend2(changes, "setObject:forKey:", oldValue, CPKeyValueChangeOldKey));
         }
         (changes == null ? null : changes.isa.objj_msgSend2(changes, "setObject:forKey:", 1, CPKeyValueChangeNotificationIsPriorKey));
         self._changesForKey[aKey] = changes;
+        observersMinimumOptions &= ~CPKeyValueObservingOptionNew;
     }
     else
     {
@@ -8894,41 +12436,75 @@ class_addMethods(the_class, [new objj_method(sel_getUid("adding"), function $_CP
         }
         delete self._nestingForKey[aKey];
         (changes == null ? null : changes.isa.objj_msgSend1(changes, "removeObjectForKey:", CPKeyValueChangeNotificationIsPriorKey));
-        var indexes = (changes == null ? null : changes.isa.objj_msgSend1(changes, "objectForKey:", CPKeyValueChangeIndexesKey)),
-            setMutationKind = changes[_CPKeyValueChangeSetMutationKindKey];
-        if (setMutationKind)
+        observersMinimumOptions = self._minOptionsForKey[aKey];
+        if (observersMinimumOptions & CPKeyValueObservingOptionNew)
         {
-            var newValue = changes[_CPKeyValueChangeSetMutationNewValueKey];
-            (changes == null ? null : changes.isa.objj_msgSend2(changes, "setValue:forKey:", newValue, CPKeyValueChangeNewKey));
-            delete changes[_CPKeyValueChangeSetMutationNewValueKey];
-            delete changes[_CPKeyValueChangeSetMutationObjectsKey];
-            delete changes[_CPKeyValueChangeSetMutationKindKey];
-        }
-        else if (indexes)
-        {
-            var type = (changes == null ? null : changes.isa.objj_msgSend1(changes, "objectForKey:", CPKeyValueChangeKindKey));
-            if (type == CPKeyValueChangeReplacement || type == CPKeyValueChangeInsertion)
+            var indexes = (changes == null ? null : changes.isa.objj_msgSend1(changes, "objectForKey:", CPKeyValueChangeIndexesKey)),
+                setMutationKind = changes[_CPKeyValueChangeSetMutationKindKey];
+            if (setMutationKind)
             {
-                var newValues = ((___r1 = ((___r2 = self._targetObject), ___r2 == null ? null : ___r2.isa.objj_msgSend1(___r2, "mutableArrayValueForKeyPath:", aKey))), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "objectsAtIndexes:", indexes));
-                (changes == null ? null : changes.isa.objj_msgSend2(changes, "setValue:forKey:", newValues, CPKeyValueChangeNewKey));
+                var newValue = changes[_CPKeyValueChangeSetMutationNewValueKey];
+                (changes == null ? null : changes.isa.objj_msgSend2(changes, "setValue:forKey:", newValue, CPKeyValueChangeNewKey));
+                delete changes[_CPKeyValueChangeSetMutationNewValueKey];
+                delete changes[_CPKeyValueChangeSetMutationObjectsKey];
+                delete changes[_CPKeyValueChangeSetMutationKindKey];
+            }
+            else if (indexes)
+            {
+                var type = (changes == null ? null : changes.isa.objj_msgSend1(changes, "objectForKey:", CPKeyValueChangeKindKey));
+                if (type == CPKeyValueChangeReplacement || type == CPKeyValueChangeInsertion)
+                {
+                    var newValues = ((___r1 = ((___r2 = self._targetObject), ___r2 == null ? null : ___r2.isa.objj_msgSend1(___r2, "mutableArrayValueForKeyPath:", aKey))), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "objectsAtIndexes:", indexes));
+                    (changes == null ? null : changes.isa.objj_msgSend2(changes, "setValue:forKey:", newValues, CPKeyValueChangeNewKey));
+                }
+            }
+            else
+            {
+                var newValue = ((___r1 = self._targetObject), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "valueForKey:", aKey));
+                if (newValue === nil || newValue === undefined)
+                    newValue = CPNull.isa.objj_msgSend0(CPNull, "null");
+                (changes == null ? null : changes.isa.objj_msgSend2(changes, "setObject:forKey:", newValue, CPKeyValueChangeNewKey));
+            }
+        }
+        delete self._minOptionsForKey[aKey];
+        delete self._changesForKey[aKey];
+    }
+    var count = observers ? observers.length : 0,
+        changesCache = {};
+    while (count--)
+    {
+        var observerInfo = observers[count],
+            options = observerInfo.options,
+            onlyNewAndOldOptions = options & kvoNewAndOld,
+            observerChanges = nil;
+        if (isBefore)
+        {
+            if (options & CPKeyValueObservingOptionPrior)
+            {
+                observerChanges = changes;
+                onlyNewAndOldOptions &= ~CPKeyValueObservingOptionNew;
             }
         }
         else
         {
-            var newValue = ((___r1 = self._targetObject), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "valueForKey:", aKey));
-            if (newValue === nil || newValue === undefined)
-                newValue = CPNull.isa.objj_msgSend0(CPNull, "null");
-            (changes == null ? null : changes.isa.objj_msgSend2(changes, "setObject:forKey:", newValue, CPKeyValueChangeNewKey));
+            observerChanges = changes;
         }
-        delete self._changesForKey[aKey];
-    }
-    var observers = ((___r1 = self._observersForKey[aKey]), ___r1 == null ? null : ___r1.isa.objj_msgSend0(___r1, "allValues")),
-        count = observers ? observers.length : 0;
-    while (count--)
-    {
-        var observerInfo = observers[count];
-        if (!isBefore || observerInfo.options & CPKeyValueObservingOptionPrior)
-            ((___r1 = observerInfo.observer), ___r1 == null ? null : ___r1.isa.objj_msgSend(___r1, "observeValueForKeyPath:ofObject:change:context:", aKey, self._targetObject, changes, observerInfo.context));
+        if (observerChanges)
+        {
+            if (onlyNewAndOldOptions !== observersMinimumOptions)
+            {
+                observerChanges = changesCache[onlyNewAndOldOptions];
+                if (!observerChanges)
+                {
+                    changesCache[onlyNewAndOldOptions] = observerChanges = (changes == null ? null : changes.isa.objj_msgSend0(changes, "mutableCopy"));
+                    if (!(onlyNewAndOldOptions & CPKeyValueObservingOptionOld))
+                        (observerChanges == null ? null : observerChanges.isa.objj_msgSend1(observerChanges, "removeObjectForKey:", CPKeyValueChangeOldKey));
+                    if (!(onlyNewAndOldOptions & CPKeyValueObservingOptionNew))
+                        (observerChanges == null ? null : observerChanges.isa.objj_msgSend1(observerChanges, "removeObjectForKey:", CPKeyValueChangeNewKey));
+                }
+            }
+            ((___r1 = observerInfo.observer), ___r1 == null ? null : ___r1.isa.objj_msgSend(___r1, "observeValueForKeyPath:ofObject:change:context:", aKey, self._targetObject, observerChanges, observerInfo.context));
+        }
     }
     var dependentKeysMap = self._nativeClass[DependentKeysKey];
     if (!dependentKeysMap)
@@ -9112,9 +12688,17 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithKeyPath:object:
 {
     if (aKeyPath === self._firstPart)
     {
-        var oldValue = ((___r1 = self._value), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "valueForKeyPath:", self._secondPart)),
-            newValue = ((___r1 = self._object), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "valueForKeyPath:", self._firstPart + "." + self._secondPart)),
-            pathChanges = objj_msgSend(objj_msgSend(CPDictionary, "alloc"), "initWithObjectsAndKeys:", newValue ? newValue : CPNull.isa.objj_msgSend0(CPNull, "null"), CPKeyValueChangeNewKey, oldValue ? oldValue : CPNull.isa.objj_msgSend0(CPNull, "null"), CPKeyValueChangeOldKey, CPKeyValueChangeSetting, CPKeyValueChangeKindKey);
+        var pathChanges = CPMutableDictionary.isa.objj_msgSend2(CPMutableDictionary, "dictionaryWithObject:forKey:", CPKeyValueChangeSetting, CPKeyValueChangeKindKey);
+        if (self._options & CPKeyValueObservingOptionOld)
+        {
+            var oldValue = ((___r1 = self._value), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "valueForKeyPath:", self._secondPart));
+            (pathChanges == null ? null : pathChanges.isa.objj_msgSend2(pathChanges, "setObject:forKey:", oldValue != null ? oldValue : CPNull.isa.objj_msgSend0(CPNull, "null"), CPKeyValueChangeOldKey));
+        }
+        if (self._options & CPKeyValueObservingOptionNew)
+        {
+            var newValue = ((___r1 = self._object), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "valueForKeyPath:", self._firstPart + "." + self._secondPart));
+            (pathChanges == null ? null : pathChanges.isa.objj_msgSend2(pathChanges, "setObject:forKey:", newValue != null ? newValue : CPNull.isa.objj_msgSend0(CPNull, "null"), CPKeyValueChangeNewKey));
+        }
         ((___r1 = self._observer), ___r1 == null ? null : ___r1.isa.objj_msgSend(___r1, "observeValueForKeyPath:ofObject:change:context:", self._firstPart + "." + self._secondPart, self._object, pathChanges, self._context));
         if (self._value)
             ((___r1 = self._value), ___r1 == null ? null : ___r1.isa.objj_msgSend2(___r1, "removeObserver:forKeyPath:", self, self._secondPart));
@@ -9284,8 +12868,9 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     (aCoder == null ? null : aCoder.isa.objj_msgSend2(aCoder, "encodeObject:forKey:", self._locale, CPLocaleIdentifierLocaleKey));
 }
 ,["void","CPCoder"])]);
-}p;7;CPLog.jt;19;@STATIC;1.0;t;3;1;
-p;16;CPNotification.jt;2373;@STATIC;1.0;i;13;CPException.ji;10;CPObject.jt;2321;objj_executeFile("CPException.j", YES);objj_executeFile("CPObject.j", YES);{var the_class = objj_allocateClassPair(CPObject, "CPNotification"),
+}p;7;CPLog.jt;20;@STATIC;1.0;t;4;
+
+1;p;16;CPNotification.jt;2432;@STATIC;1.0;i;13;CPException.ji;10;CPObject.ji;14;CPDictionary.jt;2361;objj_executeFile("CPException.j", YES);objj_executeFile("CPObject.j", YES);objj_executeFile("CPDictionary.j", YES);{var the_class = objj_allocateClassPair(CPObject, "CPNotification"),
 meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_name"), new objj_ivar("_object"), new objj_ivar("_userInfo")]);objj_registerClassPair(the_class);
 class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPNotification__init(self, _cmd)
 {
@@ -9326,7 +12911,7 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("notificationWithName:o
     var ___r1;
 }
 ,["CPNotification","CPString","id"])]);
-}p;22;CPNotificationCenter.jt;14097;@STATIC;1.0;i;9;CPArray.ji;14;CPDictionary.ji;13;CPException.ji;16;CPNotification.ji;8;CPNull.ji;7;CPSet.jt;13983;objj_executeFile("CPArray.j", YES);objj_executeFile("CPDictionary.j", YES);objj_executeFile("CPException.j", YES);objj_executeFile("CPNotification.j", YES);objj_executeFile("CPNull.j", YES);objj_executeFile("CPSet.j", YES);var CPNotificationDefaultCenter = nil;
+}p;22;CPNotificationCenter.jt;16329;@STATIC;1.0;i;9;CPArray.ji;14;CPDictionary.ji;13;CPException.ji;16;CPNotification.ji;8;CPNull.ji;7;CPSet.jt;16215;objj_executeFile("CPArray.j", YES);objj_executeFile("CPDictionary.j", YES);objj_executeFile("CPException.j", YES);objj_executeFile("CPNotification.j", YES);objj_executeFile("CPNull.j", YES);objj_executeFile("CPSet.j", YES);var CPNotificationDefaultCenter = nil;
 {var the_class = objj_allocateClassPair(CPObject, "CPNotificationCenter"),
 meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_namedRegistries"), new objj_ivar("_unnamedRegistry")]);objj_registerClassPair(the_class);
 class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPNotificationCenter__init(self, _cmd)
@@ -9342,8 +12927,22 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPNot
 }
 ,["id"]), new objj_method(sel_getUid("addObserver:selector:name:object:"), function $CPNotificationCenter__addObserver_selector_name_object_(self, _cmd, anObserver, aSelector, aNotificationName, anObject)
 {
-    var registry,
+    var registry = self.isa.objj_msgSend1(self, "_registryForNotificationName:", aNotificationName),
         observer = ((___r1 = (_CPNotificationObserver == null ? null : _CPNotificationObserver.isa.objj_msgSend0(_CPNotificationObserver, "alloc"))), ___r1 == null ? null : ___r1.isa.objj_msgSend2(___r1, "initWithObserver:selector:", anObserver, aSelector));
+    (registry == null ? null : registry.isa.objj_msgSend2(registry, "addObserver:object:", observer, anObject));
+    var ___r1;
+}
+,["void","id","SEL","CPString","id"]), new objj_method(sel_getUid("addObserverForName:object:queue:usingBlock:"), function $CPNotificationCenter__addObserverForName_object_queue_usingBlock_(self, _cmd, aNotificationName, anObject, queue, block)
+{
+    var registry = self.isa.objj_msgSend1(self, "_registryForNotificationName:", aNotificationName),
+        observer = ((___r1 = (_CPNotificationObserver == null ? null : _CPNotificationObserver.isa.objj_msgSend0(_CPNotificationObserver, "alloc"))), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "initWithBlock:", block));
+    (registry == null ? null : registry.isa.objj_msgSend2(registry, "addObserver:object:", observer, anObject));
+    return observer;
+    var ___r1;
+}
+,["id","CPString","id","id","Function"]), new objj_method(sel_getUid("_registryForNotificationName:"), function $CPNotificationCenter___registryForNotificationName_(self, _cmd, aNotificationName)
+{
+    var registry;
     if (aNotificationName == nil)
         registry = self._unnamedRegistry;
     else if (!(registry = ((___r1 = self._namedRegistries), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "objectForKey:", aNotificationName))))
@@ -9351,10 +12950,10 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPNot
         registry = ((___r1 = (_CPNotificationRegistry == null ? null : _CPNotificationRegistry.isa.objj_msgSend0(_CPNotificationRegistry, "alloc"))), ___r1 == null ? null : ___r1.isa.objj_msgSend0(___r1, "init"));
         ((___r1 = self._namedRegistries), ___r1 == null ? null : ___r1.isa.objj_msgSend2(___r1, "setObject:forKey:", registry, aNotificationName));
     }
-    (registry == null ? null : registry.isa.objj_msgSend2(registry, "addObserver:object:", observer, anObject));
+    return registry;
     var ___r1;
 }
-,["void","id","SEL","CPString","id"]), new objj_method(sel_getUid("removeObserver:"), function $CPNotificationCenter__removeObserver_(self, _cmd, anObserver)
+,["_CPNotificationRegistry","CPString"]), new objj_method(sel_getUid("removeObserver:"), function $CPNotificationCenter__removeObserver_(self, _cmd, anObserver)
 {
     var name = nil,
         names = ((___r1 = self._namedRegistries), ___r1 == null ? null : ___r1.isa.objj_msgSend0(___r1, "keyEnumerator"));
@@ -9445,7 +13044,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $_CPNo
                 observer = nil,
                 observersEnumerator = (observers == null ? null : observers.isa.objj_msgSend0(observers, "objectEnumerator"));
             while ((observer = (observersEnumerator == null ? null : observersEnumerator.isa.objj_msgSend0(observersEnumerator, "nextObject"))) !== nil)
-                if ((observer == null ? null : observer.isa.objj_msgSend0(observer, "observer")) == anObserver)
+                if ((observer == null ? null : observer.isa.objj_msgSend0(observer, "observer")) == anObserver || (observer == null ? null : observer.isa.objj_msgSend0(observer, "block")) && (anObserver == null ? null : anObserver.isa.objj_msgSend1(anObserver, "respondsToSelector:", sel_getUid("block"))) && (observer == null ? null : observer.isa.objj_msgSend0(observer, "block")) == (anObserver == null ? null : anObserver.isa.objj_msgSend0(anObserver, "block")))
                     (observers == null ? null : observers.isa.objj_msgSend1(observers, "removeObject:", observer));
             if (!(observers == null ? null : observers.isa.objj_msgSend0(observers, "count")))
                 removedKeys.push(key);
@@ -9458,7 +13057,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $_CPNo
             observer = nil,
             observersEnumerator = (observers == null ? null : observers.isa.objj_msgSend0(observers, "objectEnumerator"));
         while ((observer = (observersEnumerator == null ? null : observersEnumerator.isa.objj_msgSend0(observersEnumerator, "nextObject"))) !== nil)
-            if ((observer == null ? null : observer.isa.objj_msgSend0(observer, "observer")) == anObserver)
+            if ((observer == null ? null : observer.isa.objj_msgSend0(observer, "observer")) == anObserver || (observer == null ? null : observer.isa.objj_msgSend0(observer, "block")) && (anObserver == null ? null : anObserver.isa.objj_msgSend1(anObserver, "respondsToSelector:", sel_getUid("block"))) && (observer == null ? null : observer.isa.objj_msgSend0(observer, "block")) == (anObserver == null ? null : anObserver.isa.objj_msgSend0(anObserver, "block")))
                 (observers == null ? null : observers.isa.objj_msgSend1(observers, "removeObject:", observer));
         if (!(observers == null ? null : observers.isa.objj_msgSend0(observers, "count")))
             removedKeys.push(key);
@@ -9502,7 +13101,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $_CPNo
 }
 ,["unsigned"])]);
 }{var the_class = objj_allocateClassPair(CPObject, "_CPNotificationObserver"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_observer"), new objj_ivar("_selector")]);objj_registerClassPair(the_class);
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_observer"), new objj_ivar("_block"), new objj_ivar("_selector")]);objj_registerClassPair(the_class);
 class_addMethods(the_class, [new objj_method(sel_getUid("initWithObserver:selector:"), function $_CPNotificationObserver__initWithObserver_selector_(self, _cmd, anObserver, aSelector)
 {
     if (self)
@@ -9512,28 +13111,65 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithObserver:select
     }
     return self;
 }
-,["id","id","SEL"]), new objj_method(sel_getUid("observer"), function $_CPNotificationObserver__observer(self, _cmd)
+,["id","id","SEL"]), new objj_method(sel_getUid("initWithBlock:"), function $_CPNotificationObserver__initWithBlock_(self, _cmd, aBlock)
+{
+    if (self)
+    {
+        self._block = aBlock;
+    }
+    return self;
+}
+,["id","Function"]), new objj_method(sel_getUid("observer"), function $_CPNotificationObserver__observer(self, _cmd)
 {
     return self._observer;
 }
+,["id"]), new objj_method(sel_getUid("block"), function $_CPNotificationObserver__block(self, _cmd)
+{
+    return self._block;
+}
 ,["id"]), new objj_method(sel_getUid("postNotification:"), function $_CPNotificationObserver__postNotification_(self, _cmd, aNotification)
 {
+    if (self._block)
+    {
+        self._block(aNotification);
+        return;
+    }
     ((___r1 = self._observer), ___r1 == null ? null : ___r1.isa.objj_msgSend2(___r1, "performSelector:withObject:", self._selector, aNotification));
     var ___r1;
 }
 ,["void","CPNotification"])]);
-}p;8;CPNull.jt;1190;@STATIC;1.0;i;10;CPObject.jt;1156;objj_executeFile("CPObject.j", YES);var CPNullSharedNull = nil;
+}p;8;CPNull.jt;1065;@STATIC;1.0;i;10;CPObject.jt;1031;
+objj_executeFile("CPObject.j", YES);
+
+var CPNullSharedNull = nil;
 {var the_class = objj_allocateClassPair(CPObject, "CPNull"),
-meta_class = the_class.isa;objj_registerClassPair(the_class);
+meta_class = the_class.isa;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+objj_registerClassPair(the_class);
 class_addMethods(the_class, [new objj_method(sel_getUid("isEqual:"), function $CPNull__isEqual_(self, _cmd, anObject)
 {
     if (self === anObject)
         return YES;
-    return (anObject == null ? null : anObject.isa.objj_msgSend1(anObject, "isKindOfClass:", CPNull.isa.objj_msgSend0(CPNull, "class")));
+
+    return objj_msgSend(anObject, "isKindOfClass:", objj_msgSend(CPNull, "class"));
 }
 ,["BOOL","id"]), new objj_method(sel_getUid("initWithCoder:"), function $CPNull__initWithCoder_(self, _cmd, aCoder)
 {
-    return CPNull.isa.objj_msgSend0(CPNull, "null");
+    return objj_msgSend(CPNull, "null");
 }
 ,["id","CPCoder"]), new objj_method(sel_getUid("encodeWithCoder:"), function $CPNull__encodeWithCoder_(self, _cmd, aCoder)
 {
@@ -9542,9 +13178,9 @@ class_addMethods(the_class, [new objj_method(sel_getUid("isEqual:"), function $C
 class_addMethods(meta_class, [new objj_method(sel_getUid("null"), function $CPNull__null(self, _cmd)
 {
     if (!CPNullSharedNull)
-        CPNullSharedNull = ((___r1 = CPNull.isa.objj_msgSend0(CPNull, "alloc")), ___r1 == null ? null : ___r1.isa.objj_msgSend0(___r1, "init"));
+        CPNullSharedNull = objj_msgSend(objj_msgSend(CPNull, "alloc"), "init");
+
     return CPNullSharedNull;
-    var ___r1;
 }
 ,["CPNull"])]);
 }p;10;CPNumber.jt;9188;@STATIC;1.0;i;13;CPException.ji;8;CPNull.ji;10;CPObject.ji;15;CPObjJRuntime.jt;9104;objj_executeFile("CPException.j", YES);objj_executeFile("CPNull.j", YES);objj_executeFile("CPObject.j", YES);objj_executeFile("CPObjJRuntime.j", YES);var CPNumberUIDs = new CFMutableDictionary();
@@ -9785,13 +13421,17 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
 }Number.prototype.isa = CPNumber;
 Boolean.prototype.isa = CPNumber;
 CPNumber.isa.objj_msgSend0(CPNumber, "initialize");
-p;19;CPNumberFormatter.jt;17657;@STATIC;1.0;i;10;CPString.ji;13;CPFormatter.ji;17;CPDecimalNumber.jt;17582;objj_executeFile("CPString.j", YES);objj_executeFile("CPFormatter.j", YES);objj_executeFile("CPDecimalNumber.j", YES);CPNumberFormatterNoStyle = 0;
+p;19;CPNumberFormatter.jt;17870;@STATIC;1.0;i;10;CPString.ji;13;CPFormatter.ji;17;CPDecimalNumber.jt;17795;objj_executeFile("CPString.j", YES);objj_executeFile("CPFormatter.j", YES);objj_executeFile("CPDecimalNumber.j", YES);{var the_typedef = objj_allocateTypeDef("CPNumberFormatterStyle");
+objj_registerTypeDef(the_typedef);
+}CPNumberFormatterNoStyle = 0;
 CPNumberFormatterDecimalStyle = 1;
 CPNumberFormatterCurrencyStyle = 2;
 CPNumberFormatterPercentStyle = 3;
 CPNumberFormatterScientificStyle = 4;
 CPNumberFormatterSpellOutStyle = 5;
-CPNumberFormatterRoundCeiling = CPRoundUp;
+{var the_typedef = objj_allocateTypeDef("CPNumberFormatterRoundingMode");
+objj_registerTypeDef(the_typedef);
+}CPNumberFormatterRoundCeiling = CPRoundUp;
 CPNumberFormatterRoundFloor = CPRoundDown;
 CPNumberFormatterRoundDown = CPRoundDown;
 CPNumberFormatterRoundUp = CPRoundUp;
@@ -10098,7 +13738,7 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     (aCoder == null ? null : aCoder.isa.objj_msgSend2(aCoder, "encodeBool:forKey:", self._generatesDecimalNumbers, CPNumberFormatterGeneratesDecimalNumbers));
 }
 ,["void","CPCoder"])]);
-}p;10;CPObject.jt;14610;@STATIC;1.0;t;14590;{var the_protocol = objj_allocateProtocol("CPObject");
+}p;10;CPObject.jt;14681;@STATIC;1.0;i;20;_CPTypeDefinitions.jt;14636;objj_executeFile("_CPTypeDefinitions.j", YES);{var the_protocol = objj_allocateProtocol("CPObject");
 objj_registerProtocol(the_protocol);
 protocol_addMethodDescriptions(the_protocol, [new objj_method(sel_getUid("isEqual:"), Nil
 ,["BOOL","id"]), new objj_method(sel_getUid("hash"), Nil
@@ -10398,27 +14038,47 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("load"), function $CPOb
     }
     return desc;
 }
-p;15;CPObjJRuntime.jt;439;@STATIC;1.0;t;421;CPStringFromSelector = function(aSelector)
+p;15;CPObjJRuntime.jt;459;@STATIC;1.0;t;441;
+CPStringFromSelector = function(aSelector)
 {
     return sel_getName(aSelector);
 }
+
 CPSelectorFromString = function(aSelectorName)
 {
     return sel_registerName(aSelectorName);
 }
+
 CPClassFromString = function(aClassName)
 {
     return objj_getClass(aClassName);
 }
+
 CPStringFromClass = function(aClass)
 {
     return class_getName(aClass);
 }
+
+
+
+
+
+
 CPOrderedAscending = -1;
+
+
+
+
+
 CPOrderedSame = 0;
+
+
+
+
+
 CPOrderedDescending = 1;
-CPNotFound = -1;
-p;13;CPOperation.jt;6699;@STATIC;1.0;i;9;CPArray.ji;10;CPObject.jt;6652;objj_executeFile("CPArray.j", YES);objj_executeFile("CPObject.j", YES);CPOperationQueuePriorityVeryLow = -8;
+
+CPNotFound = -1;p;13;CPOperation.jt;6687;@STATIC;1.0;i;9;CPArray.ji;10;CPObject.jt;6640;objj_executeFile("CPArray.j", YES);objj_executeFile("CPObject.j", YES);CPOperationQueuePriorityVeryLow = -8;
 CPOperationQueuePriorityLow = -4;
 CPOperationQueuePriorityNormal = 0;
 CPOperationQueuePriorityHigh = 4;
@@ -10458,10 +14118,10 @@ class_addMethods(the_class, [new objj_method(sel_getUid("main"), function $CPOpe
         self.isa.objj_msgSend1(self, "willChangeValueForKey:", "isExecuting");
         self._executing = NO;
         self.isa.objj_msgSend1(self, "didChangeValueForKey:", "isExecuting");
-        self.isa.objj_msgSend1(self, "willChangeValueForKey:", "isFinished");
-        self._finished = YES;
-        self.isa.objj_msgSend1(self, "didChangeValueForKey:", "isFinished");
     }
+    self.isa.objj_msgSend1(self, "willChangeValueForKey:", "isFinished");
+    self._finished = YES;
+    self.isa.objj_msgSend1(self, "didChangeValueForKey:", "isFinished");
 }
 ,["void"]), new objj_method(sel_getUid("isCancelled"), function $CPOperation__isCancelled(self, _cmd)
 {
@@ -10560,7 +14220,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("main"), function $CPOpe
     var ___r1, ___r2;
 }
 ,["void"])]);
-}p;18;CPOperationQueue.jt;9601;@STATIC;1.0;i;9;CPArray.ji;21;CPFunctionOperation.ji;23;CPInvocationOperation.ji;10;CPObject.ji;13;CPOperation.ji;10;CPString.ji;9;CPTimer.jt;9454;objj_executeFile("CPArray.j", YES);objj_executeFile("CPFunctionOperation.j", YES);objj_executeFile("CPInvocationOperation.j", YES);objj_executeFile("CPObject.j", YES);objj_executeFile("CPOperation.j", YES);objj_executeFile("CPString.j", YES);objj_executeFile("CPTimer.j", YES);var cpOperationMainQueue = nil;
+}p;18;CPOperationQueue.jt;9469;@STATIC;1.0;i;9;CPArray.ji;21;CPFunctionOperation.ji;23;CPInvocationOperation.ji;10;CPObject.ji;13;CPOperation.ji;10;CPString.ji;9;CPTimer.jt;9322;objj_executeFile("CPArray.j", YES);objj_executeFile("CPFunctionOperation.j", YES);objj_executeFile("CPInvocationOperation.j", YES);objj_executeFile("CPObject.j", YES);objj_executeFile("CPOperation.j", YES);objj_executeFile("CPString.j", YES);objj_executeFile("CPTimer.j", YES);var cpOperationMainQueue = nil;
 {var the_class = objj_allocateClassPair(CPObject, "CPOperationQueue"),
 meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_operations"), new objj_ivar("_suspended"), new objj_ivar("_name"), new objj_ivar("_timer")]);objj_registerClassPair(the_class);
 class_addMethods(the_class, [new objj_method(sel_getUid("name"), function $CPOperationQueue__name(self, _cmd)
@@ -10592,7 +14252,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("name"), function $CPOpe
         for (; i < count; i++)
         {
             var op = ((___r1 = self._operations), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "objectAtIndex:", i));
-            if ((op == null ? null : op.isa.objj_msgSend0(op, "isReady")) && !(op == null ? null : op.isa.objj_msgSend0(op, "isCancelled")) && !(op == null ? null : op.isa.objj_msgSend0(op, "isFinished")) && !(op == null ? null : op.isa.objj_msgSend0(op, "isExecuting")))
+            if ((op == null ? null : op.isa.objj_msgSend0(op, "isReady")) && !(op == null ? null : op.isa.objj_msgSend0(op, "isFinished")) && !(op == null ? null : op.isa.objj_msgSend0(op, "isExecuting")))
             {
                 (op == null ? null : op.isa.objj_msgSend0(op, "start"));
             }
@@ -10732,7 +14392,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("name"), function $CPOpe
             for (; i < count; i++)
             {
                 var op = (ops == null ? null : ops.isa.objj_msgSend1(ops, "objectAtIndex:", i));
-                if ((op == null ? null : op.isa.objj_msgSend0(op, "isReady")) && !(op == null ? null : op.isa.objj_msgSend0(op, "isCancelled")) && !(op == null ? null : op.isa.objj_msgSend0(op, "isFinished")) && !(op == null ? null : op.isa.objj_msgSend0(op, "isExecuting")))
+                if ((op == null ? null : op.isa.objj_msgSend0(op, "isReady")) && !(op == null ? null : op.isa.objj_msgSend0(op, "isFinished")) && !(op == null ? null : op.isa.objj_msgSend0(op, "isExecuting")))
                 {
                     (op == null ? null : op.isa.objj_msgSend0(op, "start"));
                 }
@@ -10764,13 +14424,21 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("mainQueue"), function 
     return CPOperationQueue.isa.objj_msgSend0(CPOperationQueue, "mainQueue");
 }
 ,["CPOperationQueue"])]);
-}p;29;CPPropertyListSerialization.jt;2221;@STATIC;1.0;i;13;CPException.ji;10;CPObject.jt;2169;objj_executeFile("CPException.j", YES);objj_executeFile("CPObject.j", YES);CPPropertyListUnknownFormat = 0;
+}p;29;CPPropertyListSerialization.jt;2215;@STATIC;1.0;i;13;CPException.ji;10;CPObject.jt;2163;
+objj_executeFile("CPException.j", YES);
+objj_executeFile("CPObject.j", YES);
+
+
+CPPropertyListUnknownFormat = 0;
 CPPropertyListOpenStepFormat = kCFPropertyListOpenStepFormat;
 CPPropertyListXMLFormat_v1_0 = kCFPropertyListXMLFormat_v1_0;
 CPPropertyListBinaryFormat_v1_0 = kCFPropertyListBinaryFormat_v1_0;
 CPPropertyList280NorthFormat_v1_0 = kCFPropertyList280NorthFormat_v1_0;
+
 {var the_class = objj_allocateClassPair(CPObject, "CPPropertyListSerialization"),
-meta_class = the_class.isa;objj_registerClassPair(the_class);
+meta_class = the_class.isa;
+
+objj_registerClassPair(the_class);
 class_addMethods(meta_class, [new objj_method(sel_getUid("dataFromPropertyList:format:"), function $CPPropertyListSerialization__dataFromPropertyList_format_(self, _cmd, aPlist, aFormat)
 {
     return CPPropertyListCreateData(aPlist, aFormat);
@@ -10780,18 +14448,24 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("dataFromPropertyList:f
     return CPPropertyListCreateFromData(data, aFormat);
 }
 ,["id","CPData","CPPropertyListFormat"])]);
-}{
+}
+
+{
 var the_class = objj_getClass("CPPropertyListSerialization")
 if(!the_class) throw new SyntaxError("*** Could not find definition for class \"CPPropertyListSerialization\"");
-var meta_class = the_class.isa;class_addMethods(meta_class, [new objj_method(sel_getUid("dataFromPropertyList:format:errorDescription:"), function $CPPropertyListSerialization__dataFromPropertyList_format_errorDescription_(self, _cmd, aPlist, aFormat, anErrorString)
+var meta_class = the_class.isa;
+
+class_addMethods(meta_class, [new objj_method(sel_getUid("dataFromPropertyList:format:errorDescription:"), function $CPPropertyListSerialization__dataFromPropertyList_format_errorDescription_(self, _cmd, aPlist, aFormat, anErrorString)
 {
     _CPReportLenientDeprecation(self, _cmd, sel_getUid("dataFromPropertyList:format:"));
-    return self.isa.objj_msgSend2(self, "dataFromPropertyList:format:", aPlist, aFormat);
+
+    return objj_msgSend(self, "dataFromPropertyList:format:", aPlist, aFormat);
 }
 ,["CPData","id","CPPropertyListFormat","id"]), new objj_method(sel_getUid("propertyListFromData:format:errorDescription:"), function $CPPropertyListSerialization__propertyListFromData_format_errorDescription_(self, _cmd, data, aFormat, errorString)
 {
     _CPReportLenientDeprecation(self, _cmd, sel_getUid("propertyListFromData:format:"));
-    return self.isa.objj_msgSend2(self, "propertyListFromData:format:", data, aFormat);
+
+    return objj_msgSend(self, "propertyListFromData:format:", data, aFormat);
 }
 ,["id","CPData","CPPropertyListFormat","id"])]);
 }p;9;CPProxy.jt;5314;@STATIC;1.0;i;13;CPException.ji;14;CPInvocation.ji;10;CPObject.ji;10;CPString.jt;5228;objj_executeFile("CPException.j", YES);objj_executeFile("CPInvocation.j", YES);objj_executeFile("CPObject.j", YES);objj_executeFile("CPString.j", YES);{var the_class = objj_allocateClassPair(Nil, "CPProxy"),
@@ -10895,7 +14569,9 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("load"), function $CPPr
     return !!class_getInstanceMethod(isa, aSelector);
 }
 ,["BOOL","SEL"])]);
-}p;9;CPRange.jt;1631;@STATIC;1.0;t;1612;CPMakeRange = function(location, length)
+}p;9;CPRange.jt;1719;@STATIC;1.0;t;1700;{var the_typedef = objj_allocateTypeDef("CPRange");
+objj_registerTypeDef(the_typedef);
+}CPMakeRange = function(location, length)
 {
     return {location: location, length: length};
 }
@@ -10944,18 +14620,49 @@ CPRangeFromString = function(aString)
     var comma = aString.indexOf(',');
     return {location: parseInt(aString.substr(1, comma - 1)), length: parseInt(aString.substring(comma + 1, aString.length))};
 }
-p;11;CPRunLoop.jt;12231;@STATIC;1.0;i;9;CPArray.ji;8;CPDate.ji;10;CPObject.ji;10;CPString.jt;12156;objj_executeFile("CPArray.j", YES);objj_executeFile("CPDate.j", YES);objj_executeFile("CPObject.j", YES);objj_executeFile("CPString.j", YES);CPDefaultRunLoopMode = "CPDefaultRunLoopMode";
+p;11;CPRunLoop.jt;11187;@STATIC;1.0;i;9;CPArray.ji;8;CPDate.ji;10;CPObject.ji;10;CPString.jt;11112;
+objj_executeFile("CPArray.j", YES);
+objj_executeFile("CPDate.j", YES);
+objj_executeFile("CPObject.j", YES);
+objj_executeFile("CPString.j", YES);
+
+
+
+
+
+CPDefaultRunLoopMode = "CPDefaultRunLoopMode";
+
 _CPRunLoopPerformCompare = function(lhs, rhs)
 {
-    return (rhs == null ? null : rhs.isa.objj_msgSend0(rhs, "order")) - (lhs == null ? null : lhs.isa.objj_msgSend0(lhs, "order"));
+    return objj_msgSend(rhs, "order") - objj_msgSend(lhs, "order");
 }
+
 var _CPRunLoopPerformPool = [],
     _CPRunLoopPerformPoolCapacity = 5;
+
+
 {var the_class = objj_allocateClassPair(CPObject, "_CPRunLoopPerform"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_target"), new objj_ivar("_selector"), new objj_ivar("_argument"), new objj_ivar("_order"), new objj_ivar("_runLoopModes"), new objj_ivar("_isValid")]);objj_registerClassPair(the_class);
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_target"), new objj_ivar("_selector"), new objj_ivar("_argument"), new objj_ivar("_order"), new objj_ivar("_runLoopModes"), new objj_ivar("_isValid")]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+objj_registerClassPair(the_class);
 class_addMethods(the_class, [new objj_method(sel_getUid("initWithSelector:target:argument:order:modes:"), function $_CPRunLoopPerform__initWithSelector_target_argument_order_modes_(self, _cmd, aSelector, aTarget, anArgument, anOrder, modes)
 {
     self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("_CPRunLoopPerform").super_class }, "init");
+
     if (self)
     {
         self._selector = aSelector;
@@ -10965,6 +14672,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithSelector:target
         self._runLoopModes = modes;
         self._isValid = YES;
     }
+
     return self;
 }
 ,["id","SEL","SEL","id","unsigned","CPArray"]), new objj_method(sel_getUid("selector"), function $_CPRunLoopPerform__selector(self, _cmd)
@@ -10987,13 +14695,15 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithSelector:target
 {
     if (!self._isValid)
         return YES;
-    if (((___r1 = self._runLoopModes), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "containsObject:", aRunLoopMode)))
+
+    if (objj_msgSend(self._runLoopModes, "containsObject:", aRunLoopMode))
     {
-        ((___r1 = self._target), ___r1 == null ? null : ___r1.isa.objj_msgSend2(___r1, "performSelector:withObject:", self._selector, self._argument));
+        objj_msgSend(self._target, "performSelector:withObject:", self._selector, self._argument);
+
         return YES;
     }
+
     return NO;
-    var ___r1;
 }
 ,["BOOL","CPString"]), new objj_method(sel_getUid("invalidate"), function $_CPRunLoopPerform__invalidate(self, _cmd)
 {
@@ -11004,6 +14714,7 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("_poolPerform:"), funct
 {
     if (!aPerform || _CPRunLoopPerformPool.length >= _CPRunLoopPerformPoolCapacity)
         return;
+
     _CPRunLoopPerformPool.push(aPerform);
 }
 ,["void","_CPRunLoopPerform"]), new objj_method(sel_getUid("performWithSelector:target:argument:order:modes:"), function $_CPRunLoopPerform__performWithSelector_target_argument_order_modes_(self, _cmd, aSelector, aTarget, anArgument, anOrder, modes)
@@ -11011,84 +14722,139 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("_poolPerform:"), funct
     if (_CPRunLoopPerformPool.length)
     {
         var perform = _CPRunLoopPerformPool.pop();
+
         perform._target = aTarget;
         perform._selector = aSelector;
         perform._argument = anArgument;
         perform._order = anOrder;
         perform._runLoopModes = modes;
         perform._isValid = YES;
+
         return perform;
     }
-    return ((___r1 = self.isa.objj_msgSend0(self, "alloc")), ___r1 == null ? null : ___r1.isa.objj_msgSend(___r1, "initWithSelector:target:argument:order:modes:", aSelector, aTarget, anArgument, anOrder, modes));
-    var ___r1;
+
+    return objj_msgSend(objj_msgSend(self, "alloc"), "initWithSelector:target:argument:order:modes:", aSelector, aTarget, anArgument, anOrder, modes);
 }
 ,["_CPRunLoopPerform","SEL","id","id","unsigned","CPArray"])]);
-}var CPRunLoopLastNativeRunLoop = 0;
+}
+
+var CPRunLoopLastNativeRunLoop = 0;
 {var the_class = objj_allocateClassPair(CPObject, "CPRunLoop"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_runLoopLock"), new objj_ivar("_timersForModes"), new objj_ivar("_nativeTimersForModes"), new objj_ivar("_nextTimerFireDatesForModes"), new objj_ivar("_didAddTimer"), new objj_ivar("_effectiveDate"), new objj_ivar("_orderedPerforms"), new objj_ivar("_runLoopInsuranceTimer")]);objj_registerClassPair(the_class);
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_runLoopLock"), new objj_ivar("_timersForModes"), new objj_ivar("_nativeTimersForModes"), new objj_ivar("_nextTimerFireDatesForModes"), new objj_ivar("_didAddTimer"), new objj_ivar("_effectiveDate"), new objj_ivar("_orderedPerforms"), new objj_ivar("_runLoopInsuranceTimer")]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+objj_registerClassPair(the_class);
 class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPRunLoop__init(self, _cmd)
 {
     self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPRunLoop").super_class }, "init");
+
     if (self)
     {
         self._orderedPerforms = [];
+
         self._timersForModes = {};
         self._nativeTimersForModes = {};
         self._nextTimerFireDatesForModes = {};
     }
+
     return self;
 }
 ,["id"]), new objj_method(sel_getUid("performSelector:target:argument:order:modes:"), function $CPRunLoop__performSelector_target_argument_order_modes_(self, _cmd, aSelector, aTarget, anArgument, anOrder, modes)
 {
-    var perform = _CPRunLoopPerform.isa.objj_msgSend(_CPRunLoopPerform, "performWithSelector:target:argument:order:modes:", aSelector, aTarget, anArgument, anOrder, modes),
+    var perform = objj_msgSend(_CPRunLoopPerform, "performWithSelector:target:argument:order:modes:", aSelector, aTarget, anArgument, anOrder, modes),
         count = self._orderedPerforms.length;
+
+
     while (count--)
-        if (anOrder < ((___r1 = self._orderedPerforms[count]), ___r1 == null ? null : ___r1.isa.objj_msgSend0(___r1, "order")))
+        if (anOrder < objj_msgSend(self._orderedPerforms[count], "order"))
             break;
+
     self._orderedPerforms.splice(count + 1, 0, perform);
-    var ___r1;
 }
 ,["void","SEL","id","id","int","CPArray"]), new objj_method(sel_getUid("cancelPerformSelector:target:argument:"), function $CPRunLoop__cancelPerformSelector_target_argument_(self, _cmd, aSelector, aTarget, anArgument)
 {
     var count = self._orderedPerforms.length;
+
     while (count--)
     {
         var perform = self._orderedPerforms[count];
-        if ((perform == null ? null : perform.isa.objj_msgSend0(perform, "selector")) === aSelector && (perform == null ? null : perform.isa.objj_msgSend0(perform, "target")) == aTarget && (perform == null ? null : perform.isa.objj_msgSend0(perform, "argument")) == anArgument)
-            ((___r1 = self._orderedPerforms[count]), ___r1 == null ? null : ___r1.isa.objj_msgSend0(___r1, "invalidate"));
+
+        if (objj_msgSend(perform, "selector") === aSelector && objj_msgSend(perform, "target") == aTarget && objj_msgSend(perform, "argument") == anArgument)
+            objj_msgSend(self._orderedPerforms[count], "invalidate");
     }
-    var ___r1;
 }
 ,["void","SEL","id","id"]), new objj_method(sel_getUid("performSelectors"), function $CPRunLoop__performSelectors(self, _cmd)
 {
-    self.isa.objj_msgSend1(self, "limitDateForMode:", CPDefaultRunLoopMode);
+    objj_msgSend(self, "limitDateForMode:", CPDefaultRunLoopMode);
 }
 ,["void"]), new objj_method(sel_getUid("addTimer:forMode:"), function $CPRunLoop__addTimer_forMode_(self, _cmd, aTimer, aMode)
 {
+
     if (self._timersForModes[aMode])
         self._timersForModes[aMode].push(aTimer);
     else
         self._timersForModes[aMode] = [aTimer];
+
     self._didAddTimer = YES;
+
     if (!aTimer._lastNativeRunLoopsForModes)
         aTimer._lastNativeRunLoopsForModes = {};
+
     aTimer._lastNativeRunLoopsForModes[aMode] = CPRunLoopLastNativeRunLoop;
-    if (((___r1 = CFBundle.environments()), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "indexOfObject:", "Browser")) !== CPNotFound)
+
+
+    if (objj_msgSend(CFBundle.environments(), "indexOfObject:", ("Browser")) !== CPNotFound)
     {
         if (!self._runLoopInsuranceTimer)
             self._runLoopInsuranceTimer = window.setNativeTimeout(function()
             {
-                self.isa.objj_msgSend1(self, "limitDateForMode:", CPDefaultRunLoopMode);
+                objj_msgSend(self, "limitDateForMode:", CPDefaultRunLoopMode);
             }, 0);
     }
-    var ___r1;
 }
 ,["void","CPTimer","CPString"]), new objj_method(sel_getUid("limitDateForMode:"), function $CPRunLoop__limitDateForMode_(self, _cmd, aMode)
 {
+
     if (self._runLoopLock)
         return;
+
     self._runLoopLock = YES;
-    if (((___r1 = CFBundle.environments()), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "indexOfObject:", "Browser")) !== CPNotFound)
+
+
+    if (objj_msgSend(CFBundle.environments(), "indexOfObject:", ("Browser")) !== CPNotFound)
     {
         if (self._runLoopInsuranceTimer)
         {
@@ -11096,73 +14862,112 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPRun
             self._runLoopInsuranceTimer = nil;
         }
     }
-    var now = self._effectiveDate ? ((___r1 = self._effectiveDate), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "laterDate:", CPDate.isa.objj_msgSend0(CPDate, "date"))) : CPDate.isa.objj_msgSend0(CPDate, "date"),
+
+    var now = self._effectiveDate ? objj_msgSend(self._effectiveDate, "laterDate:", objj_msgSend(CPDate, "date")) : objj_msgSend(CPDate, "date"),
         nextFireDate = nil,
         nextTimerFireDate = self._nextTimerFireDatesForModes[aMode];
+
+
+
     if (self._didAddTimer || nextTimerFireDate && nextTimerFireDate <= now)
     {
         self._didAddTimer = NO;
+
+
         if (self._nativeTimersForModes[aMode] !== nil)
         {
             window.clearNativeTimeout(self._nativeTimersForModes[aMode]);
+
             self._nativeTimersForModes[aMode] = nil;
         }
+
+
         var timers = self._timersForModes[aMode],
             index = timers.length;
+
         self._timersForModes[aMode] = nil;
-        var hasNativeTimers = ((___r1 = CFBundle.environments()), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "indexOfObject:", "Browser")) !== CPNotFound;
+
+
+
+        var hasNativeTimers = objj_msgSend(CFBundle.environments(), "indexOfObject:", ("Browser")) !== CPNotFound;
+
+
         while (index--)
         {
             var timer = timers[index];
+
             if ((!hasNativeTimers || timer._lastNativeRunLoopsForModes[aMode] < CPRunLoopLastNativeRunLoop) && timer._isValid && timer._fireDate <= now)
-                (timer == null ? null : timer.isa.objj_msgSend0(timer, "fire"));
+                objj_msgSend(timer, "fire");
+
+
             if (timer._isValid)
-                nextFireDate = nextFireDate === nil ? timer._fireDate : (nextFireDate == null ? null : nextFireDate.isa.objj_msgSend1(nextFireDate, "earlierDate:", timer._fireDate));
+                nextFireDate = (nextFireDate === nil) ? timer._fireDate : objj_msgSend(nextFireDate, "earlierDate:", timer._fireDate);
+
             else
             {
+
                 timer._lastNativeRunLoopsForModes[aMode] = 0;
+
                 timers.splice(index, 1);
             }
         }
+
+
+
+
         var newTimers = self._timersForModes[aMode];
+
         if (newTimers && newTimers.length)
         {
             index = newTimers.length;
+
             while (index--)
             {
                 var timer = newTimers[index];
-                if ((timer == null ? null : timer.isa.objj_msgSend0(timer, "isValid")))
-                    nextFireDate = nextFireDate === nil ? timer._fireDate : (nextFireDate == null ? null : nextFireDate.isa.objj_msgSend1(nextFireDate, "earlierDate:", timer._fireDate));
+
+                if (objj_msgSend(timer, "isValid"))
+                    nextFireDate = (nextFireDate === nil) ? timer._fireDate : objj_msgSend(nextFireDate, "earlierDate:", timer._fireDate);
                 else
                     newTimers.splice(index, 1);
             }
+
             self._timersForModes[aMode] = newTimers.concat(timers);
         }
         else
             self._timersForModes[aMode] = timers;
+
         self._nextTimerFireDatesForModes[aMode] = nextFireDate;
+
+
         if (self._nextTimerFireDatesForModes[aMode] !== nil)
             self._nativeTimersForModes[aMode] = window.setNativeTimeout(function()
-            {
-                self._effectiveDate = nextFireDate;
-                self._nativeTimersForModes[aMode] = nil;
-                ++CPRunLoopLastNativeRunLoop;
-                self.isa.objj_msgSend1(self, "limitDateForMode:", aMode);
-                self._effectiveDate = nil;
-            }, MAX(0, (nextFireDate == null ? null : nextFireDate.isa.objj_msgSend0(nextFireDate, "timeIntervalSinceNow")) * 1000));
+                {
+                    self._effectiveDate = nextFireDate;
+                    self._nativeTimersForModes[aMode] = nil;
+                    ++CPRunLoopLastNativeRunLoop;
+                    objj_msgSend(self, "limitDateForMode:", aMode);
+                    self._effectiveDate = nil;
+                }, MAX(0, objj_msgSend(nextFireDate, "timeIntervalSinceNow") * 1000));
     }
+
+
     var performs = self._orderedPerforms,
         index = performs.length;
+
     self._orderedPerforms = [];
+
     while (index--)
     {
         var perform = performs[index];
-        if ((perform == null ? null : perform.isa.objj_msgSend1(perform, "fireInMode:", CPDefaultRunLoopMode)))
+
+        if (objj_msgSend(perform, "fireInMode:", CPDefaultRunLoopMode))
         {
-            _CPRunLoopPerform.isa.objj_msgSend1(_CPRunLoopPerform, "_poolPerform:", perform);
+            objj_msgSend(_CPRunLoopPerform, "_poolPerform:", perform);
+
             performs.splice(index, 1);
         }
     }
+
     if (self._orderedPerforms.length)
     {
         self._orderedPerforms = self._orderedPerforms.concat(performs);
@@ -11170,17 +14975,18 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPRun
     }
     else
         self._orderedPerforms = performs;
+
     self._runLoopLock = NO;
+
     return nextFireDate;
-    var ___r1;
 }
 ,["CPDate","CPString"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("initialize"), function $CPRunLoop__initialize(self, _cmd)
 {
-    if (self !== CPRunLoop.isa.objj_msgSend0(CPRunLoop, "class"))
+    if (self !== objj_msgSend(CPRunLoop, "class"))
         return;
-    CPMainRunLoop = ((___r1 = CPRunLoop.isa.objj_msgSend0(CPRunLoop, "alloc")), ___r1 == null ? null : ___r1.isa.objj_msgSend0(___r1, "init"));
-    var ___r1;
+
+    CPMainRunLoop = objj_msgSend(objj_msgSend(CPRunLoop, "alloc"), "init");
 }
 ,["void"]), new objj_method(sel_getUid("currentRunLoop"), function $CPRunLoop__currentRunLoop(self, _cmd)
 {
@@ -11752,21 +15558,58 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
         (containedObject == null ? null : containedObject.isa.objj_msgSend2(containedObject, "setValue:forKey:", aValue, aKey));
 }
 ,["void","id","CPString"])]);
-}p;18;CPSortDescriptor.jt;5449;@STATIC;1.0;i;10;CPObject.ji;15;CPObjJRuntime.ji;10;CPString.jt;5380;objj_executeFile("CPObject.j", YES);objj_executeFile("CPObjJRuntime.j", YES);objj_executeFile("CPString.j", YES);{var the_class = objj_allocateClassPair(CPObject, "CPSortDescriptor"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_key"), new objj_ivar("_selector"), new objj_ivar("_ascending")]);objj_registerClassPair(the_class);
+}p;18;CPSortDescriptor.jt;4749;@STATIC;1.0;i;10;CPObject.ji;15;CPObjJRuntime.ji;10;CPString.jt;4680;
+objj_executeFile("CPObject.j", YES);
+objj_executeFile("CPObjJRuntime.j", YES);
+objj_executeFile("CPString.j", YES);
+
+//@class CPString
+{var the_class = objj_allocateClassPair(CPObject, "CPSortDescriptor"),
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_key"), new objj_ivar("_selector"), new objj_ivar("_ascending")]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+objj_registerClassPair(the_class);
 class_addMethods(the_class, [new objj_method(sel_getUid("initWithKey:ascending:"), function $CPSortDescriptor__initWithKey_ascending_(self, _cmd, aKey, isAscending)
 {
-    return self.isa.objj_msgSend3(self, "initWithKey:ascending:selector:", aKey, isAscending, sel_getUid("compare:"));
+    return objj_msgSend(self, "initWithKey:ascending:selector:", aKey, isAscending, sel_getUid("compare:"));
 }
 ,["id","CPString","BOOL"]), new objj_method(sel_getUid("initWithKey:ascending:selector:"), function $CPSortDescriptor__initWithKey_ascending_selector_(self, _cmd, aKey, isAscending, aSelector)
 {
     self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPSortDescriptor").super_class }, "init");
+
     if (self)
     {
         self._key = aKey;
         self._ascending = isAscending;
         self._selector = aSelector;
     }
+
     return self;
 }
 ,["id","CPString","BOOL","SEL"]), new objj_method(sel_getUid("ascending"), function $CPSortDescriptor__ascending(self, _cmd)
@@ -11783,54 +15626,56 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithKey:ascending:"
 }
 ,["SEL"]), new objj_method(sel_getUid("compareObject:withObject:"), function $CPSortDescriptor__compareObject_withObject_(self, _cmd, lhsObject, rhsObject)
 {
-    return (self._ascending ? 1 : -1) * ((___r1 = (lhsObject == null ? null : lhsObject.isa.objj_msgSend1(lhsObject, "valueForKeyPath:", self._key))), ___r1 == null ? null : ___r1.isa.objj_msgSend2(___r1, "performSelector:withObject:", self._selector, (rhsObject == null ? null : rhsObject.isa.objj_msgSend1(rhsObject, "valueForKeyPath:", self._key))));
-    var ___r1;
+    return (self._ascending ? 1 : -1) * objj_msgSend(objj_msgSend(lhsObject, "valueForKeyPath:", self._key), "performSelector:withObject:", self._selector, objj_msgSend(rhsObject, "valueForKeyPath:", self._key));
 }
 ,["CPComparisonResult","id","id"]), new objj_method(sel_getUid("reversedSortDescriptor"), function $CPSortDescriptor__reversedSortDescriptor(self, _cmd)
 {
-    return ((___r1 = ((___r2 = self.isa.objj_msgSend0(self, "class")), ___r2 == null ? null : ___r2.isa.objj_msgSend0(___r2, "alloc"))), ___r1 == null ? null : ___r1.isa.objj_msgSend3(___r1, "initWithKey:ascending:selector:", self._key, !self._ascending, self._selector));
-    var ___r1, ___r2;
+    return objj_msgSend(objj_msgSend(objj_msgSend(self, "class"), "alloc"), "initWithKey:ascending:selector:", self._key, !self._ascending, self._selector);
 }
 ,["id"]), new objj_method(sel_getUid("description"), function $CPSortDescriptor__description(self, _cmd)
 {
-    return (CPString == null ? null : CPString.isa.objj_msgSend(CPString, "stringWithFormat:", "(%@, %@, %@)", self.isa.objj_msgSend0(self, "key"), self.isa.objj_msgSend0(self, "ascending") ? "ascending" : "descending", CPStringFromSelector(self.isa.objj_msgSend0(self, "selector"))));
+    return objj_msgSend(CPString, "stringWithFormat:", "(%@, %@, %@)", objj_msgSend(self, "key"), objj_msgSend(self, "ascending") ? "ascending": "descending", CPStringFromSelector(objj_msgSend(self, "selector")));
 }
 ,["CPString"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("sortDescriptorWithKey:ascending:"), function $CPSortDescriptor__sortDescriptorWithKey_ascending_(self, _cmd, aKey, isAscending)
 {
-    return ((___r1 = self.isa.objj_msgSend0(self, "alloc")), ___r1 == null ? null : ___r1.isa.objj_msgSend2(___r1, "initWithKey:ascending:", aKey, isAscending));
-    var ___r1;
+    return objj_msgSend(objj_msgSend(self, "alloc"), "initWithKey:ascending:", aKey, isAscending);
 }
 ,["id","CPString","BOOL"]), new objj_method(sel_getUid("sortDescriptorWithKey:ascending:selector:"), function $CPSortDescriptor__sortDescriptorWithKey_ascending_selector_(self, _cmd, aKey, isAscending, aSelector)
 {
-    return ((___r1 = self.isa.objj_msgSend0(self, "alloc")), ___r1 == null ? null : ___r1.isa.objj_msgSend3(___r1, "initWithKey:ascending:selector:", aKey, isAscending, aSelector));
-    var ___r1;
+    return objj_msgSend(objj_msgSend(self, "alloc"), "initWithKey:ascending:selector:", aKey, isAscending, aSelector);
 }
 ,["id","CPString","BOOL","SEL"])]);
-}var CPSortDescriptorKeyKey = "CPSortDescriptorKeyKey",
+}
+
+var CPSortDescriptorKeyKey = "CPSortDescriptorKeyKey",
     CPSortDescriptorAscendingKey = "CPSortDescriptorAscendingKey",
     CPSortDescriptorSelectorKey = "CPSortDescriptorSelectorKey";
+
 {
 var the_class = objj_getClass("CPSortDescriptor")
 if(!the_class) throw new SyntaxError("*** Could not find definition for class \"CPSortDescriptor\"");
-var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_getUid("initWithCoder:"), function $CPSortDescriptor__initWithCoder_(self, _cmd, aCoder)
+var meta_class = the_class.isa;
+
+class_addMethods(the_class, [new objj_method(sel_getUid("initWithCoder:"), function $CPSortDescriptor__initWithCoder_(self, _cmd, aCoder)
 {
     if (self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPSortDescriptor").super_class }, "init"))
     {
-        self._key = (aCoder == null ? null : aCoder.isa.objj_msgSend1(aCoder, "decodeObjectForKey:", CPSortDescriptorKeyKey));
-        self._ascending = (aCoder == null ? null : aCoder.isa.objj_msgSend1(aCoder, "decodeBoolForKey:", CPSortDescriptorAscendingKey));
-        self._selector = CPSelectorFromString((aCoder == null ? null : aCoder.isa.objj_msgSend1(aCoder, "decodeObjectForKey:", CPSortDescriptorSelectorKey)));
+        self._key = objj_msgSend(aCoder, "decodeObjectForKey:", CPSortDescriptorKeyKey);
+        self._ascending = objj_msgSend(aCoder, "decodeBoolForKey:", CPSortDescriptorAscendingKey);
+        self._selector = CPSelectorFromString(objj_msgSend(aCoder, "decodeObjectForKey:", CPSortDescriptorSelectorKey));
     }
+
     return self;
 }
 ,["id","CPCoder"]), new objj_method(sel_getUid("encodeWithCoder:"), function $CPSortDescriptor__encodeWithCoder_(self, _cmd, aCoder)
 {
-    (aCoder == null ? null : aCoder.isa.objj_msgSend2(aCoder, "encodeObject:forKey:", self._key, CPSortDescriptorKeyKey));
-    (aCoder == null ? null : aCoder.isa.objj_msgSend2(aCoder, "encodeBool:forKey:", self._ascending, CPSortDescriptorAscendingKey));
-    (aCoder == null ? null : aCoder.isa.objj_msgSend2(aCoder, "encodeObject:forKey:", CPStringFromSelector(self._selector), CPSortDescriptorSelectorKey));
+    objj_msgSend(aCoder, "encodeObject:forKey:", self._key, CPSortDescriptorKeyKey);
+    objj_msgSend(aCoder, "encodeBool:forKey:", self._ascending, CPSortDescriptorAscendingKey);
+    objj_msgSend(aCoder, "encodeObject:forKey:", CPStringFromSelector(self._selector), CPSortDescriptorSelectorKey);
 }
 ,["void","CPCoder"])]);
-}p;10;CPString.jt;21716;@STATIC;1.0;i;13;CPException.ji;10;CPObject.ji;15;CPObjJRuntime.ji;9;CPRange.ji;18;CPSortDescriptor.ji;7;CPURL.ji;9;CPValue.ji;8;CPNull.jt;21571;objj_executeFile("CPException.j", YES);objj_executeFile("CPObject.j", YES);objj_executeFile("CPObjJRuntime.j", YES);objj_executeFile("CPRange.j", YES);objj_executeFile("CPSortDescriptor.j", YES);objj_executeFile("CPURL.j", YES);objj_executeFile("CPValue.j", YES);objj_executeFile("CPNull.j", YES);CPCaseInsensitiveSearch = 1;
+}p;10;CPString.jt;22076;@STATIC;1.0;i;13;CPException.ji;10;CPObject.ji;15;CPObjJRuntime.ji;9;CPRange.ji;18;CPSortDescriptor.ji;7;CPURL.ji;9;CPValue.ji;8;CPNull.jt;21931;objj_executeFile("CPException.j", YES);objj_executeFile("CPObject.j", YES);objj_executeFile("CPObjJRuntime.j", YES);objj_executeFile("CPRange.j", YES);objj_executeFile("CPSortDescriptor.j", YES);objj_executeFile("CPURL.j", YES);objj_executeFile("CPValue.j", YES);objj_executeFile("CPNull.j", YES);CPCaseInsensitiveSearch = 1;
 CPLiteralSearch = 2;
 CPBackwardsSearch = 4;
 CPAnchoredSearch = 8;
@@ -11933,6 +15778,11 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithString:"), func
     {
         string = string.toLowerCase();
         aString = aString.toLowerCase();
+    }
+    if (aMask & CPDiacriticInsensitiveSearch)
+    {
+        string = string.stripDiacritics();
+        aString = aString.stripDiacritics();
     }
     if (aMask & CPBackwardsSearch)
     {
@@ -12088,6 +15938,10 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithString:"), func
 ,["CPString"]), new objj_method(sel_getUid("uppercaseString"), function $CPString__uppercaseString(self, _cmd)
 {
     return self.toUpperCase();
+}
+,["CPString"]), new objj_method(sel_getUid("stripDiacritics"), function $CPString__stripDiacritics(self, _cmd)
+{
+    return self.stripDiacritics();
 }
 ,["CPString"]), new objj_method(sel_getUid("doubleValue"), function $CPString__doubleValue(self, _cmd)
 {
@@ -12271,8 +16125,8 @@ var meta_class = the_class.isa;class_addMethods(meta_class, [new objj_method(sel
     return g;
 }
 ,["CPString"])]);
-}var diacritics = [[192, 198], [224, 230], [231, 231], [232, 235], [236, 239], [242, 246], [249, 252]],
-    normalized = [65, 97, 99, 101, 105, 111, 117];
+}var diacritics = [[192, 198], [200, 203], [204, 207], [210, 214], [217, 220], [224, 230], [231, 231], [232, 235], [236, 239], [242, 246], [249, 252]],
+    normalized = [65, 69, 73, 79, 85, 97, 99, 101, 105, 111, 117];
 String.prototype.stripDiacritics = function()
 {
     var output = "";
@@ -13182,7 +17036,11 @@ class_addMethods(the_class, [new objj_method(sel_getUid("methodSignatureForSelec
     var ___r1;
 }
 ,["void","CPInvocation"])]);
-}p;7;CPURL.jt;9032;@STATIC;1.0;i;10;CPObject.ji;10;CPString.jt;8983;objj_executeFile("CPObject.j", YES);objj_executeFile("CPString.j", YES);CPURLNameKey = "CPURLNameKey";
+}p;7;CPURL.jt;8434;@STATIC;1.0;i;10;CPObject.ji;10;CPString.jt;8385;
+objj_executeFile("CPObject.j", YES);
+objj_executeFile("CPString.j", YES);
+
+CPURLNameKey = "CPURLNameKey";
 CPURLLocalizedNameKey = "CPURLLocalizedNameKey";
 CPURLIsRegularFileKey = "CPURLIsRegularFileKey";
 CPURLIsDirectoryKey = "CPURLIsDirectoryKey";
@@ -13207,8 +17065,73 @@ CPURLLabelColorKey = "CPURLLabelColorKey";
 CPURLLocalizedLabelKey = "CPURLLocalizedLabelKey";
 CPURLEffectiveIconKey = "CPURLEffectiveIconKey";
 CPURLCustomIconKey = "CPURLCustomIconKey";
+
 {var the_class = objj_allocateClassPair(CPObject, "CPURL"),
-meta_class = the_class.isa;objj_registerClassPair(the_class);
+meta_class = the_class.isa;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+objj_registerClassPair(the_class);
 class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPURL__init(self, _cmd)
 {
     return nil;
@@ -13216,16 +17139,17 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPURL
 ,["id"]), new objj_method(sel_getUid("initWithScheme:host:path:"), function $CPURL__initWithScheme_host_path_(self, _cmd, aScheme, aHost, aPath)
 {
     var URLString = (aScheme ? aScheme + ":" : "") + (aHost ? aHost + "//" : "") + (aPath || "");
-    return self.isa.objj_msgSend1(self, "initWithString:", URLString);
+
+    return objj_msgSend(self, "initWithString:", URLString);
 }
 ,["id","CPString","CPString","CPString"]), new objj_method(sel_getUid("initWithString:"), function $CPURL__initWithString_(self, _cmd, URLString)
 {
-    return self.isa.objj_msgSend2(self, "initWithString:relativeToURL:", URLString, nil);
+    return objj_msgSend(self, "initWithString:relativeToURL:", URLString, nil);
 }
 ,["id","CPString"]), new objj_method(sel_getUid("initWithString:relativeToURL:"), function $CPURL__initWithString_relativeToURL_(self, _cmd, URLString, aBaseURL)
 {
     var result = new CFURL(URLString, aBaseURL);
-    result.isa = self.isa.objj_msgSend0(self, "class");
+    result.isa = objj_msgSend(self, "class");
     return result;
 }
 ,["id","CPString","CPURL"]), new objj_method(sel_getUid("absoluteURL"), function $CPURL__absoluteURL(self, _cmd)
@@ -13246,12 +17170,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPURL
 }
 ,["CPString"]), new objj_method(sel_getUid("path"), function $CPURL__path(self, _cmd)
 {
-    return self.isa.objj_msgSend0(self, "absoluteURL").path();
+    return objj_msgSend(self, "absoluteURL").path();
 }
 ,["CPString"]), new objj_method(sel_getUid("pathComponents"), function $CPURL__pathComponents(self, _cmd)
 {
     var components = self.pathComponents();
-    return (components == null ? null : components.isa.objj_msgSend0(components, "copy"));
+    return objj_msgSend(components, "copy");
 }
 ,["CPArray"]), new objj_method(sel_getUid("relativePath"), function $CPURL__relativePath(self, _cmd)
 {
@@ -13263,21 +17187,23 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPURL
 }
 ,["CPString"]), new objj_method(sel_getUid("user"), function $CPURL__user(self, _cmd)
 {
-    return self.isa.objj_msgSend0(self, "absoluteURL").user();
+    return objj_msgSend(self, "absoluteURL").user();
 }
 ,["CPString"]), new objj_method(sel_getUid("password"), function $CPURL__password(self, _cmd)
 {
-    return self.isa.objj_msgSend0(self, "absoluteURL").password();
+    return objj_msgSend(self, "absoluteURL").password();
 }
 ,["CPString"]), new objj_method(sel_getUid("host"), function $CPURL__host(self, _cmd)
 {
-    return self.isa.objj_msgSend0(self, "absoluteURL").domain();
+    return objj_msgSend(self, "absoluteURL").domain();
 }
 ,["CPString"]), new objj_method(sel_getUid("port"), function $CPURL__port(self, _cmd)
 {
-    var portNumber = self.isa.objj_msgSend0(self, "absoluteURL").portNumber();
+    var portNumber = objj_msgSend(self, "absoluteURL").portNumber();
+
     if (portNumber === -1)
         return nil;
+
     return portNumber;
 }
 ,["Number"]), new objj_method(sel_getUid("parameterString"), function $CPURL__parameterString(self, _cmd)
@@ -13292,20 +17218,23 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPURL
 {
     if (self === anObject)
         return YES;
-    if (!anObject || !(anObject == null ? null : anObject.isa.objj_msgSend1(anObject, "isKindOfClass:", CPURL.isa.objj_msgSend0(CPURL, "class"))))
+
+    if (!anObject || !objj_msgSend(anObject, "isKindOfClass:", objj_msgSend(CPURL, "class")))
         return NO;
-    return self.isa.objj_msgSend1(self, "isEqualToURL:", anObject);
+
+    return objj_msgSend(self, "isEqualToURL:", anObject);
 }
 ,["BOOL","id"]), new objj_method(sel_getUid("isEqualToURL:"), function $CPURL__isEqualToURL_(self, _cmd, aURL)
 {
     if (self === aURL)
         return YES;
-    return ((___r1 = self.isa.objj_msgSend0(self, "absoluteString")), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "isEqual:", (aURL == null ? null : aURL.isa.objj_msgSend0(aURL, "absoluteString"))));
-    var ___r1;
+
+
+    return objj_msgSend(objj_msgSend(self, "absoluteString"), "isEqual:", objj_msgSend(aURL, "absoluteString"));
 }
 ,["BOOL","id"]), new objj_method(sel_getUid("lastPathComponent"), function $CPURL__lastPathComponent(self, _cmd)
 {
-    return self.isa.objj_msgSend0(self, "absoluteURL").lastPathComponent();
+    return objj_msgSend(self, "absoluteURL").lastPathComponent();
 }
 ,["CPString"]), new objj_method(sel_getUid("pathExtension"), function $CPURL__pathExtension(self, _cmd)
 {
@@ -13314,7 +17243,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPURL
 ,["CPString"]), new objj_method(sel_getUid("URLByDeletingLastPathComponent"), function $CPURL__URLByDeletingLastPathComponent(self, _cmd)
 {
     var result = self.createCopyDeletingLastPathComponent();
-    result.isa = self.isa.objj_msgSend0(self, "class");
+    result.isa = objj_msgSend(self, "class");
     return result;
 }
 ,["CPURL"]), new objj_method(sel_getUid("standardizedURL"), function $CPURL__standardizedURL(self, _cmd)
@@ -13323,11 +17252,11 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPURL
 }
 ,["CPURL"]), new objj_method(sel_getUid("isFileURL"), function $CPURL__isFileURL(self, _cmd)
 {
-    return self.isa.objj_msgSend0(self, "scheme") === "file";
+    return objj_msgSend(self, "scheme") === "file";
 }
 ,["BOOL"]), new objj_method(sel_getUid("description"), function $CPURL__description(self, _cmd)
 {
-    return self.isa.objj_msgSend0(self, "absoluteString");
+    return objj_msgSend(self, "absoluteString");
 }
 ,["CPString"]), new objj_method(sel_getUid("resourceValueForKey:"), function $CPURL__resourceValueForKey_(self, _cmd, aKey)
 {
@@ -13345,60 +17274,67 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPURL
 class_addMethods(meta_class, [new objj_method(sel_getUid("alloc"), function $CPURL__alloc(self, _cmd)
 {
     var result = new CFURL();
-    result.isa = self.isa.objj_msgSend0(self, "class");
+    result.isa = objj_msgSend(self, "class");
     return result;
 }
 ,["id"]), new objj_method(sel_getUid("URLWithString:"), function $CPURL__URLWithString_(self, _cmd, URLString)
 {
-    return ((___r1 = self.isa.objj_msgSend0(self, "alloc")), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "initWithString:", URLString));
-    var ___r1;
+    return objj_msgSend(objj_msgSend(self, "alloc"), "initWithString:", URLString);
 }
 ,["id","CPString"]), new objj_method(sel_getUid("URLWithString:relativeToURL:"), function $CPURL__URLWithString_relativeToURL_(self, _cmd, URLString, aBaseURL)
 {
-    return ((___r1 = self.isa.objj_msgSend0(self, "alloc")), ___r1 == null ? null : ___r1.isa.objj_msgSend2(___r1, "initWithString:relativeToURL:", URLString, aBaseURL));
-    var ___r1;
+    return objj_msgSend(objj_msgSend(self, "alloc"), "initWithString:relativeToURL:", URLString, aBaseURL);
 }
 ,["id","CPString","CPURL"])]);
-}var CPURLURLStringKey = "CPURLURLStringKey",
+}
+
+var CPURLURLStringKey = "CPURLURLStringKey",
     CPURLBaseURLKey = "CPURLBaseURLKey";
+
 {
 var the_class = objj_getClass("CPURL")
 if(!the_class) throw new SyntaxError("*** Could not find definition for class \"CPURL\"");
-var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_getUid("initWithCoder:"), function $CPURL__initWithCoder_(self, _cmd, aCoder)
+var meta_class = the_class.isa;
+
+class_addMethods(the_class, [new objj_method(sel_getUid("initWithCoder:"), function $CPURL__initWithCoder_(self, _cmd, aCoder)
 {
-    return self.isa.objj_msgSend2(self, "initWithString:relativeToURL:", (aCoder == null ? null : aCoder.isa.objj_msgSend1(aCoder, "decodeObjectForKey:", CPURLURLStringKey)), (aCoder == null ? null : aCoder.isa.objj_msgSend1(aCoder, "decodeObjectForKey:", CPURLBaseURLKey)));
+    return objj_msgSend(self, "initWithString:relativeToURL:", objj_msgSend(aCoder, "decodeObjectForKey:", CPURLURLStringKey), objj_msgSend(aCoder, "decodeObjectForKey:", CPURLBaseURLKey));
 }
 ,["id","CPCoder"]), new objj_method(sel_getUid("encodeWithCoder:"), function $CPURL__encodeWithCoder_(self, _cmd, aCoder)
 {
-    (aCoder == null ? null : aCoder.isa.objj_msgSend2(aCoder, "encodeObject:forKey:", self._baseURL, CPURLBaseURLKey));
-    (aCoder == null ? null : aCoder.isa.objj_msgSend2(aCoder, "encodeObject:forKey:", self._string, CPURLURLStringKey));
+    objj_msgSend(aCoder, "encodeObject:forKey:", self._baseURL, CPURLBaseURLKey);
+    objj_msgSend(aCoder, "encodeObject:forKey:", self._string, CPURLURLStringKey);
 }
 ,["void","CPCoder"])]);
-}CFURL.prototype.isa = CPURL.isa.objj_msgSend0(CPURL, "class");
-p;17;CPURLConnection.jt;12295;@STATIC;1.0;i;8;CPData.ji;10;CPObject.ji;11;CPRunLoop.ji;14;CPURLRequest.ji;15;CPURLResponse.jt;12193;objj_executeFile("CPData.j", YES);objj_executeFile("CPObject.j", YES);objj_executeFile("CPRunLoop.j", YES);objj_executeFile("CPURLRequest.j", YES);objj_executeFile("CPURLResponse.j", YES);var CPURLConnectionDelegate = nil;
+}
+
+CFURL.prototype.isa = objj_msgSend(CPURL, "class");p;17;CPURLConnection.jt;10926;@STATIC;1.0;i;8;CPData.ji;10;CPObject.ji;11;CPRunLoop.ji;14;CPURLRequest.ji;15;CPURLResponse.jt;10824;objj_executeFile("CPData.j", YES);objj_executeFile("CPObject.j", YES);objj_executeFile("CPRunLoop.j", YES);objj_executeFile("CPURLRequest.j", YES);objj_executeFile("CPURLResponse.j", YES);{var the_typedef = objj_allocateTypeDef("HTTPRequest");
+objj_registerTypeDef(the_typedef);
+}var CPURLConnectionDelegate = nil;
 {var the_class = objj_allocateClassPair(CPObject, "CPURLConnection"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_request"), new objj_ivar("_delegate"), new objj_ivar("_isCanceled"), new objj_ivar("_isLocalFileConnection"), new objj_ivar("_withCredentials"), new objj_ivar("_HTTPRequest")]);objj_registerClassPair(the_class);
-class_addMethods(the_class, [new objj_method(sel_getUid("withCredentials"), function $CPURLConnection__withCredentials(self, _cmd)
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_originalRequest"), new objj_ivar("_request"), new objj_ivar("_delegate"), new objj_ivar("_isCanceled"), new objj_ivar("_isLocalFileConnection"), new objj_ivar("_HTTPRequest")]);objj_registerClassPair(the_class);
+class_addMethods(the_class, [new objj_method(sel_getUid("originalRequest"), function $CPURLConnection__originalRequest(self, _cmd)
 {
-    return self._withCredentials;
+    return self._originalRequest;
 }
-,["BOOL"]), new objj_method(sel_getUid("setWithCredentials:"), function $CPURLConnection__setWithCredentials_(self, _cmd, newValue)
+,["CPURLRequest"]), new objj_method(sel_getUid("currentRequest"), function $CPURLConnection__currentRequest(self, _cmd)
 {
-    self._withCredentials = newValue;
+    return self._request;
 }
-,["void","BOOL"]), new objj_method(sel_getUid("initWithRequest:delegate:startImmediately:"), function $CPURLConnection__initWithRequest_delegate_startImmediately_(self, _cmd, aRequest, aDelegate, shouldStartImmediately)
+,["CPURLRequest"]), new objj_method(sel_getUid("initWithRequest:delegate:startImmediately:"), function $CPURLConnection__initWithRequest_delegate_startImmediately_(self, _cmd, aRequest, aDelegate, shouldStartImmediately)
 {
     self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPURLConnection").super_class }, "init");
     if (self)
     {
         self._request = aRequest;
+        self._originalRequest = (aRequest == null ? null : aRequest.isa.objj_msgSend0(aRequest, "copy"));
         self._delegate = aDelegate;
         self._isCanceled = NO;
-        self._withCredentials = NO;
         var URL = ((___r1 = self._request), ___r1 == null ? null : ___r1.isa.objj_msgSend0(___r1, "URL")),
             scheme = (URL == null ? null : URL.isa.objj_msgSend0(URL, "scheme"));
         self._isLocalFileConnection = scheme === "file" || (scheme === "http" || scheme === "https") && window.location && (window.location.protocol === "file:" || window.location.protocol === "app:");
         self._HTTPRequest = new CFHTTPRequest();
+        self._HTTPRequest.setWithCredentials((aRequest == null ? null : aRequest.isa.objj_msgSend0(aRequest, "withCredentials")));
         if (shouldStartImmediately)
             (self == null ? null : self.isa.objj_msgSend0(self, "start"));
     }
@@ -13416,7 +17352,6 @@ class_addMethods(the_class, [new objj_method(sel_getUid("withCredentials"), func
 ,["id"]), new objj_method(sel_getUid("start"), function $CPURLConnection__start(self, _cmd)
 {
     self._isCanceled = NO;
-    self._HTTPRequest.setWithCredentials(self._withCredentials);
     try    {
         self._HTTPRequest.open(((___r1 = self._request), ___r1 == null ? null : ___r1.isa.objj_msgSend0(___r1, "HTTPMethod")), ((___r1 = ((___r2 = self._request), ___r2 == null ? null : ___r2.isa.objj_msgSend0(___r2, "URL"))), ___r1 == null ? null : ___r1.isa.objj_msgSend0(___r1, "absoluteString")), YES);
         self._HTTPRequest.onreadystatechange = function()
@@ -13493,18 +17428,9 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("setClassDelegate:"), f
 }
 ,["void","id"]), new objj_method(sel_getUid("sendSynchronousRequest:returningResponse:"), function $CPURLConnection__sendSynchronousRequest_returningResponse_(self, _cmd, aRequest, aURLResponse)
 {
-    var cfHTTPRequest = new CFHTTPRequest();
-    return CPURLConnection.isa.objj_msgSend3(CPURLConnection, "_sendSynchronousRequest:returningResponse:withCFHTTPRequest:", aRequest, aURLResponse, cfHTTPRequest);
-}
-,["CPData","CPURLRequest","CPURLResponse"]), new objj_method(sel_getUid("sendSynchronousRequest:returningResponse:withCredentials:"), function $CPURLConnection__sendSynchronousRequest_returningResponse_withCredentials_(self, _cmd, aRequest, aURLResponse, withCredentials)
-{
-    var cfHTTPRequest = new CFHTTPRequest();
-    cfHTTPRequest.setWithCredentials(withCredentials);
-    return CPURLConnection.isa.objj_msgSend3(CPURLConnection, "_sendSynchronousRequest:returningResponse:withCFHTTPRequest:", aRequest, aURLResponse, cfHTTPRequest);
-}
-,["CPData","CPURLRequest","CPURLResponse","BOOL"]), new objj_method(sel_getUid("_sendSynchronousRequest:returningResponse:withCFHTTPRequest:"), function $CPURLConnection___sendSynchronousRequest_returningResponse_withCFHTTPRequest_(self, _cmd, aRequest, aURLResponse, aCFHTTPRequest)
-{
     try    {
+        var aCFHTTPRequest = new CFHTTPRequest();
+        aCFHTTPRequest.setWithCredentials((aRequest == null ? null : aRequest.isa.objj_msgSend0(aRequest, "withCredentials")));
         aCFHTTPRequest.open((aRequest == null ? null : aRequest.isa.objj_msgSend0(aRequest, "HTTPMethod")), ((___r1 = (aRequest == null ? null : aRequest.isa.objj_msgSend0(aRequest, "URL"))), ___r1 == null ? null : ___r1.isa.objj_msgSend0(___r1, "absoluteString")), NO);
         var fields = (aRequest == null ? null : aRequest.isa.objj_msgSend0(aRequest, "allHTTPHeaderFields")),
             key = nil,
@@ -13520,20 +17446,12 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("setClassDelegate:"), f
     }    return nil;
     var ___r1;
 }
-,["CPData","CPURLRequest","CPURLResponse","CFHTTPRequest"]), new objj_method(sel_getUid("connectionWithRequest:delegate:"), function $CPURLConnection__connectionWithRequest_delegate_(self, _cmd, aRequest, aDelegate)
+,["CPData","CPURLRequest","CPURLResponse"]), new objj_method(sel_getUid("connectionWithRequest:delegate:"), function $CPURLConnection__connectionWithRequest_delegate_(self, _cmd, aRequest, aDelegate)
 {
     return ((___r1 = self.isa.objj_msgSend0(self, "alloc")), ___r1 == null ? null : ___r1.isa.objj_msgSend2(___r1, "initWithRequest:delegate:", aRequest, aDelegate));
     var ___r1;
 }
-,["CPURLConnection","CPURLRequest","id"]), new objj_method(sel_getUid("connectionWithRequest:delegate:withCredentials:"), function $CPURLConnection__connectionWithRequest_delegate_withCredentials_(self, _cmd, aRequest, aDelegate, withCredentials)
-{
-    var connection = ((___r1 = self.isa.objj_msgSend0(self, "alloc")), ___r1 == null ? null : ___r1.isa.objj_msgSend3(___r1, "initWithRequest:delegate:startImmediately:", aRequest, aDelegate, NO));
-    (connection == null ? null : connection.isa.objj_msgSend1(connection, "setWithCredentials:", withCredentials));
-    (connection == null ? null : connection.isa.objj_msgSend0(connection, "start"));
-    return connection;
-    var ___r1;
-}
-,["CPURLConnection","CPURLRequest","id","BOOL"])]);
+,["CPURLConnection","CPURLRequest","id"])]);
 }{
 var the_class = objj_getClass("CPURLConnection")
 if(!the_class) throw new SyntaxError("*** Could not find definition for class \"CPURLConnection\"");
@@ -13549,9 +17467,72 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("sendSynchronousRequest
     return self.isa.objj_msgSend2(self, "sendSynchronousRequest:returningResponse:", aRequest, aURLResponse);
 }
 ,["CPData","CPURLRequest","CPURLResponse","id"])]);
-}p;14;CPURLRequest.jt;3585;@STATIC;1.0;i;14;CPDictionary.ji;10;CPObject.ji;10;CPString.ji;7;CPURL.jt;3506;objj_executeFile("CPDictionary.j", YES);objj_executeFile("CPObject.j", YES);objj_executeFile("CPString.j", YES);objj_executeFile("CPURL.j", YES);{var the_class = objj_allocateClassPair(CPObject, "CPURLRequest"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_URL"), new objj_ivar("_HTTPBody"), new objj_ivar("_HTTPMethod"), new objj_ivar("_HTTPHeaderFields")]);objj_registerClassPair(the_class);
-class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPURLRequest__init(self, _cmd)
+}p;12;CPURLError.jt;1647;@STATIC;1.0;t;1628;CPURLErrorDomain = "CPURLErrorDomain";
+CPURLErrorFailingURLErrorKey = "CPErrorFailingURLKey";
+CPURLErrorFailingURLStringErrorKey = "CPURLErrorFailingURLStringKey";
+CPURLErrorUnknown = -1;
+CPURLErrorCancelled = kCFURLErrorCancelled;
+CPURLErrorBadURL = kCFURLErrorBadURL;
+CPURLErrorTimedOut = kCFURLErrorTimedOut;
+CPURLErrorUnsupportedURL = kCFURLErrorUnsupportedURL;
+CPURLErrorCannotFindHost = kCFURLErrorCannotFindHost;
+CPURLErrorCannotConnectToHost = kCFURLErrorCannotConnectToHost;
+CPURLErrorNetworkConnectionLost = kCFURLErrorNetworkConnectionLost;
+CPURLErrorDNSLookupFailed = kCFURLErrorDNSLookupFailed;
+CPURLErrorHTTPTooManyRedirects = kCFURLErrorHTTPTooManyRedirects;
+CPURLErrorResourceUnavailable = kCFURLErrorResourceUnavailable;
+CPURLErrorNotConnectedToInternet = kCFURLErrorNotConnectedToInternet;
+CPURLErrorRedirectToNonExistentLocation = kCFURLErrorRedirectToNonExistentLocation;
+CPURLErrorBadServerResponse = kCFURLErrorBadServerResponse;
+CPURLErrorUserCancelledAuthentication = kCFURLErrorUserCancelledAuthentication;
+CPURLErrorUserAuthenticationRequired = kCFURLErrorUserAuthenticationRequired;
+CPURLErrorZeroByteResource = kCFURLErrorZeroByteResource;
+CPURLErrorCannotDecodeRawData = kCFURLErrorCannotDecodeRawData;
+CPURLErrorCannotDecodeContentData = kCFURLErrorCannotDecodeContentData;
+CPURLErrorCannotParseResponse = kCFURLErrorCannotParseResponse;
+CPURLErrorFileDoesNotExist = kCFURLErrorFileDoesNotExist;
+CPURLErrorFileIsDirectory = kCFURLErrorFileIsDirectory;
+CPURLErrorNoPermissionsToReadFile = kCFURLErrorNoPermissionsToReadFile;
+CPURLErrorDataLengthExceedsMaximum = kCFURLErrorDataLengthExceedsMaximum;
+p;14;CPURLRequest.jt;5120;@STATIC;1.0;i;14;CPDictionary.ji;10;CPObject.ji;10;CPString.ji;7;CPURL.jt;5041;objj_executeFile("CPDictionary.j", YES);objj_executeFile("CPObject.j", YES);objj_executeFile("CPString.j", YES);objj_executeFile("CPURL.j", YES);{var the_class = objj_allocateClassPair(CPObject, "CPURLRequest"),
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_URL"), new objj_ivar("_HTTPBody"), new objj_ivar("_HTTPMethod"), new objj_ivar("_withCredentials"), new objj_ivar("_HTTPHeaderFields")]);objj_registerClassPair(the_class);
+class_addMethods(the_class, [new objj_method(sel_getUid("URL"), function $CPURLRequest__URL(self, _cmd)
+{
+    return self._URL;
+}
+,["CPURL"]), new objj_method(sel_getUid("setURL:"), function $CPURLRequest__setURL_(self, _cmd, newValue)
+{
+    self._URL = newValue;
+}
+,["void","CPURL"]), new objj_method(sel_getUid("HTTPBody"), function $CPURLRequest__HTTPBody(self, _cmd)
+{
+    return self._HTTPBody;
+}
+,["CPString"]), new objj_method(sel_getUid("setHTTPBody:"), function $CPURLRequest__setHTTPBody_(self, _cmd, newValue)
+{
+    self._HTTPBody = newValue;
+}
+,["void","CPString"]), new objj_method(sel_getUid("HTTPMethod"), function $CPURLRequest__HTTPMethod(self, _cmd)
+{
+    return self._HTTPMethod;
+}
+,["CPString"]), new objj_method(sel_getUid("setHTTPMethod:"), function $CPURLRequest__setHTTPMethod_(self, _cmd, newValue)
+{
+    self._HTTPMethod = newValue;
+}
+,["void","CPString"]), new objj_method(sel_getUid("withCredentials"), function $CPURLRequest__withCredentials(self, _cmd)
+{
+    return self._withCredentials;
+}
+,["BOOL"]), new objj_method(sel_getUid("setWithCredentials:"), function $CPURLRequest__setWithCredentials_(self, _cmd, newValue)
+{
+    self._withCredentials = newValue;
+}
+,["void","BOOL"]), new objj_method(sel_getUid("allHTTPHeaderFields"), function $CPURLRequest__allHTTPHeaderFields(self, _cmd)
+{
+    return self._HTTPHeaderFields;
+}
+,["CPDictionary"]), new objj_method(sel_getUid("init"), function $CPURLRequest__init(self, _cmd)
 {
     return self.isa.objj_msgSend1(self, "initWithURL:", nil);
 }
@@ -13564,41 +17545,18 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPURL
         self._HTTPBody = "";
         self._HTTPMethod = "GET";
         self._HTTPHeaderFields = objj_msgSend(objj_msgSend(CPDictionary, "alloc"), "init");
+        self._withCredentials = NO;
         (self == null ? null : self.isa.objj_msgSend2(self, "setValue:forHTTPHeaderField:", "Thu, 01 Jan 1970 00:00:00 GMT", "If-Modified-Since"));
         (self == null ? null : self.isa.objj_msgSend2(self, "setValue:forHTTPHeaderField:", "no-cache", "Cache-Control"));
         (self == null ? null : self.isa.objj_msgSend2(self, "setValue:forHTTPHeaderField:", "XMLHttpRequest", "X-Requested-With"));
     }
     return self;
 }
-,["id","CPURL"]), new objj_method(sel_getUid("URL"), function $CPURLRequest__URL(self, _cmd)
-{
-    return self._URL;
-}
-,["CPURL"]), new objj_method(sel_getUid("setURL:"), function $CPURLRequest__setURL_(self, _cmd, aURL)
+,["id","CPURL"]), new objj_method(sel_getUid("setURL:"), function $CPURLRequest__setURL_(self, _cmd, aURL)
 {
     self._URL = new CFURL(aURL);
 }
-,["void","CPURL"]), new objj_method(sel_getUid("setHTTPBody:"), function $CPURLRequest__setHTTPBody_(self, _cmd, anHTTPBody)
-{
-    self._HTTPBody = anHTTPBody;
-}
-,["void","CPString"]), new objj_method(sel_getUid("HTTPBody"), function $CPURLRequest__HTTPBody(self, _cmd)
-{
-    return self._HTTPBody;
-}
-,["CPString"]), new objj_method(sel_getUid("setHTTPMethod:"), function $CPURLRequest__setHTTPMethod_(self, _cmd, anHTTPMethod)
-{
-    self._HTTPMethod = anHTTPMethod;
-}
-,["void","CPString"]), new objj_method(sel_getUid("HTTPMethod"), function $CPURLRequest__HTTPMethod(self, _cmd)
-{
-    return self._HTTPMethod;
-}
-,["CPString"]), new objj_method(sel_getUid("allHTTPHeaderFields"), function $CPURLRequest__allHTTPHeaderFields(self, _cmd)
-{
-    return self._HTTPHeaderFields;
-}
-,["CPDictionary"]), new objj_method(sel_getUid("valueForHTTPHeaderField:"), function $CPURLRequest__valueForHTTPHeaderField_(self, _cmd, aField)
+,["void","CPURL"]), new objj_method(sel_getUid("valueForHTTPHeaderField:"), function $CPURLRequest__valueForHTTPHeaderField_(self, _cmd, aField)
 {
     return ((___r1 = self._HTTPHeaderFields), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "objectForKey:", aField));
     var ___r1;
@@ -13615,13 +17573,34 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("requestWithURL:"), fun
     var ___r1;
 }
 ,["id","CPURL"])]);
-}p;15;CPURLResponse.jt;2714;@STATIC;1.0;i;10;CPObject.ji;7;CPURL.jt;2669;objj_executeFile("CPObject.j", YES);objj_executeFile("CPURL.j", YES);{var the_class = objj_allocateClassPair(CPObject, "CPURLResponse"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_URL")]);objj_registerClassPair(the_class);
+}{
+var the_class = objj_getClass("CPURLRequest")
+if(!the_class) throw new SyntaxError("*** Could not find definition for class \"CPURLRequest\"");
+var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_getUid("copy"), function $CPURLRequest__copy(self, _cmd)
+{
+    var request = ((___r1 = CPURLRequest.isa.objj_msgSend0(CPURLRequest, "alloc")), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "initWithURL:", self.isa.objj_msgSend0(self, "URL")));
+    (request == null ? null : request.isa.objj_msgSend1(request, "setHTTPBody:", self.isa.objj_msgSend0(self, "HTTPBody")));
+    (request == null ? null : request.isa.objj_msgSend1(request, "setHTTPMethod:", self.isa.objj_msgSend0(self, "HTTPMethod")));
+    (request == null ? null : request.isa.objj_msgSend1(request, "setWithCredentials:", self.isa.objj_msgSend0(self, "withCredentials")));
+    request._HTTPHeaderFields = self.isa.objj_msgSend0(self, "allHTTPHeaderFields");
+    return request;
+    var ___r1;
+}
+,["id"])]);
+}p;15;CPURLResponse.jt;2615;@STATIC;1.0;i;10;CPObject.ji;7;CPURL.jt;2570;
+objj_executeFile("CPObject.j", YES);
+objj_executeFile("CPURL.j", YES);
+{var the_class = objj_allocateClassPair(CPObject, "CPURLResponse"),
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_URL")]);
+
+objj_registerClassPair(the_class);
 class_addMethods(the_class, [new objj_method(sel_getUid("initWithURL:"), function $CPURLResponse__initWithURL_(self, _cmd, aURL)
 {
     self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPURLResponse").super_class }, "init");
+
     if (self)
         self._URL = aURL;
+
     return self;
 }
 ,["id","CPURL"]), new objj_method(sel_getUid("URL"), function $CPURLResponse__URL(self, _cmd)
@@ -13629,8 +17608,28 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithURL:"), functio
     return self._URL;
 }
 ,["CPURL"])]);
-}{var the_class = objj_allocateClassPair(CPURLResponse, "CPHTTPURLResponse"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_statusCode"), new objj_ivar("_allResponseHeaders"), new objj_ivar("_responseHeaders")]);objj_registerClassPair(the_class);
+}
+
+
+
+
+{var the_class = objj_allocateClassPair(CPURLResponse, "CPHTTPURLResponse"),
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_statusCode"), new objj_ivar("_allResponseHeaders"), new objj_ivar("_responseHeaders")]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+objj_registerClassPair(the_class);
 class_addMethods(the_class, [new objj_method(sel_getUid("_setStatusCode:"), function $CPHTTPURLResponse___setStatusCode_(self, _cmd, aStatusCode)
 {
     self._statusCode = aStatusCode;
@@ -13645,31 +17644,35 @@ class_addMethods(the_class, [new objj_method(sel_getUid("_setStatusCode:"), func
 }
 ,["void","CPString"]), new objj_method(sel_getUid("allHeaderFields"), function $CPHTTPURLResponse__allHeaderFields(self, _cmd)
 {
+
     if (!self._responseHeaders)
-        self._responseHeaders = ((___r1 = self.isa.objj_msgSend0(self, "class")), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "parseHTTPHeaders:", self._allResponseHeaders));
+        self._responseHeaders = objj_msgSend(objj_msgSend(self, "class"), "parseHTTPHeaders:", self._allResponseHeaders);
+
     return self._responseHeaders;
-    var ___r1;
 }
 ,["CPDictionary"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("parseHTTPHeaders:"), function $CPHTTPURLResponse__parseHTTPHeaders_(self, _cmd, headersString)
 {
-    var r = CPMutableDictionary.isa.objj_msgSend0(CPMutableDictionary, "dictionary");
+    var r = objj_msgSend(CPMutableDictionary, "dictionary");
+
     if (headersString)
     {
         var headerLines = headersString.split('\r\n'),
             count = headerLines.length;
+
         while (count--)
         {
             var headerLine = headerLines[count],
                 index = headerLine.indexOf(': ');
             if (index !== CPNotFound)
-                (r == null ? null : r.isa.objj_msgSend2(r, "setValue:forKey:", headerLine.substring(index + 2), headerLine.substring(0, index)));
+                objj_msgSend(r, "setValue:forKey:", headerLine.substring(index + 2), headerLine.substring(0, index));
         }
     }
+
     return r;
 }
 ,["CPDictionary","CPString"])]);
-}p;16;CPUserDefaults.jt;23910;@STATIC;1.0;i;10;CPBundle.ji;8;CPData.ji;14;CPDictionary.ji;13;CPException.ji;17;CPKeyedArchiver.ji;19;CPKeyedUnarchiver.ji;22;CPNotificationCenter.ji;10;CPObject.ji;11;CPRunLoop.ji;10;CPString.ji;7;CPURL.ji;17;CPURLConnection.ji;14;CPURLRequest.jt;23655;objj_executeFile("CPBundle.j", YES);objj_executeFile("CPData.j", YES);objj_executeFile("CPDictionary.j", YES);objj_executeFile("CPException.j", YES);objj_executeFile("CPKeyedArchiver.j", YES);objj_executeFile("CPKeyedUnarchiver.j", YES);objj_executeFile("CPNotificationCenter.j", YES);objj_executeFile("CPObject.j", YES);objj_executeFile("CPRunLoop.j", YES);objj_executeFile("CPString.j", YES);objj_executeFile("CPURL.j", YES);objj_executeFile("CPURLConnection.j", YES);objj_executeFile("CPURLRequest.j", YES);CPArgumentDomain = "CPArgumentDomain";
+}p;16;CPUserDefaults.jt;23914;@STATIC;1.0;i;10;CPBundle.ji;8;CPData.ji;14;CPDictionary.ji;13;CPException.ji;17;CPKeyedArchiver.ji;19;CPKeyedUnarchiver.ji;22;CPNotificationCenter.ji;10;CPObject.ji;11;CPRunLoop.ji;10;CPString.ji;7;CPURL.ji;17;CPURLConnection.ji;14;CPURLRequest.jt;23659;objj_executeFile("CPBundle.j", YES);objj_executeFile("CPData.j", YES);objj_executeFile("CPDictionary.j", YES);objj_executeFile("CPException.j", YES);objj_executeFile("CPKeyedArchiver.j", YES);objj_executeFile("CPKeyedUnarchiver.j", YES);objj_executeFile("CPNotificationCenter.j", YES);objj_executeFile("CPObject.j", YES);objj_executeFile("CPRunLoop.j", YES);objj_executeFile("CPString.j", YES);objj_executeFile("CPURL.j", YES);objj_executeFile("CPURLConnection.j", YES);objj_executeFile("CPURLRequest.j", YES);CPArgumentDomain = "CPArgumentDomain";
 CPApplicationDomain = ((___r1 = ((___r2 = CPBundle.isa.objj_msgSend0(CPBundle, "mainBundle")), ___r2 == null ? null : ___r2.isa.objj_msgSend0(___r2, "infoDictionary"))), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "objectForKey:", "CPBundleIdentifier")) || "CPApplicationDomain";
 CPGlobalDomain = "CPGlobalDomain";
 CPLocaleDomain = "CPLocaleDomain";
@@ -13941,7 +17944,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPUse
 }
 ,["void","BOOL","CPString"]), new objj_method(sel_getUid("setFloat:forKey:"), function $CPUserDefaults__setFloat_forKey_(self, _cmd, aValue, aKey)
 {
-    if ((aValue == null ? null : aValue.isa.objj_msgSend1(aValue, "respondsToSelector:", sel_getUid("aValue"))))
+    if ((aValue == null ? null : aValue.isa.objj_msgSend1(aValue, "respondsToSelector:", sel_getUid("floatValue"))))
         aValue = (aValue == null ? null : aValue.isa.objj_msgSend0(aValue, "floatValue"));
     self.isa.objj_msgSend2(self, "setObject:forKey:", parseFloat(aValue), aKey);
 }
@@ -14064,7 +18067,9 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("supportsLocalStorage")
     }    return YES;
 }
 ,["BOOL"])]);
-}p;22;CPUserSessionManager.jt;2959;@STATIC;1.0;i;22;CPNotificationCenter.ji;10;CPObject.ji;10;CPString.jt;2883;objj_executeFile("CPNotificationCenter.j", YES);objj_executeFile("CPObject.j", YES);objj_executeFile("CPString.j", YES);CPUserSessionUndeterminedStatus = 0;
+}p;22;CPUserSessionManager.jt;3059;@STATIC;1.0;i;22;CPNotificationCenter.ji;10;CPObject.ji;10;CPString.jt;2983;objj_executeFile("CPNotificationCenter.j", YES);objj_executeFile("CPObject.j", YES);objj_executeFile("CPString.j", YES);{var the_typedef = objj_allocateTypeDef("CPUserSessionStatus");
+objj_registerTypeDef(the_typedef);
+}CPUserSessionUndeterminedStatus = 0;
 CPUserSessionLoggedInStatus = 1;
 CPUserSessionLoggedOutStatus = 2;
 CPUserSessionManagerStatusDidChangeNotification = "CPUserSessionManagerStatusDidChangeNotification";
@@ -14114,13 +18119,30 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("defaultManager"), func
     var ___r1;
 }
 ,["id"])]);
-}p;9;CPValue.jt;2373;@STATIC;1.0;i;9;CPCoder.ji;10;CPObject.jt;2326;objj_executeFile("CPCoder.j", YES);objj_executeFile("CPObject.j", YES);{var the_class = objj_allocateClassPair(CPObject, "CPValue"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_JSObject")]);objj_registerClassPair(the_class);
+}p;9;CPValue.jt;2249;@STATIC;1.0;i;9;CPCoder.ji;10;CPObject.jt;2202;
+objj_executeFile("CPCoder.j", YES);
+objj_executeFile("CPObject.j", YES);
+{var the_class = objj_allocateClassPair(CPObject, "CPValue"),
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_JSObject")]);
+
+
+
+
+
+
+
+
+
+
+
+objj_registerClassPair(the_class);
 class_addMethods(the_class, [new objj_method(sel_getUid("initWithJSObject:"), function $CPValue__initWithJSObject_(self, _cmd, aJSObject)
 {
     self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPValue").super_class }, "init");
+
     if (self)
         self._JSObject = aJSObject;
+
     return self;
 }
 ,["id","JSObject"]), new objj_method(sel_getUid("JSObject"), function $CPValue__JSObject(self, _cmd)
@@ -14130,47 +18152,83 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithJSObject:"), fu
 ,["JSObject"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("valueWithJSObject:"), function $CPValue__valueWithJSObject_(self, _cmd, aJSObject)
 {
-    return ((___r1 = self.isa.objj_msgSend0(self, "alloc")), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "initWithJSObject:", aJSObject));
-    var ___r1;
+    return objj_msgSend(objj_msgSend(self, "alloc"), "initWithJSObject:", aJSObject);
 }
 ,["id","JSObject"])]);
-}var CPValueValueKey = "CPValueValueKey";
+}
+
+var CPValueValueKey = "CPValueValueKey";
+
 {
 var the_class = objj_getClass("CPValue")
 if(!the_class) throw new SyntaxError("*** Could not find definition for class \"CPValue\"");
-var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_getUid("initWithCoder:"), function $CPValue__initWithCoder_(self, _cmd, aCoder)
+var meta_class = the_class.isa;
+
+
+
+
+
+class_addMethods(the_class, [new objj_method(sel_getUid("initWithCoder:"), function $CPValue__initWithCoder_(self, _cmd, aCoder)
 {
     self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPValue").super_class }, "init");
+
     if (self)
-        self._JSObject = JSON.parse((aCoder == null ? null : aCoder.isa.objj_msgSend1(aCoder, "decodeObjectForKey:", CPValueValueKey)));
+        self._JSObject = JSON.parse(objj_msgSend(aCoder, "decodeObjectForKey:", CPValueValueKey));
+
     return self;
 }
 ,["id","CPCoder"]), new objj_method(sel_getUid("encodeWithCoder:"), function $CPValue__encodeWithCoder_(self, _cmd, aCoder)
 {
-    (aCoder == null ? null : aCoder.isa.objj_msgSend2(aCoder, "encodeObject:forKey:", JSON.stringify(self._JSObject), CPValueValueKey));
+    objj_msgSend(aCoder, "encodeObject:forKey:", JSON.stringify(self._JSObject), CPValueValueKey);
 }
 ,["void","CPCoder"])]);
-}CPJSObjectCreateJSON = function(aJSObject)
+}
+
+CPJSObjectCreateJSON = function(aJSObject)
 {
     CPLog.warn("CPJSObjectCreateJSON deprecated, use JSON.stringify() or CPString's objectFromJSON");
     return JSON.stringify(aJSObject);
 }
+
 CPJSObjectCreateWithJSON = function(aString)
 {
     CPLog.warn("CPJSObjectCreateWithJSON deprecated, use JSON.parse() or CPString's JSONFromObject");
     return JSON.parse(aString);
-}
-p;20;CPValueTransformer.jt;7819;@STATIC;1.0;i;8;CPData.ji;14;CPDictionary.ji;13;CPException.ji;17;CPKeyedArchiver.ji;19;CPKeyedUnarchiver.ji;10;CPNumber.ji;10;CPObject.jt;7675;objj_executeFile("CPData.j", YES);objj_executeFile("CPDictionary.j", YES);objj_executeFile("CPException.j", YES);objj_executeFile("CPKeyedArchiver.j", YES);objj_executeFile("CPKeyedUnarchiver.j", YES);objj_executeFile("CPNumber.j", YES);objj_executeFile("CPObject.j", YES);var transformerMap = objj_msgSend(objj_msgSend(CPDictionary, "alloc"), "init");
+}p;20;CPValueTransformer.jt;6975;@STATIC;1.0;i;8;CPData.ji;14;CPDictionary.ji;13;CPException.ji;17;CPKeyedArchiver.ji;19;CPKeyedUnarchiver.ji;10;CPNumber.ji;10;CPObject.jt;6831;
+objj_executeFile("CPData.j", YES);
+objj_executeFile("CPDictionary.j", YES);
+objj_executeFile("CPException.j", YES);
+objj_executeFile("CPKeyedArchiver.j", YES);
+objj_executeFile("CPKeyedUnarchiver.j", YES);
+objj_executeFile("CPNumber.j", YES);
+objj_executeFile("CPObject.j", YES);
+
+var transformerMap = objj_msgSend(objj_msgSend(CPDictionary, "alloc"), "init");
+
 {var the_class = objj_allocateClassPair(CPObject, "CPValueTransformer"),
-meta_class = the_class.isa;objj_registerClassPair(the_class);
+meta_class = the_class.isa;
+
+
+
+
+
+
+
+
+
+
+
+
+
+objj_registerClassPair(the_class);
 class_addMethods(the_class, [new objj_method(sel_getUid("reverseTransformedValue:"), function $CPValueTransformer__reverseTransformedValue_(self, _cmd, aValue)
 {
-    if (!((___r1 = self.isa.objj_msgSend0(self, "class")), ___r1 == null ? null : ___r1.isa.objj_msgSend0(___r1, "allowsReverseTransformation")))
+    if (!objj_msgSend(objj_msgSend(self, "class"), "allowsReverseTransformation"))
     {
-        CPException.isa.objj_msgSend2(CPException, "raise:reason:", CPInvalidArgumentException, self + " is not reversible.");
+        objj_msgSend(CPException, "raise:reason:", CPInvalidArgumentException, (self + " is not reversible."));
     }
-    return self.isa.objj_msgSend1(self, "transformedValue:", aValue);
-    var ___r1;
+
+    return objj_msgSend(self, "transformedValue:", aValue);
 }
 ,["id","id"]), new objj_method(sel_getUid("transformedValue:"), function $CPValueTransformer__transformedValue_(self, _cmd, aValue)
 {
@@ -14179,39 +18237,54 @@ class_addMethods(the_class, [new objj_method(sel_getUid("reverseTransformedValue
 ,["id","id"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("initialize"), function $CPValueTransformer__initialize(self, _cmd)
 {
-    if (self !== CPValueTransformer.isa.objj_msgSend0(CPValueTransformer, "class"))
+    if (self !== objj_msgSend(CPValueTransformer, "class"))
         return;
+
+
+
+
+
 }
 ,["void"]), new objj_method(sel_getUid("setValueTransformer:forName:"), function $CPValueTransformer__setValueTransformer_forName_(self, _cmd, transformer, aName)
 {
-    (transformerMap == null ? null : transformerMap.isa.objj_msgSend2(transformerMap, "setObject:forKey:", transformer, aName));
+    objj_msgSend(transformerMap, "setObject:forKey:", transformer, aName);
 }
 ,["void","CPValueTransformer","CPString"]), new objj_method(sel_getUid("valueTransformerForName:"), function $CPValueTransformer__valueTransformerForName_(self, _cmd, aName)
 {
-    return (transformerMap == null ? null : transformerMap.isa.objj_msgSend1(transformerMap, "objectForKey:", aName));
+    return objj_msgSend(transformerMap, "objectForKey:", aName);
 }
 ,["CPValueTransformer","CPString"]), new objj_method(sel_getUid("valueTransformerNames"), function $CPValueTransformer__valueTransformerNames(self, _cmd)
 {
-    return (transformerMap == null ? null : transformerMap.isa.objj_msgSend0(transformerMap, "allKeys"));
+    return objj_msgSend(transformerMap, "allKeys");
 }
 ,["CPArray"]), new objj_method(sel_getUid("allowsReverseTransformation"), function $CPValueTransformer__allowsReverseTransformation(self, _cmd)
 {
-    return NO;
+  return NO;
 }
 ,["BOOL"]), new objj_method(sel_getUid("transformedValueClass"), function $CPValueTransformer__transformedValueClass(self, _cmd)
 {
-    return CPObject.isa.objj_msgSend0(CPObject, "class");
+    return objj_msgSend(CPObject, "class");
 }
 ,["Class"])]);
-}{var the_class = objj_allocateClassPair(CPValueTransformer, "CPNegateBooleanTransformer"),
-meta_class = the_class.isa;objj_registerClassPair(the_class);
+}
+
+
+
+{var the_class = objj_allocateClassPair(CPValueTransformer, "CPNegateBooleanTransformer"),
+meta_class = the_class.isa;
+
+
+
+
+
+objj_registerClassPair(the_class);
 class_addMethods(the_class, [new objj_method(sel_getUid("reverseTransformedValue:"), function $CPNegateBooleanTransformer__reverseTransformedValue_(self, _cmd, aValue)
 {
-    return !(aValue == null ? null : aValue.isa.objj_msgSend0(aValue, "boolValue"));
+    return !objj_msgSend(aValue, "boolValue");
 }
 ,["id","id"]), new objj_method(sel_getUid("transformedValue:"), function $CPNegateBooleanTransformer__transformedValue_(self, _cmd, aValue)
 {
-    return !(aValue == null ? null : aValue.isa.objj_msgSend0(aValue, "boolValue"));
+    return !objj_msgSend(aValue, "boolValue");
 }
 ,["id","id"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("allowsReverseTransformation"), function $CPNegateBooleanTransformer__allowsReverseTransformation(self, _cmd)
@@ -14220,11 +18293,17 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("allowsReverseTransform
 }
 ,["BOOL"]), new objj_method(sel_getUid("transformedValueClass"), function $CPNegateBooleanTransformer__transformedValueClass(self, _cmd)
 {
-    return CPNumber.isa.objj_msgSend0(CPNumber, "class");
+    return objj_msgSend(CPNumber, "class");
 }
 ,["Class"])]);
-}{var the_class = objj_allocateClassPair(CPValueTransformer, "CPIsNilTransformer"),
-meta_class = the_class.isa;objj_registerClassPair(the_class);
+}
+
+{var the_class = objj_allocateClassPair(CPValueTransformer, "CPIsNilTransformer"),
+meta_class = the_class.isa;
+
+
+
+objj_registerClassPair(the_class);
 class_addMethods(the_class, [new objj_method(sel_getUid("transformedValue:"), function $CPIsNilTransformer__transformedValue_(self, _cmd, aValue)
 {
     return aValue === nil || aValue === undefined;
@@ -14236,11 +18315,17 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("allowsReverseTransform
 }
 ,["BOOL"]), new objj_method(sel_getUid("transformedValueClass"), function $CPIsNilTransformer__transformedValueClass(self, _cmd)
 {
-    return CPNumber.isa.objj_msgSend0(CPNumber, "class");
+    return objj_msgSend(CPNumber, "class");
 }
 ,["Class"])]);
-}{var the_class = objj_allocateClassPair(CPValueTransformer, "CPIsNotNilTransformer"),
-meta_class = the_class.isa;objj_registerClassPair(the_class);
+}
+
+{var the_class = objj_allocateClassPair(CPValueTransformer, "CPIsNotNilTransformer"),
+meta_class = the_class.isa;
+
+
+
+objj_registerClassPair(the_class);
 class_addMethods(the_class, [new objj_method(sel_getUid("transformedValue:"), function $CPIsNotNilTransformer__transformedValue_(self, _cmd, aValue)
 {
     return aValue !== nil && aValue !== undefined;
@@ -14252,18 +18337,26 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("allowsReverseTransform
 }
 ,["BOOL"]), new objj_method(sel_getUid("transformedValueClass"), function $CPIsNotNilTransformer__transformedValueClass(self, _cmd)
 {
-    return CPNumber.isa.objj_msgSend0(CPNumber, "class");
+    return objj_msgSend(CPNumber, "class");
 }
 ,["Class"])]);
-}{var the_class = objj_allocateClassPair(CPValueTransformer, "CPUnarchiveFromDataTransformer"),
-meta_class = the_class.isa;objj_registerClassPair(the_class);
+}
+
+{var the_class = objj_allocateClassPair(CPValueTransformer, "CPUnarchiveFromDataTransformer"),
+meta_class = the_class.isa;
+
+
+
+
+
+objj_registerClassPair(the_class);
 class_addMethods(the_class, [new objj_method(sel_getUid("reverseTransformedValue:"), function $CPUnarchiveFromDataTransformer__reverseTransformedValue_(self, _cmd, aValue)
 {
-    return CPKeyedArchiver.isa.objj_msgSend1(CPKeyedArchiver, "archivedDataWithRootObject:", aValue);
+    return objj_msgSend(CPKeyedArchiver, "archivedDataWithRootObject:", aValue);
 }
 ,["id","id"]), new objj_method(sel_getUid("transformedValue:"), function $CPUnarchiveFromDataTransformer__transformedValue_(self, _cmd, aValue)
 {
-    return CPKeyedUnarchiver.isa.objj_msgSend1(CPKeyedUnarchiver, "unarchiveObjectWithData:", aValue);
+    return objj_msgSend(CPKeyedUnarchiver, "unarchiveObjectWithData:", aValue);
 }
 ,["id","id"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("allowsReverseTransformation"), function $CPUnarchiveFromDataTransformer__allowsReverseTransformation(self, _cmd)
@@ -14272,109 +18365,152 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("allowsReverseTransform
 }
 ,["BOOL"]), new objj_method(sel_getUid("transformedValueClass"), function $CPUnarchiveFromDataTransformer__transformedValueClass(self, _cmd)
 {
-    return CPData.isa.objj_msgSend0(CPData, "class");
+    return objj_msgSend(CPData, "class");
 }
 ,["Class"])]);
-}CPNegateBooleanTransformerName = "CPNegateBoolean";
+}
+
+CPNegateBooleanTransformerName = "CPNegateBoolean";
 CPIsNilTransformerName = "CPIsNil";
 CPIsNotNilTransformerName = "CPIsNotNil";
 CPUnarchiveFromDataTransformerName = "CPUnarchiveFromData";
 CPKeyedUnarchiveFromDataTransformerName = "CPKeyedUnarchiveFromData";
-CPValueTransformer.isa.objj_msgSend2(CPValueTransformer, "setValueTransformer:forName:", ((___r1 = CPNegateBooleanTransformer.isa.objj_msgSend0(CPNegateBooleanTransformer, "alloc")), ___r1 == null ? null : ___r1.isa.objj_msgSend0(___r1, "init")), CPNegateBooleanTransformerName);
-CPValueTransformer.isa.objj_msgSend2(CPValueTransformer, "setValueTransformer:forName:", ((___r1 = CPIsNilTransformer.isa.objj_msgSend0(CPIsNilTransformer, "alloc")), ___r1 == null ? null : ___r1.isa.objj_msgSend0(___r1, "init")), CPIsNilTransformerName);
-CPValueTransformer.isa.objj_msgSend2(CPValueTransformer, "setValueTransformer:forName:", ((___r1 = CPIsNotNilTransformer.isa.objj_msgSend0(CPIsNotNilTransformer, "alloc")), ___r1 == null ? null : ___r1.isa.objj_msgSend0(___r1, "init")), CPIsNotNilTransformerName);
-CPValueTransformer.isa.objj_msgSend2(CPValueTransformer, "setValueTransformer:forName:", ((___r1 = CPUnarchiveFromDataTransformer.isa.objj_msgSend0(CPUnarchiveFromDataTransformer, "alloc")), ___r1 == null ? null : ___r1.isa.objj_msgSend0(___r1, "init")), CPUnarchiveFromDataTransformerName);
-p;17;CPWebDAVManager.jt;8745;@STATIC;1.0;i;9;CPArray.ji;14;CPDictionary.ji;10;CPObject.ji;10;CPString.ji;7;CPURL.ji;17;CPURLConnection.ji;14;CPURLRequest.jt;8612;objj_executeFile("CPArray.j", YES);objj_executeFile("CPDictionary.j", YES);objj_executeFile("CPObject.j", YES);objj_executeFile("CPString.j", YES);objj_executeFile("CPURL.j", YES);objj_executeFile("CPURLConnection.j", YES);objj_executeFile("CPURLRequest.j", YES);var setURLResourceValuesForKeysFromProperties = function(aURL, keys, properties)
+
+objj_msgSend(CPValueTransformer, "setValueTransformer:forName:", objj_msgSend(objj_msgSend(CPNegateBooleanTransformer, "alloc"), "init"), CPNegateBooleanTransformerName);
+objj_msgSend(CPValueTransformer, "setValueTransformer:forName:", objj_msgSend(objj_msgSend(CPIsNilTransformer, "alloc"), "init"), CPIsNilTransformerName);
+objj_msgSend(CPValueTransformer, "setValueTransformer:forName:", objj_msgSend(objj_msgSend(CPIsNotNilTransformer, "alloc"), "init"), CPIsNotNilTransformerName);
+objj_msgSend(CPValueTransformer, "setValueTransformer:forName:", objj_msgSend(objj_msgSend(CPUnarchiveFromDataTransformer, "alloc"), "init"), CPUnarchiveFromDataTransformerName);p;17;CPWebDAVManager.jt;7495;@STATIC;1.0;i;9;CPArray.ji;14;CPDictionary.ji;10;CPObject.ji;10;CPString.ji;7;CPURL.ji;17;CPURLConnection.ji;14;CPURLRequest.jt;7362;
+objj_executeFile("CPArray.j", YES);
+objj_executeFile("CPDictionary.j", YES);
+objj_executeFile("CPObject.j", YES);
+objj_executeFile("CPString.j", YES);
+objj_executeFile("CPURL.j", YES);
+objj_executeFile("CPURLConnection.j", YES);
+objj_executeFile("CPURLRequest.j", YES);
+
+var setURLResourceValuesForKeysFromProperties = function(aURL, keys, properties)
 {
-    var resourceType = (properties == null ? null : properties.isa.objj_msgSend1(properties, "objectForKey:", "resourcetype"));
+    var resourceType = objj_msgSend(properties, "objectForKey:", "resourcetype");
+
     if (resourceType === CPWebDAVManagerCollectionResourceType)
     {
-        (aURL == null ? null : aURL.isa.objj_msgSend2(aURL, "setResourceValue:forKey:", YES, CPURLIsDirectoryKey));
-        (aURL == null ? null : aURL.isa.objj_msgSend2(aURL, "setResourceValue:forKey:", NO, CPURLIsRegularFileKey));
+        objj_msgSend(aURL, "setResourceValue:forKey:", YES, CPURLIsDirectoryKey);
+        objj_msgSend(aURL, "setResourceValue:forKey:", NO, CPURLIsRegularFileKey);
     }
     else if (resourceType === CPWebDAVManagerNonCollectionResourceType)
     {
-        (aURL == null ? null : aURL.isa.objj_msgSend2(aURL, "setResourceValue:forKey:", NO, CPURLIsDirectoryKey));
-        (aURL == null ? null : aURL.isa.objj_msgSend2(aURL, "setResourceValue:forKey:", YES, CPURLIsRegularFileKey));
+        objj_msgSend(aURL, "setResourceValue:forKey:", NO, CPURLIsDirectoryKey);
+        objj_msgSend(aURL, "setResourceValue:forKey:", YES, CPURLIsRegularFileKey);
     }
-    var displayName = (properties == null ? null : properties.isa.objj_msgSend1(properties, "objectForKey:", "displayname"));
+
+    var displayName = objj_msgSend(properties, "objectForKey:", "displayname");
+
     if (displayName !== nil)
     {
-        (aURL == null ? null : aURL.isa.objj_msgSend2(aURL, "setResourceValue:forKey:", displayName, CPURLNameKey));
-        (aURL == null ? null : aURL.isa.objj_msgSend2(aURL, "setResourceValue:forKey:", displayName, CPURLLocalizedNameKey));
+        objj_msgSend(aURL, "setResourceValue:forKey:", displayName, CPURLNameKey);
+        objj_msgSend(aURL, "setResourceValue:forKey:", displayName, CPURLLocalizedNameKey);
     }
 };
+
 CPWebDAVManagerCollectionResourceType = 1;
 CPWebDAVManagerNonCollectionResourceType = 0;
+
 {var the_class = objj_allocateClassPair(CPObject, "CPWebDAVManager"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_blocksForConnections")]);objj_registerClassPair(the_class);
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_blocksForConnections")]);
+
+
+
+
+
+objj_registerClassPair(the_class);
 class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPWebDAVManager__init(self, _cmd)
 {
     self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPWebDAVManager").super_class }, "init");
+
     if (self)
         self._blocksForConnections = objj_msgSend(objj_msgSend(CPDictionary, "alloc"), "init");
+
     return self;
 }
 ,["id"]), new objj_method(sel_getUid("contentsOfDirectoryAtURL:includingPropertiesForKeys:options:block:"), function $CPWebDAVManager__contentsOfDirectoryAtURL_includingPropertiesForKeys_options_block_(self, _cmd, aURL, keys, aMask, aBlock)
 {
     var properties = [],
-        count = (keys == null ? null : keys.isa.objj_msgSend0(keys, "count"));
+        count = objj_msgSend(keys, "count");
+
     while (count--)
         properties.push(WebDAVPropertiesForURLKeys[keys[count]]);
+
     var makeContents = function(aURL, response)
     {
         var contents = [],
             URLString = nil,
-            URLStrings = (response == null ? null : response.isa.objj_msgSend0(response, "keyEnumerator"));
-        while ((URLString = (URLStrings == null ? null : URLStrings.isa.objj_msgSend0(URLStrings, "nextObject"))) !== nil)
+            URLStrings = objj_msgSend(response, "keyEnumerator");
+
+        while ((URLString = objj_msgSend(URLStrings, "nextObject")) !== nil)
         {
-            var URL = CPURL.isa.objj_msgSend1(CPURL, "URLWithString:", URLString),
-                properties = (response == null ? null : response.isa.objj_msgSend1(response, "objectForKey:", URLString));
-            if (!((___r1 = (URL == null ? null : URL.isa.objj_msgSend0(URL, "absoluteString"))), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "isEqual:", (aURL == null ? null : aURL.isa.objj_msgSend0(aURL, "absoluteString")))))
+            var URL = objj_msgSend(CPURL, "URLWithString:", URLString),
+                properties = objj_msgSend(response, "objectForKey:", URLString);
+
+
+            if (!objj_msgSend(objj_msgSend(URL, "absoluteString"), "isEqual:", objj_msgSend(aURL, "absoluteString")))
             {
                 contents.push(URL);
+
                 setURLResourceValuesForKeysFromProperties(URL, keys, properties);
             }
         }
+
         return contents;
-        var ___r1;
     };
+
     if (!aBlock)
-        return makeContents(aURL, self.isa.objj_msgSend(self, "PROPFIND:properties:depth:block:", aURL, properties, 1, nil));
-    self.isa.objj_msgSend(self, "PROPFIND:properties:depth:block:", aURL, properties, 1, function(aURL, response)
+        return makeContents(aURL, objj_msgSend(self, "PROPFIND:properties:depth:block:", aURL, properties, 1, nil));
+
+    objj_msgSend(self, "PROPFIND:properties:depth:block:", aURL, properties, 1, function(aURL, response)
     {
         aBlock(aURL, makeContents(aURL, response));
     });
 }
 ,["CPArray","CPURL","CPArray","CPDirectoryEnumerationOptions","Function"]), new objj_method(sel_getUid("PROPFIND:properties:depth:block:"), function $CPWebDAVManager__PROPFIND_properties_depth_block_(self, _cmd, aURL, properties, aDepth, aBlock)
 {
-    var request = CPURLRequest.isa.objj_msgSend1(CPURLRequest, "requestWithURL:", aURL);
-    (request == null ? null : request.isa.objj_msgSend1(request, "setHTTPMethod:", "PROPFIND"));
-    (request == null ? null : request.isa.objj_msgSend2(request, "setValue:forHTTPHeaderField:", aDepth, "Depth"));
+    var request = objj_msgSend(CPURLRequest, "requestWithURL:", aURL);
+
+    objj_msgSend(request, "setHTTPMethod:", "PROPFIND");
+    objj_msgSend(request, "setValue:forHTTPHeaderField:", aDepth, "Depth");
+
     var HTTPBody = ["<?xml version=\"1.0\"?><a:propfind xmlns:a=\"DAV:\">"],
         index = 0,
         count = properties.length;
+
     for (; index < count; ++index)
         HTTPBody.push("<a:prop><a:", properties[index], "/></a:prop>");
+
     HTTPBody.push("</a:propfind>");
-    (request == null ? null : request.isa.objj_msgSend1(request, "setHTTPBody:", HTTPBody.join("")));
+
+    objj_msgSend(request, "setHTTPBody:", HTTPBody.join(""));
+
     if (!aBlock)
-        return parsePROPFINDResponse(((___r1 = CPURLConnection.isa.objj_msgSend2(CPURLConnection, "sendSynchronousRequest:returningResponse:", request, nil)), ___r1 == null ? null : ___r1.isa.objj_msgSend0(___r1, "rawString")));
+        return parsePROPFINDResponse(objj_msgSend(objj_msgSend(CPURLConnection, "sendSynchronousRequest:returningResponse:", request, nil), "rawString"));
+
     else
     {
-        var connection = CPURLConnection.isa.objj_msgSend2(CPURLConnection, "connectionWithRequest:delegate:", request, self);
-        ((___r1 = self._blocksForConnections), ___r1 == null ? null : ___r1.isa.objj_msgSend2(___r1, "setObject:forKey:", aBlock, (connection == null ? null : connection.isa.objj_msgSend0(connection, "UID"))));
+        var connection = objj_msgSend(CPURLConnection, "connectionWithRequest:delegate:", request, self);
+
+        objj_msgSend(self._blocksForConnections, "setObject:forKey:", aBlock, objj_msgSend(connection, "UID"));
     }
-    var ___r1;
 }
 ,["CPDictionary","CPURL","CPDictionary","CPString","Function"]), new objj_method(sel_getUid("connection:didReceiveData:"), function $CPWebDAVManager__connection_didReceiveData_(self, _cmd, aURLConnection, aString)
 {
-    var block = ((___r1 = self._blocksForConnections), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "objectForKey:", (aURLConnection == null ? null : aURLConnection.isa.objj_msgSend0(aURLConnection, "UID"))));
-    block(((___r1 = aURLConnection._request), ___r1 == null ? null : ___r1.isa.objj_msgSend0(___r1, "URL")), parsePROPFINDResponse(aString));
-    var ___r1;
+    var block = objj_msgSend(self._blocksForConnections, "objectForKey:", objj_msgSend(aURLConnection, "UID"));
+
+
+    block(objj_msgSend(aURLConnection._request, "URL"), parsePROPFINDResponse(aString));
 }
 ,["void","CPURLConnection","CPString"])]);
-}var WebDAVPropertiesForURLKeys = {};
+}
+
+var WebDAVPropertiesForURLKeys = { };
+
 WebDAVPropertiesForURLKeys[CPURLNameKey] = "displayname";
 WebDAVPropertiesForURLKeys[CPURLLocalizedNameKey] = "displayname";
 WebDAVPropertiesForURLKeys[CPURLIsRegularFileKey] = "resourcetype";
@@ -14384,12 +18520,16 @@ var XMLDocumentFromString = function(anXMLString)
     if (typeof window["ActiveXObject"] !== "undefined")
     {
         var XMLDocument = new ActiveXObject("Microsoft.XMLDOM");
+
         XMLDocument.async = false;
         XMLDocument.loadXML(anXMLString);
+
         return XMLDocument;
     }
-    return (new DOMParser()).parseFromString(anXMLString, "text/xml");
+
+    return new DOMParser().parseFromString(anXMLString,"text/xml");
 };
+
 var parsePROPFINDResponse = function(anXMLString)
 {
     var XMLDocument = XMLDocumentFromString(anXMLString),
@@ -14397,36 +18537,46 @@ var parsePROPFINDResponse = function(anXMLString)
         responseIndex = 0,
         responseCount = responses.length,
         propertiesForURLs = objj_msgSend(objj_msgSend(CPDictionary, "alloc"), "init");
+
     for (; responseIndex < responseCount; ++responseIndex)
     {
         var response = responses[responseIndex],
-            elements = ((response.getElementsByTagNameNS("*", "prop")).item(0)).childNodes,
+            elements = response.getElementsByTagNameNS("*", "prop").item(0).childNodes,
             index = 0,
             count = elements.length,
             properties = objj_msgSend(objj_msgSend(CPDictionary, "alloc"), "init");
+
         for (; index < count; ++index)
         {
             var element = elements[index];
+
             if (element.nodeType === 8 || element.nodeType === 3)
                 continue;
+
             var nodeName = element.nodeName,
                 colonIndex = nodeName.lastIndexOf(':');
+
             if (colonIndex > -1)
                 nodeName = nodeName.substr(colonIndex + 1);
+
             if (nodeName === "resourcetype")
-                (properties == null ? null : properties.isa.objj_msgSend2(properties, "setObject:forKey:", element.firstChild ? CPWebDAVManagerCollectionResourceType : CPWebDAVManagerNonCollectionResourceType, nodeName));
+                objj_msgSend(properties, "setObject:forKey:", element.firstChild ? CPWebDAVManagerCollectionResourceType : CPWebDAVManagerNonCollectionResourceType, nodeName);
             else
-                (properties == null ? null : properties.isa.objj_msgSend2(properties, "setObject:forKey:", element.firstChild.nodeValue, nodeName));
+                objj_msgSend(properties, "setObject:forKey:", element.firstChild.nodeValue, nodeName);
         }
-        var href = (response.getElementsByTagNameNS("*", "href")).item(0);
-        (propertiesForURLs == null ? null : propertiesForURLs.isa.objj_msgSend2(propertiesForURLs, "setObject:forKey:", properties, href.firstChild.nodeValue));
+
+        var href = response.getElementsByTagNameNS("*", "href").item(0);
+
+        objj_msgSend(propertiesForURLs, "setObject:forKey:", properties, href.firstChild.nodeValue);
     }
+
     return propertiesForURLs;
 };
-var mapURLsAndProperties = function(properties, ignoredURL)
+
+var mapURLsAndProperties = function( properties, ignoredURL)
 {
-};
-p;12;Foundation.jt;3531;@STATIC;1.0;i;13;_CGGeometry.ji;9;CPArray.ji;10;CPBundle.ji;22;CPByteCountFormatter.ji;16;CPCharacterSet.ji;9;CPCoder.ji;23;CPComparisonPredicate.ji;21;CPCompoundPredicate.ji;8;CPData.ji;8;CPDate.ji;17;CPDateFormatter.ji;11;CPDecimal.ji;17;CPDecimalNumber.ji;18;CPDelayedPerform.ji;14;CPDictionary.ji;14;CPEnumerator.ji;9;CPError.ji;13;CPException.ji;14;CPExpression.ji;13;CPFormatter.ji;13;CPIndexPath.ji;12;CPIndexSet.ji;14;CPInvocation.ji;19;CPJSONPConnection.ji;17;CPKeyedArchiver.ji;19;CPKeyedUnarchiver.ji;18;CPKeyValueCoding.ji;21;CPKeyValueObserving.ji;10;CPLocale.ji;16;CPMutableArray.ji;14;CPMutableSet.ji;16;CPNotification.ji;22;CPNotificationCenter.ji;8;CPNull.ji;10;CPNumber.ji;19;CPNumberFormatter.ji;10;CPObject.ji;15;CPObjJRuntime.ji;13;CPOperation.ji;18;CPOperationQueue.ji;13;CPPredicate.ji;29;CPPropertyListSerialization.ji;9;CPRange.ji;11;CPRunLoop.ji;11;CPScanner.ji;7;CPSet.ji;18;CPSortDescriptor.ji;10;CPString.ji;9;CPTimer.ji;12;CPTimeZone.ji;15;CPUndoManager.ji;7;CPURL.ji;17;CPURLConnection.ji;14;CPURLRequest.ji;15;CPURLResponse.ji;16;CPUserDefaults.ji;22;CPUserSessionManager.ji;9;CPValue.ji;20;CPValueTransformer.jt;2381;objj_executeFile("_CGGeometry.j", YES);objj_executeFile("CPArray.j", YES);objj_executeFile("CPBundle.j", YES);objj_executeFile("CPByteCountFormatter.j", YES);objj_executeFile("CPCharacterSet.j", YES);objj_executeFile("CPCoder.j", YES);objj_executeFile("CPComparisonPredicate.j", YES);objj_executeFile("CPCompoundPredicate.j", YES);objj_executeFile("CPData.j", YES);objj_executeFile("CPDate.j", YES);objj_executeFile("CPDateFormatter.j", YES);objj_executeFile("CPDecimal.j", YES);objj_executeFile("CPDecimalNumber.j", YES);objj_executeFile("CPDelayedPerform.j", YES);objj_executeFile("CPDictionary.j", YES);objj_executeFile("CPEnumerator.j", YES);objj_executeFile("CPError.j", YES);objj_executeFile("CPException.j", YES);objj_executeFile("CPExpression.j", YES);objj_executeFile("CPFormatter.j", YES);objj_executeFile("CPIndexPath.j", YES);objj_executeFile("CPIndexSet.j", YES);objj_executeFile("CPInvocation.j", YES);objj_executeFile("CPJSONPConnection.j", YES);objj_executeFile("CPKeyedArchiver.j", YES);objj_executeFile("CPKeyedUnarchiver.j", YES);objj_executeFile("CPKeyValueCoding.j", YES);objj_executeFile("CPKeyValueObserving.j", YES);objj_executeFile("CPLocale.j", YES);objj_executeFile("CPMutableArray.j", YES);objj_executeFile("CPMutableSet.j", YES);objj_executeFile("CPNotification.j", YES);objj_executeFile("CPNotificationCenter.j", YES);objj_executeFile("CPNull.j", YES);objj_executeFile("CPNumber.j", YES);objj_executeFile("CPNumberFormatter.j", YES);objj_executeFile("CPObject.j", YES);objj_executeFile("CPObjJRuntime.j", YES);objj_executeFile("CPOperation.j", YES);objj_executeFile("CPOperationQueue.j", YES);objj_executeFile("CPPredicate.j", YES);objj_executeFile("CPPropertyListSerialization.j", YES);objj_executeFile("CPRange.j", YES);objj_executeFile("CPRunLoop.j", YES);objj_executeFile("CPScanner.j", YES);objj_executeFile("CPSet.j", YES);objj_executeFile("CPSortDescriptor.j", YES);objj_executeFile("CPString.j", YES);objj_executeFile("CPTimer.j", YES);objj_executeFile("CPTimeZone.j", YES);objj_executeFile("CPUndoManager.j", YES);objj_executeFile("CPURL.j", YES);objj_executeFile("CPURLConnection.j", YES);objj_executeFile("CPURLRequest.j", YES);objj_executeFile("CPURLResponse.j", YES);objj_executeFile("CPUserDefaults.j", YES);objj_executeFile("CPUserSessionManager.j", YES);objj_executeFile("CPValue.j", YES);objj_executeFile("CPValueTransformer.j", YES);p;10;_CPArray.jt;28830;@STATIC;1.0;i;14;CPEnumerator.ji;13;CPException.ji;10;CPObject.ji;9;CPRange.ji;18;CPSortDescriptor.jt;28722;objj_executeFile("CPEnumerator.j", YES);objj_executeFile("CPException.j", YES);objj_executeFile("CPObject.j", YES);objj_executeFile("CPRange.j", YES);objj_executeFile("CPSortDescriptor.j", YES);CPEnumerationNormal = 0;
+
+};p;12;Foundation.jt;3634;@STATIC;1.0;i;13;_CGGeometry.ji;9;CPArray.ji;10;CPBundle.ji;22;CPByteCountFormatter.ji;9;CPCache.ji;16;CPCharacterSet.ji;9;CPCoder.ji;23;CPComparisonPredicate.ji;21;CPCompoundPredicate.ji;8;CPData.ji;8;CPDate.ji;17;CPDateFormatter.ji;11;CPDecimal.ji;17;CPDecimalNumber.ji;18;CPDelayedPerform.ji;14;CPDictionary.ji;14;CPEnumerator.ji;9;CPError.ji;13;CPException.ji;14;CPExpression.ji;13;CPFormatter.ji;13;CPIndexPath.ji;12;CPIndexSet.ji;14;CPInvocation.ji;19;CPJSONPConnection.ji;17;CPKeyedArchiver.ji;19;CPKeyedUnarchiver.ji;18;CPKeyValueCoding.ji;21;CPKeyValueObserving.ji;10;CPLocale.ji;16;CPMutableArray.ji;14;CPMutableSet.ji;16;CPNotification.ji;22;CPNotificationCenter.ji;8;CPNull.ji;10;CPNumber.ji;19;CPNumberFormatter.ji;10;CPObject.ji;15;CPObjJRuntime.ji;13;CPOperation.ji;18;CPOperationQueue.ji;13;CPPredicate.ji;29;CPPropertyListSerialization.ji;9;CPRange.ji;11;CPRunLoop.ji;11;CPScanner.ji;7;CPSet.ji;18;CPSortDescriptor.ji;10;CPString.ji;9;CPTimer.ji;12;CPTimeZone.ji;15;CPUndoManager.ji;7;CPURL.ji;17;CPURLConnection.ji;12;CPURLError.ji;14;CPURLRequest.ji;15;CPURLResponse.ji;16;CPUserDefaults.ji;22;CPUserSessionManager.ji;9;CPValue.ji;20;CPValueTransformer.jt;2454;objj_executeFile("_CGGeometry.j", YES);objj_executeFile("CPArray.j", YES);objj_executeFile("CPBundle.j", YES);objj_executeFile("CPByteCountFormatter.j", YES);objj_executeFile("CPCache.j", YES);objj_executeFile("CPCharacterSet.j", YES);objj_executeFile("CPCoder.j", YES);objj_executeFile("CPComparisonPredicate.j", YES);objj_executeFile("CPCompoundPredicate.j", YES);objj_executeFile("CPData.j", YES);objj_executeFile("CPDate.j", YES);objj_executeFile("CPDateFormatter.j", YES);objj_executeFile("CPDecimal.j", YES);objj_executeFile("CPDecimalNumber.j", YES);objj_executeFile("CPDelayedPerform.j", YES);objj_executeFile("CPDictionary.j", YES);objj_executeFile("CPEnumerator.j", YES);objj_executeFile("CPError.j", YES);objj_executeFile("CPException.j", YES);objj_executeFile("CPExpression.j", YES);objj_executeFile("CPFormatter.j", YES);objj_executeFile("CPIndexPath.j", YES);objj_executeFile("CPIndexSet.j", YES);objj_executeFile("CPInvocation.j", YES);objj_executeFile("CPJSONPConnection.j", YES);objj_executeFile("CPKeyedArchiver.j", YES);objj_executeFile("CPKeyedUnarchiver.j", YES);objj_executeFile("CPKeyValueCoding.j", YES);objj_executeFile("CPKeyValueObserving.j", YES);objj_executeFile("CPLocale.j", YES);objj_executeFile("CPMutableArray.j", YES);objj_executeFile("CPMutableSet.j", YES);objj_executeFile("CPNotification.j", YES);objj_executeFile("CPNotificationCenter.j", YES);objj_executeFile("CPNull.j", YES);objj_executeFile("CPNumber.j", YES);objj_executeFile("CPNumberFormatter.j", YES);objj_executeFile("CPObject.j", YES);objj_executeFile("CPObjJRuntime.j", YES);objj_executeFile("CPOperation.j", YES);objj_executeFile("CPOperationQueue.j", YES);objj_executeFile("CPPredicate.j", YES);objj_executeFile("CPPropertyListSerialization.j", YES);objj_executeFile("CPRange.j", YES);objj_executeFile("CPRunLoop.j", YES);objj_executeFile("CPScanner.j", YES);objj_executeFile("CPSet.j", YES);objj_executeFile("CPSortDescriptor.j", YES);objj_executeFile("CPString.j", YES);objj_executeFile("CPTimer.j", YES);objj_executeFile("CPTimeZone.j", YES);objj_executeFile("CPUndoManager.j", YES);objj_executeFile("CPURL.j", YES);objj_executeFile("CPURLConnection.j", YES);objj_executeFile("CPURLError.j", YES);objj_executeFile("CPURLRequest.j", YES);objj_executeFile("CPURLResponse.j", YES);objj_executeFile("CPUserDefaults.j", YES);objj_executeFile("CPUserSessionManager.j", YES);objj_executeFile("CPValue.j", YES);objj_executeFile("CPValueTransformer.j", YES);p;10;_CPArray.jt;28970;@STATIC;1.0;i;14;CPEnumerator.ji;13;CPException.ji;10;CPObject.ji;9;CPRange.ji;18;CPSortDescriptor.jt;28862;objj_executeFile("CPEnumerator.j", YES);objj_executeFile("CPException.j", YES);objj_executeFile("CPObject.j", YES);objj_executeFile("CPRange.j", YES);objj_executeFile("CPSortDescriptor.j", YES);CPEnumerationNormal = 0;
 CPEnumerationConcurrent = 1 << 0;
 CPEnumerationReverse = 1 << 1;
 CPBinarySearchingFirstEqual = 1 << 8;
@@ -14504,7 +18654,11 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPArr
 {
     _CPRaiseInvalidAbstractInvocation(self, _cmd);
 }
-,["CPUInteger"]), new objj_method(sel_getUid("firstObject"), function $CPArray__firstObject(self, _cmd)
+,["CPUInteger"]), new objj_method(sel_getUid("hash"), function $CPArray__hash(self, _cmd)
+{
+    return self.isa.objj_msgSend0(self, "UID");
+}
+,["unsigned"]), new objj_method(sel_getUid("firstObject"), function $CPArray__firstObject(self, _cmd)
 {
     var count = self.isa.objj_msgSend0(self, "count");
     if (count > 0)
@@ -15246,7 +19400,9 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("alloc"), function $_CP
 }
 ,["id","id"])]);
 }Array.prototype.isa = _CPJavaScriptArray;
-p;9;CPArray.jt;139;@STATIC;1.0;i;10;_CPArray.ji;20;_CPJavaScriptArray.jt;82;objj_executeFile("_CPArray.j", YES);objj_executeFile("_CPJavaScriptArray.j", YES);p;16;CPMutableArray.jt;15988;@STATIC;1.0;i;10;_CPArray.jt;15953;objj_executeFile("_CPArray.j", YES);{var the_class = objj_allocateClassPair(CPArray, "CPMutableArray"),
+p;9;CPArray.jt;141;@STATIC;1.0;i;10;_CPArray.ji;20;_CPJavaScriptArray.jt;84;
+objj_executeFile("_CPArray.j", YES);
+objj_executeFile("_CPJavaScriptArray.j", YES);p;16;CPMutableArray.jt;15988;@STATIC;1.0;i;10;_CPArray.jt;15953;objj_executeFile("_CPArray.j", YES);{var the_class = objj_allocateClassPair(CPArray, "CPMutableArray"),
 meta_class = the_class.isa;objj_registerClassPair(the_class);
 class_addMethods(the_class, [new objj_method(sel_getUid("addObject:"), function $CPMutableArray__addObject_(self, _cmd, anObject)
 {
@@ -15697,21 +19853,201 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     (coder == null ? null : coder.isa.objj_msgSend2(coder, "encodeObject:forKey:", self._value, CPConstantValueKey));
 }
 ,["void","CPCoder"])]);
-}p;15;_CPExpression.jt;7981;@STATIC;1.0;i;9;CPArray.ji;14;CPDictionary.ji;18;CPKeyValueCoding.ji;10;CPObject.ji;10;CPString.jt;7877;objj_executeFile("CPArray.j", YES);objj_executeFile("CPDictionary.j", YES);objj_executeFile("CPKeyValueCoding.j", YES);objj_executeFile("CPObject.j", YES);objj_executeFile("CPString.j", YES);CPConstantValueExpressionType = 0;
+}p;15;_CPExpression.jt;6761;@STATIC;1.0;i;9;CPArray.ji;14;CPDictionary.ji;18;CPKeyValueCoding.ji;10;CPObject.ji;10;CPString.jt;6657;
+objj_executeFile("CPArray.j", YES);
+objj_executeFile("CPDictionary.j", YES);
+objj_executeFile("CPKeyValueCoding.j", YES);
+objj_executeFile("CPObject.j", YES);
+objj_executeFile("CPString.j", YES);
+
+
+
+
+CPConstantValueExpressionType = 0;
+
+
+
 CPEvaluatedObjectExpressionType = 1;
+
+
+
 CPVariableExpressionType = 2;
+
+
+
 CPKeyPathExpressionType = 3;
+
+
+
 CPFunctionExpressionType = 4;
+
+
+
 CPAggregateExpressionType = 5;
+
+
+
 CPSubqueryExpressionType = 6;
+
+
+
 CPUnionSetExpressionType = 7;
+
+
+
 CPIntersectSetExpressionType = 8;
+
+
+
 CPMinusSetExpressionType = 9;
 {var the_class = objj_allocateClassPair(CPObject, "CPExpression"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_type")]);objj_registerClassPair(the_class);
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_type")]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+objj_registerClassPair(the_class);
 class_addMethods(the_class, [new objj_method(sel_getUid("initWithExpressionType:"), function $CPExpression__initWithExpressionType_(self, _cmd, type)
 {
     self._type = type;
+
     return self;
 }
 ,["id","int"]), new objj_method(sel_getUid("expressionType"), function $CPExpression__expressionType(self, _cmd)
@@ -15775,57 +20111,47 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithExpressionType:
 ,["CPExpression","CPDictionary"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("expressionForConstantValue:"), function $CPExpression__expressionForConstantValue_(self, _cmd, value)
 {
-    return ((___r1 = (_CPConstantValueExpression == null ? null : _CPConstantValueExpression.isa.objj_msgSend0(_CPConstantValueExpression, "alloc"))), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "initWithValue:", value));
-    var ___r1;
+    return objj_msgSend(objj_msgSend(_CPConstantValueExpression, "alloc"), "initWithValue:", value);
 }
 ,["CPExpression","id"]), new objj_method(sel_getUid("expressionForEvaluatedObject"), function $CPExpression__expressionForEvaluatedObject(self, _cmd)
 {
-    return (_CPSelfExpression == null ? null : _CPSelfExpression.isa.objj_msgSend0(_CPSelfExpression, "evaluatedObject"));
+    return objj_msgSend(_CPSelfExpression, "evaluatedObject");
 }
 ,["CPExpression"]), new objj_method(sel_getUid("expressionForVariable:"), function $CPExpression__expressionForVariable_(self, _cmd, string)
 {
-    return ((___r1 = (_CPVariableExpression == null ? null : _CPVariableExpression.isa.objj_msgSend0(_CPVariableExpression, "alloc"))), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "initWithVariable:", string));
-    var ___r1;
+    return objj_msgSend(objj_msgSend(_CPVariableExpression, "alloc"), "initWithVariable:", string);
 }
 ,["CPExpression","CPString"]), new objj_method(sel_getUid("expressionForKeyPath:"), function $CPExpression__expressionForKeyPath_(self, _cmd, keyPath)
 {
-    return ((___r1 = (_CPKeyPathExpression == null ? null : _CPKeyPathExpression.isa.objj_msgSend0(_CPKeyPathExpression, "alloc"))), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "initWithKeyPath:", keyPath));
-    var ___r1;
+    return objj_msgSend(objj_msgSend(_CPKeyPathExpression, "alloc"), "initWithKeyPath:", keyPath);
 }
 ,["CPExpression","CPString"]), new objj_method(sel_getUid("expressionForAggregate:"), function $CPExpression__expressionForAggregate_(self, _cmd, collection)
 {
-    return ((___r1 = (_CPAggregateExpression == null ? null : _CPAggregateExpression.isa.objj_msgSend0(_CPAggregateExpression, "alloc"))), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "initWithAggregate:", collection));
-    var ___r1;
+    return objj_msgSend(objj_msgSend(_CPAggregateExpression, "alloc"), "initWithAggregate:", collection);
 }
 ,["CPExpression","CPArray"]), new objj_method(sel_getUid("expressionForUnionSet:with:"), function $CPExpression__expressionForUnionSet_with_(self, _cmd, left, right)
 {
-    return ((___r1 = (_CPSetExpression == null ? null : _CPSetExpression.isa.objj_msgSend0(_CPSetExpression, "alloc"))), ___r1 == null ? null : ___r1.isa.objj_msgSend3(___r1, "initWithType:left:right:", CPUnionSetExpressionType, left, right));
-    var ___r1;
+    return objj_msgSend(objj_msgSend(_CPSetExpression, "alloc"), "initWithType:left:right:", CPUnionSetExpressionType, left, right);
 }
 ,["CPExpression","CPExpression","CPExpression"]), new objj_method(sel_getUid("expressionForIntersectSet:with:"), function $CPExpression__expressionForIntersectSet_with_(self, _cmd, left, right)
 {
-    return ((___r1 = (_CPSetExpression == null ? null : _CPSetExpression.isa.objj_msgSend0(_CPSetExpression, "alloc"))), ___r1 == null ? null : ___r1.isa.objj_msgSend3(___r1, "initWithType:left:right:", CPIntersectSetExpressionType, left, right));
-    var ___r1;
+    return objj_msgSend(objj_msgSend(_CPSetExpression, "alloc"), "initWithType:left:right:", CPIntersectSetExpressionType, left, right);
 }
 ,["CPExpression","CPExpression","CPExpression"]), new objj_method(sel_getUid("expressionForMinusSet:with:"), function $CPExpression__expressionForMinusSet_with_(self, _cmd, left, right)
 {
-    return ((___r1 = (_CPSetExpression == null ? null : _CPSetExpression.isa.objj_msgSend0(_CPSetExpression, "alloc"))), ___r1 == null ? null : ___r1.isa.objj_msgSend3(___r1, "initWithType:left:right:", CPMinusSetExpressionType, left, right));
-    var ___r1;
+    return objj_msgSend(objj_msgSend(_CPSetExpression, "alloc"), "initWithType:left:right:", CPMinusSetExpressionType, left, right);
 }
 ,["CPExpression","CPExpression","CPExpression"]), new objj_method(sel_getUid("expressionForFunction:arguments:"), function $CPExpression__expressionForFunction_arguments_(self, _cmd, function_name, parameters)
 {
-    return ((___r1 = (_CPFunctionExpression == null ? null : _CPFunctionExpression.isa.objj_msgSend0(_CPFunctionExpression, "alloc"))), ___r1 == null ? null : ___r1.isa.objj_msgSend2(___r1, "initWithSelector:arguments:", CPSelectorFromString(function_name), parameters));
-    var ___r1;
+    return objj_msgSend(objj_msgSend(_CPFunctionExpression, "alloc"), "initWithSelector:arguments:", CPSelectorFromString(function_name), parameters);
 }
 ,["CPExpression","CPString","CPArray"]), new objj_method(sel_getUid("expressionForFunction:selectorName:arguments:"), function $CPExpression__expressionForFunction_selectorName_arguments_(self, _cmd, target, selectorName, parameters)
 {
-    return ((___r1 = (_CPFunctionExpression == null ? null : _CPFunctionExpression.isa.objj_msgSend0(_CPFunctionExpression, "alloc"))), ___r1 == null ? null : ___r1.isa.objj_msgSend3(___r1, "initWithTarget:selector:arguments:", target, CPSelectorFromString(selectorName), parameters));
-    var ___r1;
+    return objj_msgSend(objj_msgSend(_CPFunctionExpression, "alloc"), "initWithTarget:selector:arguments:", target, CPSelectorFromString(selectorName), parameters);
 }
 ,["CPExpression","CPExpression","CPString","CPArray"]), new objj_method(sel_getUid("expressionForSubquery:usingIteratorVariable:predicate:"), function $CPExpression__expressionForSubquery_usingIteratorVariable_predicate_(self, _cmd, expression, variable, predicate)
 {
-    return ((___r1 = (_CPSubqueryExpression == null ? null : _CPSubqueryExpression.isa.objj_msgSend0(_CPSubqueryExpression, "alloc"))), ___r1 == null ? null : ___r1.isa.objj_msgSend3(___r1, "initWithExpression:usingIteratorVariable:predicate:", expression, variable, predicate));
-    var ___r1;
+    return objj_msgSend(objj_msgSend(_CPSubqueryExpression, "alloc"), "initWithExpression:usingIteratorVariable:predicate:", expression, variable, predicate);
 }
 ,["CPExpression","CPExpression","CPString","CPPredicate"])]);
 }p;23;_CPFunctionExpression.jt;13018;@STATIC;1.0;i;9;CPArray.ji;8;CPDate.ji;14;CPDictionary.ji;13;CPException.ji;10;CPString.ji;15;_CPExpression.jt;12901;objj_executeFile("CPArray.j", YES);objj_executeFile("CPDate.j", YES);objj_executeFile("CPDictionary.j", YES);objj_executeFile("CPException.j", YES);objj_executeFile("CPString.j", YES);objj_executeFile("_CPExpression.j", YES);{var the_class = objj_allocateClassPair(CPExpression, "_CPFunctionExpression"),
@@ -16804,24 +21130,43 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithString:args:"),
 {
     CPException.isa.objj_msgSend2(CPException, "raise:reason:", CPInvalidArgumentException, "unable to parse " + target + " at index " + (aScanner == null ? null : aScanner.isa.objj_msgSend0(aScanner, "scanLocation")));
 };
-p;19;_CPSelfExpression.jt;1820;@STATIC;1.0;i;14;CPDictionary.ji;10;CPString.ji;15;_CPExpression.jt;1747;objj_executeFile("CPDictionary.j", YES);objj_executeFile("CPString.j", YES);objj_executeFile("_CPExpression.j", YES);var evaluatedObject = nil;
+p;19;_CPSelfExpression.jt;1796;@STATIC;1.0;i;14;CPDictionary.ji;10;CPString.ji;15;_CPExpression.jt;1723;
+objj_executeFile("CPDictionary.j", YES);
+objj_executeFile("CPString.j", YES);
+objj_executeFile("_CPExpression.j", YES);
+
+var evaluatedObject = nil;
+
 {var the_class = objj_allocateClassPair(CPExpression, "_CPSelfExpression"),
-meta_class = the_class.isa;objj_registerClassPair(the_class);
+meta_class = the_class.isa;
+
+
+
+
+
+
+
+
+
+
+
+objj_registerClassPair(the_class);
 class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $_CPSelfExpression__init(self, _cmd)
 {
     self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("_CPSelfExpression").super_class }, "initWithExpressionType:", CPEvaluatedObjectExpressionType);
+
     return self;
 }
 ,["id"]), new objj_method(sel_getUid("initWithCoder:"), function $_CPSelfExpression__initWithCoder_(self, _cmd, coder)
 {
-    return _CPSelfExpression.isa.objj_msgSend0(_CPSelfExpression, "evaluatedObject");
+    return objj_msgSend(_CPSelfExpression, "evaluatedObject");
 }
 ,["id","CPCoder"]), new objj_method(sel_getUid("encodeWithCoder:"), function $_CPSelfExpression__encodeWithCoder_(self, _cmd, coder)
 {
 }
 ,["void","CPCoder"]), new objj_method(sel_getUid("isEqual:"), function $_CPSelfExpression__isEqual_(self, _cmd, object)
 {
-    return object === self;
+    return (object === self);
 }
 ,["BOOL","id"]), new objj_method(sel_getUid("expressionValueWithObject:context:"), function $_CPSelfExpression__expressionValueWithObject_context_(self, _cmd, object, context)
 {
@@ -16835,7 +21180,8 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $_CPSe
 class_addMethods(meta_class, [new objj_method(sel_getUid("evaluatedObject"), function $_CPSelfExpression__evaluatedObject(self, _cmd)
 {
     if (evaluatedObject == nil)
-        evaluatedObject = _CPSelfExpression.isa.objj_msgSend0(_CPSelfExpression, "new");
+        evaluatedObject = objj_msgSend(_CPSelfExpression, "new");
+
     return evaluatedObject;
 }
 ,["id"])]);
@@ -17091,9 +21437,11 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     (coder == null ? null : coder.isa.objj_msgSend2(coder, "encodeObject:forKey:", self._variable, CPVariableKey));
 }
 ,["void","CPCoder"])]);
-}p;23;CPComparisonPredicate.jt;19573;@STATIC;1.0;i;33;CPComparisonPredicate_Constants.ji;9;CPArray.ji;14;CPEnumerator.ji;8;CPNull.ji;10;CPString.ji;15;_CPExpression.ji;14;_CPPredicate.jt;19417;objj_executeFile("CPComparisonPredicate_Constants.j", YES);objj_executeFile("CPArray.j", YES);objj_executeFile("CPEnumerator.j", YES);objj_executeFile("CPNull.j", YES);objj_executeFile("CPString.j", YES);objj_executeFile("_CPExpression.j", YES);objj_executeFile("_CPPredicate.j", YES);var CPComparisonPredicateModifier,
-    CPPredicateOperatorType;
-{var the_class = objj_allocateClassPair(CPPredicate, "CPComparisonPredicate"),
+}p;23;CPComparisonPredicate.jt;19723;@STATIC;1.0;i;33;CPComparisonPredicate_Constants.ji;9;CPArray.ji;14;CPEnumerator.ji;8;CPNull.ji;10;CPString.ji;15;_CPExpression.ji;14;_CPPredicate.jt;19567;objj_executeFile("CPComparisonPredicate_Constants.j", YES);objj_executeFile("CPArray.j", YES);objj_executeFile("CPEnumerator.j", YES);objj_executeFile("CPNull.j", YES);objj_executeFile("CPString.j", YES);objj_executeFile("_CPExpression.j", YES);objj_executeFile("_CPPredicate.j", YES);{var the_typedef = objj_allocateTypeDef("CPComparisonPredicateModifier");
+objj_registerTypeDef(the_typedef);
+}{var the_typedef = objj_allocateTypeDef("CPPredicateOperatorType");
+objj_registerTypeDef(the_typedef);
+}{var the_class = objj_allocateClassPair(CPPredicate, "CPComparisonPredicate"),
 meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_left"), new objj_ivar("_right"), new objj_ivar("_modifier"), new objj_ivar("_type"), new objj_ivar("_options"), new objj_ivar("_customSelector")]);objj_registerClassPair(the_class);
 class_addMethods(the_class, [new objj_method(sel_getUid("initWithLeftExpression:rightExpression:customSelector:"), function $CPComparisonPredicate__initWithLeftExpression_rightExpression_customSelector_(self, _cmd, left, right, selector)
 {
@@ -17415,28 +21763,133 @@ String.prototype.escapeForRegExp = function()
     }
     return result;
 };
-p;33;CPComparisonPredicate_Constants.jt;766;@STATIC;1.0;t;748;CPDirectPredicateModifier = 0;
+p;33;CPComparisonPredicate_Constants.jt;870;@STATIC;1.0;t;852;
+CPDirectPredicateModifier = 0;
+
+
+
+
+
+
+
 CPAllPredicateModifier = 1;
+
+
+
+
+
+
+
 CPAnyPredicateModifier = 2;
+
+
+
+
+
+
 CPCaseInsensitivePredicateOption = 1;
+
+
+
+
+
 CPDiacriticInsensitivePredicateOption = 2;
 CPDiacriticInsensitiveSearch = 128;
+
+
+
+
+
+
 CPLessThanPredicateOperatorType = 0;
+
+
+
+
+
 CPLessThanOrEqualToPredicateOperatorType = 1;
+
+
+
+
+
 CPGreaterThanPredicateOperatorType = 2;
+
+
+
+
+
 CPGreaterThanOrEqualToPredicateOperatorType = 3;
+
+
+
+
+
 CPEqualToPredicateOperatorType = 4;
+
+
+
+
+
 CPNotEqualToPredicateOperatorType = 5;
+
+
+
+
+
 CPMatchesPredicateOperatorType = 6;
+
+
+
+
+
 CPLikePredicateOperatorType = 7;
+
+
+
+
+
 CPBeginsWithPredicateOperatorType = 8;
+
+
+
+
+
 CPEndsWithPredicateOperatorType = 9;
+
+
+
+
+
+
+
 CPInPredicateOperatorType = 10;
+
+
+
+
+
+
+
 CPCustomSelectorPredicateOperatorType = 11;
+
+
+
+
+
+
+
 CPContainsPredicateOperatorType = 99;
-CPBetweenPredicateOperatorType = 100;
-p;21;CPCompoundPredicate.jt;9212;@STATIC;1.0;i;31;CPCompoundPredicate_Constants.ji;9;CPArray.ji;14;_CPPredicate.jt;9125;objj_executeFile("CPCompoundPredicate_Constants.j", YES);objj_executeFile("CPArray.j", YES);objj_executeFile("_CPPredicate.j", YES);var CPCompoundPredicateType;
-{var the_class = objj_allocateClassPair(CPPredicate, "CPCompoundPredicate"),
+
+
+
+
+
+
+
+CPBetweenPredicateOperatorType = 100;p;21;CPCompoundPredicate.jt;9287;@STATIC;1.0;i;31;CPCompoundPredicate_Constants.ji;9;CPArray.ji;14;_CPPredicate.jt;9200;objj_executeFile("CPCompoundPredicate_Constants.j", YES);objj_executeFile("CPArray.j", YES);objj_executeFile("_CPPredicate.j", YES);{var the_typedef = objj_allocateTypeDef("CPCompoundPredicateType");
+objj_registerTypeDef(the_typedef);
+}{var the_class = objj_allocateClassPair(CPPredicate, "CPCompoundPredicate"),
 meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_type"), new objj_ivar("_predicates")]);objj_registerClassPair(the_class);
 class_addMethods(the_class, [new objj_method(sel_getUid("initWithType:subpredicates:"), function $CPCompoundPredicate__initWithType_subpredicates_(self, _cmd, type, predicates)
 {
@@ -17586,24 +22039,89 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     (coder == null ? null : coder.isa.objj_msgSend2(coder, "encodeInt:forKey:", self._type, "CPCompoundPredicateType"));
 }
 ,["void","CPCoder"])]);
-}p;31;CPCompoundPredicate_Constants.jt;88;@STATIC;1.0;t;71;CPNotPredicateType = 0;
+}p;31;CPCompoundPredicate_Constants.jt;98;@STATIC;1.0;t;81;
+CPNotPredicateType = 0;
+
+
+
+
+
 CPAndPredicateType = 1;
-CPOrPredicateType = 2;
-p;14;CPExpression.jt;687;@STATIC;1.0;i;15;_CPExpression.ji;28;_CPConstantValueExpression.ji;19;_CPSelfExpression.ji;23;_CPVariableExpression.ji;22;_CPKeyPathExpression.ji;23;_CPFunctionExpression.ji;24;_CPAggregateExpression.ji;18;_CPSetExpression.ji;23;_CPSubqueryExpression.jt;429;objj_executeFile("_CPExpression.j", YES);objj_executeFile("_CPConstantValueExpression.j", YES);objj_executeFile("_CPSelfExpression.j", YES);objj_executeFile("_CPVariableExpression.j", YES);objj_executeFile("_CPKeyPathExpression.j", YES);objj_executeFile("_CPFunctionExpression.j", YES);objj_executeFile("_CPAggregateExpression.j", YES);objj_executeFile("_CPSetExpression.j", YES);objj_executeFile("_CPSubqueryExpression.j", YES);p;13;CPPredicate.jt;286;@STATIC;1.0;i;14;_CPPredicate.ji;21;CPCompoundPredicate.ji;23;CPComparisonPredicate.ji;14;CPExpression.jt;176;objj_executeFile("_CPPredicate.j", YES);objj_executeFile("CPCompoundPredicate.j", YES);objj_executeFile("CPComparisonPredicate.j", YES);objj_executeFile("CPExpression.j", YES);p;23;_CPConcreteMutableSet.jt;3941;@STATIC;1.0;i;14;CPMutableSet.jt;3903;objj_executeFile("CPMutableSet.j", YES);var hasOwnProperty = Object.prototype.hasOwnProperty;
+
+
+
+
+
+CPOrPredicateType = 2;p;14;CPExpression.jt;696;@STATIC;1.0;i;15;_CPExpression.ji;28;_CPConstantValueExpression.ji;19;_CPSelfExpression.ji;23;_CPVariableExpression.ji;22;_CPKeyPathExpression.ji;23;_CPFunctionExpression.ji;24;_CPAggregateExpression.ji;18;_CPSetExpression.ji;23;_CPSubqueryExpression.jt;438;
+objj_executeFile("_CPExpression.j", YES);
+objj_executeFile("_CPConstantValueExpression.j", YES);
+objj_executeFile("_CPSelfExpression.j", YES);
+objj_executeFile("_CPVariableExpression.j", YES);
+objj_executeFile("_CPKeyPathExpression.j", YES);
+objj_executeFile("_CPFunctionExpression.j", YES);
+objj_executeFile("_CPAggregateExpression.j", YES);
+objj_executeFile("_CPSetExpression.j", YES);
+objj_executeFile("_CPSubqueryExpression.j", YES);p;13;CPPredicate.jt;290;@STATIC;1.0;i;14;_CPPredicate.ji;21;CPCompoundPredicate.ji;23;CPComparisonPredicate.ji;14;CPExpression.jt;180;
+objj_executeFile("_CPPredicate.j", YES);
+objj_executeFile("CPCompoundPredicate.j", YES);
+objj_executeFile("CPComparisonPredicate.j", YES);
+objj_executeFile("CPExpression.j", YES);p;23;_CPConcreteMutableSet.jt;3620;@STATIC;1.0;i;14;CPMutableSet.jt;3582;
+
+objj_executeFile("CPMutableSet.j", YES);
+
+
+var hasOwnProperty = Object.prototype.hasOwnProperty;
+
+
+
+
+
+
 {var the_class = objj_allocateClassPair(CPMutableSet, "_CPConcreteMutableSet"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_contents"), new objj_ivar("_count")]);objj_registerClassPair(the_class);
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_contents"), new objj_ivar("_count")]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+objj_registerClassPair(the_class);
 class_addMethods(the_class, [new objj_method(sel_getUid("initWithObjects:count:"), function $_CPConcreteMutableSet__initWithObjects_count_(self, _cmd, objects, aCount)
 {
     self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("_CPConcreteMutableSet").super_class }, "initWithObjects:count:", objects, aCount);
+
     if (self)
     {
         self._count = 0;
-        self._contents = {};
+        self._contents = { };
+
         var index = 0,
-            count = MIN((objects == null ? null : objects.isa.objj_msgSend0(objects, "count")), aCount);
+            count = MIN(objj_msgSend(objects, "count"), aCount);
+
         for (; index < count; ++index)
-            (self == null ? null : self.isa.objj_msgSend1(self, "addObject:", objects[index]));
+            objj_msgSend(self, "addObject:", objects[index]);
     }
+
     return self;
 }
 ,["id","CPArray","CPUInteger"]), new objj_method(sel_getUid("count"), function $_CPConcreteMutableSet__count(self, _cmd)
@@ -17612,7 +22130,8 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithObjects:count:"
 }
 ,["CPUInteger"]), new objj_method(sel_getUid("member:"), function $_CPConcreteMutableSet__member_(self, _cmd, anObject)
 {
-    var UID = (anObject == null ? null : anObject.isa.objj_msgSend0(anObject, "UID"));
+    var UID = objj_msgSend(anObject, "UID");
+
     if (hasOwnProperty.call(self._contents, UID))
         return self._contents[UID];
     else
@@ -17621,46 +22140,57 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithObjects:count:"
         {
             if (!hasOwnProperty.call(self._contents, objectUID))
                 continue;
+
             var object = self._contents[objectUID];
-            if (object === anObject || (object == null ? null : object.isa.objj_msgSend1(object, "isEqual:", anObject)))
+
+            if (object === anObject || objj_msgSend(object, "isEqual:", anObject))
                 return object;
         }
     }
+
     return nil;
 }
 ,["id","id"]), new objj_method(sel_getUid("allObjects"), function $_CPConcreteMutableSet__allObjects(self, _cmd)
 {
     var array = [],
         property;
+
     for (property in self._contents)
     {
         if (hasOwnProperty.call(self._contents, property))
             array.push(self._contents[property]);
     }
+
     return array;
 }
 ,["CPArray"]), new objj_method(sel_getUid("objectEnumerator"), function $_CPConcreteMutableSet__objectEnumerator(self, _cmd)
 {
-    return ((___r1 = self.isa.objj_msgSend0(self, "allObjects")), ___r1 == null ? null : ___r1.isa.objj_msgSend0(___r1, "objectEnumerator"));
-    var ___r1;
+    return objj_msgSend(objj_msgSend(self, "allObjects"), "objectEnumerator");
 }
 ,["CPEnumerator"]), new objj_method(sel_getUid("addObject:"), function $_CPConcreteMutableSet__addObject_(self, _cmd, anObject)
 {
     if (anObject === nil || anObject === undefined)
-        CPException.isa.objj_msgSend2(CPException, "raise:reason:", CPInvalidArgumentException, "attempt to insert nil or undefined");
-    if (self.isa.objj_msgSend1(self, "containsObject:", anObject))
+        objj_msgSend(CPException, "raise:reason:", CPInvalidArgumentException, "attempt to insert nil or undefined");
+
+    if (objj_msgSend(self, "containsObject:", anObject))
         return;
-    self._contents[(anObject == null ? null : anObject.isa.objj_msgSend0(anObject, "UID"))] = anObject;
+
+    self._contents[objj_msgSend(anObject, "UID")] = anObject;
     self._count++;
 }
 ,["void","id"]), new objj_method(sel_getUid("removeObject:"), function $_CPConcreteMutableSet__removeObject_(self, _cmd, anObject)
 {
+
     if (anObject === nil || anObject === undefined)
-        CPException.isa.objj_msgSend2(CPException, "raise:reason:", CPInvalidArgumentException, "attempt to remove nil or undefined");
-    var object = self.isa.objj_msgSend1(self, "member:", anObject);
+        objj_msgSend(CPException, "raise:reason:", CPInvalidArgumentException, "attempt to remove nil or undefined");
+
+
+    var object = objj_msgSend(self, "member:", anObject);
+
+
     if (object !== nil)
     {
-        delete self._contents[(object == null ? null : object.isa.objj_msgSend0(object, "UID"))];
+        delete self._contents[objj_msgSend(object, "UID")];
         self._count--;
     }
 }
@@ -17671,58 +22201,259 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithObjects:count:"
 }
 ,["void"]), new objj_method(sel_getUid("classForCoder"), function $_CPConcreteMutableSet__classForCoder(self, _cmd)
 {
-    return CPSet.isa.objj_msgSend0(CPSet, "class");
+    return objj_msgSend(CPSet, "class");
 }
 ,["Class"])]);
-}p;8;_CPSet.jt;15878;@STATIC;1.0;i;9;CPArray.ji;14;CPEnumerator.ji;10;CPNumber.ji;10;CPObject.jt;15796;objj_executeFile("CPArray.j", YES);objj_executeFile("CPEnumerator.j", YES);objj_executeFile("CPNumber.j", YES);objj_executeFile("CPObject.j", YES);{var the_class = objj_allocateClassPair(CPObject, "CPSet"),
-meta_class = the_class.isa;objj_registerClassPair(the_class);
+}p;8;_CPSet.jt;13328;@STATIC;1.0;i;9;CPArray.ji;14;CPEnumerator.ji;10;CPNumber.ji;10;CPObject.jt;13246;
+objj_executeFile("CPArray.j", YES);
+objj_executeFile("CPEnumerator.j", YES);
+objj_executeFile("CPNumber.j", YES);
+objj_executeFile("CPObject.j", YES);
+
+//@class _CPConcreteMutableSet
+{var the_class = objj_allocateClassPair(CPObject, "CPSet"),
+meta_class = the_class.isa;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+objj_registerClassPair(the_class);
 class_addMethods(the_class, [new objj_method(sel_getUid("setByAddingObject:"), function $CPSet__setByAddingObject_(self, _cmd, anObject)
 {
-    return ((___r1 = self.isa.objj_msgSend0(self, "class")), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "setWithArray:", ((___r2 = self.isa.objj_msgSend0(self, "allObjects")), ___r2 == null ? null : ___r2.isa.objj_msgSend1(___r2, "arrayByAddingObject:", anObject))));
-    var ___r1, ___r2;
+    return objj_msgSend(objj_msgSend(self, "class"), "setWithArray:", objj_msgSend(objj_msgSend(self, "allObjects"), "arrayByAddingObject:", anObject));
 }
 ,["id","id"]), new objj_method(sel_getUid("setByAddingObjectsFromSet:"), function $CPSet__setByAddingObjectsFromSet_(self, _cmd, aSet)
 {
-    return self.isa.objj_msgSend1(self, "setByAddingObjectsFromArray:", (aSet == null ? null : aSet.isa.objj_msgSend0(aSet, "allObjects")));
+    return objj_msgSend(self, "setByAddingObjectsFromArray:", objj_msgSend(aSet, "allObjects"));
 }
 ,["id","CPSet"]), new objj_method(sel_getUid("setByAddingObjectsFromArray:"), function $CPSet__setByAddingObjectsFromArray_(self, _cmd, anArray)
 {
-    return ((___r1 = self.isa.objj_msgSend0(self, "class")), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "setWithArray:", ((___r2 = self.isa.objj_msgSend0(self, "allObjects")), ___r2 == null ? null : ___r2.isa.objj_msgSend1(___r2, "arrayByAddingObjectsFromArray:", anArray))));
-    var ___r1, ___r2;
+    return objj_msgSend(objj_msgSend(self, "class"), "setWithArray:", objj_msgSend(objj_msgSend(self, "allObjects"), "arrayByAddingObjectsFromArray:", anArray));
 }
 ,["id","CPArray"]), new objj_method(sel_getUid("init"), function $CPSet__init(self, _cmd)
 {
-    return self.isa.objj_msgSend2(self, "initWithObjects:count:", nil, 0);
+    return objj_msgSend(self, "initWithObjects:count:", nil, 0);
 }
 ,["id"]), new objj_method(sel_getUid("initWithArray:"), function $CPSet__initWithArray_(self, _cmd, anArray)
 {
-    return self.isa.objj_msgSend2(self, "initWithObjects:count:", anArray, (anArray == null ? null : anArray.isa.objj_msgSend0(anArray, "count")));
+    return objj_msgSend(self, "initWithObjects:count:", anArray, objj_msgSend(anArray, "count"));
 }
 ,["id","CPArray"]), new objj_method(sel_getUid("initWithObjects:"), function $CPSet__initWithObjects_(self, _cmd, anObject)
 {
     var index = 2,
         count = arguments.length;
+
     for (; index < count; ++index)
         if (arguments[index] === nil)
             break;
-    return self.isa.objj_msgSend2(self, "initWithObjects:count:", Array.prototype.slice.call(arguments, 2, index), index - 2);
+
+    return objj_msgSend(self, "initWithObjects:count:", Array.prototype.slice.call(arguments, 2, index), index - 2);
 }
 ,["id","id"]), new objj_method(sel_getUid("initWithObjects:count:"), function $CPSet__initWithObjects_count_(self, _cmd, objects, aCount)
 {
     if (self === _CPSharedPlaceholderSet)
-        return ((___r1 = (_CPConcreteMutableSet == null ? null : _CPConcreteMutableSet.isa.objj_msgSend0(_CPConcreteMutableSet, "alloc"))), ___r1 == null ? null : ___r1.isa.objj_msgSend2(___r1, "initWithObjects:count:", objects, aCount));
+        return objj_msgSend(objj_msgSend(_CPConcreteMutableSet, "alloc"), "initWithObjects:count:", objects, aCount);
+
     return objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPSet").super_class }, "init");
-    var ___r1;
 }
 ,["id","CPArray","CPUInteger"]), new objj_method(sel_getUid("initWithSet:"), function $CPSet__initWithSet_(self, _cmd, aSet)
 {
-    return self.isa.objj_msgSend1(self, "initWithArray:", (aSet == null ? null : aSet.isa.objj_msgSend0(aSet, "allObjects")));
+    return objj_msgSend(self, "initWithArray:", objj_msgSend(aSet, "allObjects"));
 }
 ,["id","CPSet"]), new objj_method(sel_getUid("initWithSet:copyItems:"), function $CPSet__initWithSet_copyItems_(self, _cmd, aSet, shouldCopyItems)
 {
     if (shouldCopyItems)
-        return (aSet == null ? null : aSet.isa.objj_msgSend1(aSet, "valueForKey:", "copy"));
-    return self.isa.objj_msgSend1(self, "initWithSet:", aSet);
+        return objj_msgSend(aSet, "valueForKey:", "copy");
+
+    return objj_msgSend(self, "initWithSet:", aSet);
 }
 ,["id","CPSet","BOOL"]), new objj_method(sel_getUid("count"), function $CPSet__count(self, _cmd)
 {
@@ -17732,45 +22463,48 @@ class_addMethods(the_class, [new objj_method(sel_getUid("setByAddingObject:"), f
 {
     var objects = [],
         object,
-        objectEnumerator = self.isa.objj_msgSend0(self, "objectEnumerator");
-    while ((object = (objectEnumerator == null ? null : objectEnumerator.isa.objj_msgSend0(objectEnumerator, "nextObject"))) !== nil)
+        objectEnumerator = objj_msgSend(self, "objectEnumerator");
+
+    while ((object = objj_msgSend(objectEnumerator, "nextObject")) !== nil)
         objects.push(object);
+
     return objects;
 }
 ,["CPArray"]), new objj_method(sel_getUid("anyObject"), function $CPSet__anyObject(self, _cmd)
 {
-    return ((___r1 = self.isa.objj_msgSend0(self, "objectEnumerator")), ___r1 == null ? null : ___r1.isa.objj_msgSend0(___r1, "nextObject"));
-    var ___r1;
+    return objj_msgSend(objj_msgSend(self, "objectEnumerator"), "nextObject");
 }
 ,["id"]), new objj_method(sel_getUid("containsObject:"), function $CPSet__containsObject_(self, _cmd, anObject)
 {
-    return self.isa.objj_msgSend1(self, "member:", anObject) !== nil;
+    return objj_msgSend(self, "member:", anObject) !== nil;
 }
 ,["BOOL","id"]), new objj_method(sel_getUid("filteredSetUsingPredicate:"), function $CPSet__filteredSetUsingPredicate_(self, _cmd, aPredicate)
 {
     var objects = [],
         object,
-        objectEnumerator = self.isa.objj_msgSend0(self, "objectEnumerator");
-    while ((object = (objectEnumerator == null ? null : objectEnumerator.isa.objj_msgSend0(objectEnumerator, "nextObject"))) !== nil)
-        if ((aPredicate == null ? null : aPredicate.isa.objj_msgSend1(aPredicate, "evaluateWithObject:", object)))
+        objectEnumerator = objj_msgSend(self, "objectEnumerator");
+
+    while ((object = objj_msgSend(objectEnumerator, "nextObject")) !== nil)
+        if (objj_msgSend(aPredicate, "evaluateWithObject:", object))
             objects.push(object);
-    return ((___r1 = ((___r2 = self.isa.objj_msgSend0(self, "class")), ___r2 == null ? null : ___r2.isa.objj_msgSend0(___r2, "alloc"))), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "initWithArray:", objects));
-    var ___r1, ___r2;
+
+    return objj_msgSend(objj_msgSend(objj_msgSend(self, "class"), "alloc"), "initWithArray:", objects);
 }
 ,["CPSet","CPPredicate"]), new objj_method(sel_getUid("makeObjectsPerformSelector:"), function $CPSet__makeObjectsPerformSelector_(self, _cmd, aSelector)
 {
-    self.isa.objj_msgSend2(self, "makeObjectsPerformSelector:withObjects:", aSelector, nil);
+    objj_msgSend(self, "makeObjectsPerformSelector:withObjects:", aSelector, nil);
 }
 ,["void","SEL"]), new objj_method(sel_getUid("makeObjectsPerformSelector:withObject:"), function $CPSet__makeObjectsPerformSelector_withObject_(self, _cmd, aSelector, anObject)
 {
-    self.isa.objj_msgSend2(self, "makeObjectsPerformSelector:withObjects:", aSelector, [anObject]);
+    objj_msgSend(self, "makeObjectsPerformSelector:withObjects:", aSelector, [anObject]);
 }
 ,["void","SEL","id"]), new objj_method(sel_getUid("makeObjectsPerformSelector:withObjects:"), function $CPSet__makeObjectsPerformSelector_withObjects_(self, _cmd, aSelector, objects)
 {
     var object,
-        objectEnumerator = self.isa.objj_msgSend0(self, "objectEnumerator"),
+        objectEnumerator = objj_msgSend(self, "objectEnumerator"),
         argumentsArray = [nil, aSelector].concat(objects || []);
-    while ((object = (objectEnumerator == null ? null : objectEnumerator.isa.objj_msgSend0(objectEnumerator, "nextObject"))) !== nil)
+
+    while ((object = objj_msgSend(objectEnumerator, "nextObject")) !== nil)
     {
         argumentsArray[0] = object;
         objj_msgSend.apply(this, argumentsArray);
@@ -17787,8 +22521,9 @@ class_addMethods(the_class, [new objj_method(sel_getUid("setByAddingObject:"), f
 ,["CPEnumerator"]), new objj_method(sel_getUid("enumerateObjectsUsingBlock:"), function $CPSet__enumerateObjectsUsingBlock_(self, _cmd, aFunction)
 {
     var object,
-        objectEnumerator = self.isa.objj_msgSend0(self, "objectEnumerator");
-    while ((object = (objectEnumerator == null ? null : objectEnumerator.isa.objj_msgSend0(objectEnumerator, "nextObject"))) !== nil)
+        objectEnumerator = objj_msgSend(self, "objectEnumerator");
+
+    while ((object = objj_msgSend(objectEnumerator, "nextObject")) !== nil)
         if (aFunction(object))
             break;
 }
@@ -17796,173 +22531,267 @@ class_addMethods(the_class, [new objj_method(sel_getUid("setByAddingObject:"), f
 {
     var objects = [],
         object = nil,
-        objectEnumerator = self.isa.objj_msgSend0(self, "objectEnumerator");
-    while ((object = (objectEnumerator == null ? null : objectEnumerator.isa.objj_msgSend0(objectEnumerator, "nextObject"))) !== nil)
+        objectEnumerator = objj_msgSend(self, "objectEnumerator");
+
+    while ((object = objj_msgSend(objectEnumerator, "nextObject")) !== nil)
         if (aFunction(object))
             objects.push(object);
-    return ((___r1 = ((___r2 = self.isa.objj_msgSend0(self, "class")), ___r2 == null ? null : ___r2.isa.objj_msgSend0(___r2, "alloc"))), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "initWithArray:", objects));
-    var ___r1, ___r2;
+
+    return objj_msgSend(objj_msgSend(objj_msgSend(self, "class"), "alloc"), "initWithArray:", objects);
 }
 ,["CPSet","Function"]), new objj_method(sel_getUid("isSubsetOfSet:"), function $CPSet__isSubsetOfSet_(self, _cmd, aSet)
 {
     var object = nil,
-        objectEnumerator = self.isa.objj_msgSend0(self, "objectEnumerator");
-    while ((object = (objectEnumerator == null ? null : objectEnumerator.isa.objj_msgSend0(objectEnumerator, "nextObject"))) !== nil)
-        if (!(aSet == null ? null : aSet.isa.objj_msgSend1(aSet, "containsObject:", object)))
+        objectEnumerator = objj_msgSend(self, "objectEnumerator");
+
+    while ((object = objj_msgSend(objectEnumerator, "nextObject")) !== nil)
+        if (!objj_msgSend(aSet, "containsObject:", object))
             return NO;
+
     return YES;
 }
 ,["BOOL","CPSet"]), new objj_method(sel_getUid("intersectsSet:"), function $CPSet__intersectsSet_(self, _cmd, aSet)
 {
     if (self === aSet)
-        return self.isa.objj_msgSend0(self, "count") > 0;
+
+        return objj_msgSend(self, "count") > 0;
+
     var object = nil,
-        objectEnumerator = self.isa.objj_msgSend0(self, "objectEnumerator");
-    while ((object = (objectEnumerator == null ? null : objectEnumerator.isa.objj_msgSend0(objectEnumerator, "nextObject"))) !== nil)
-        if ((aSet == null ? null : aSet.isa.objj_msgSend1(aSet, "containsObject:", object)))
+        objectEnumerator = objj_msgSend(self, "objectEnumerator");
+
+    while ((object = objj_msgSend(objectEnumerator, "nextObject")) !== nil)
+        if (objj_msgSend(aSet, "containsObject:", object))
             return YES;
+
     return NO;
 }
 ,["BOOL","CPSet"]), new objj_method(sel_getUid("sortedArrayUsingDescriptors:"), function $CPSet__sortedArrayUsingDescriptors_(self, _cmd, someSortDescriptors)
 {
-    return ((___r1 = self.isa.objj_msgSend0(self, "allObjects")), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "sortedArrayUsingDescriptors:", someSortDescriptors));
-    var ___r1;
+    return objj_msgSend(objj_msgSend(self, "allObjects"), "sortedArrayUsingDescriptors:", someSortDescriptors);
 }
 ,["CPArray","CPArray"]), new objj_method(sel_getUid("isEqualToSet:"), function $CPSet__isEqualToSet_(self, _cmd, aSet)
 {
-    return self.isa.objj_msgSend1(self, "isEqual:", aSet);
+    return objj_msgSend(self, "isEqual:", aSet);
 }
 ,["BOOL","CPSet"]), new objj_method(sel_getUid("isEqual:"), function $CPSet__isEqual_(self, _cmd, aSet)
 {
-    return self === aSet || (aSet == null ? null : aSet.isa.objj_msgSend1(aSet, "isKindOfClass:", CPSet.isa.objj_msgSend0(CPSet, "class"))) && (self.isa.objj_msgSend0(self, "count") === (aSet == null ? null : aSet.isa.objj_msgSend0(aSet, "count")) && (aSet == null ? null : aSet.isa.objj_msgSend1(aSet, "isSubsetOfSet:", self)));
+
+    return self === aSet ||
+            objj_msgSend(aSet, "isKindOfClass:", objj_msgSend(CPSet, "class")) &&
+            (objj_msgSend(self, "count") === objj_msgSend(aSet, "count") &&
+            objj_msgSend(aSet, "isSubsetOfSet:", self));
 }
 ,["BOOL","CPSet"]), new objj_method(sel_getUid("description"), function $CPSet__description(self, _cmd)
 {
     var string = "{(\n",
-        objects = self.isa.objj_msgSend0(self, "allObjects"),
+        objects = objj_msgSend(self, "allObjects"),
         index = 0,
-        count = (objects == null ? null : objects.isa.objj_msgSend0(objects, "count"));
+        count = objj_msgSend(objects, "count");
+
     for (; index < count; ++index)
     {
         var object = objects[index];
-        string += "\t" + ((String(object)).split('\n')).join("\n\t") + "\n";
+
+        string += "\t" + String(object).split('\n').join("\n\t") + "\n";
     }
+
     return string + ")}";
 }
 ,["CPString"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("alloc"), function $CPSet__alloc(self, _cmd)
 {
-    if (self === CPSet.isa.objj_msgSend0(CPSet, "class") || self === (CPMutableSet == null ? null : CPMutableSet.isa.objj_msgSend0(CPMutableSet, "class")))
-        return (_CPPlaceholderSet == null ? null : _CPPlaceholderSet.isa.objj_msgSend0(_CPPlaceholderSet, "alloc"));
+    if (self === objj_msgSend(CPSet, "class") || self === objj_msgSend(CPMutableSet, "class"))
+        return objj_msgSend(_CPPlaceholderSet, "alloc");
+
     return objj_msgSendSuper({ receiver:self, super_class:objj_getMetaClass("CPSet").super_class }, "alloc");
 }
 ,["id"]), new objj_method(sel_getUid("set"), function $CPSet__set(self, _cmd)
 {
-    return ((___r1 = self.isa.objj_msgSend0(self, "alloc")), ___r1 == null ? null : ___r1.isa.objj_msgSend0(___r1, "init"));
-    var ___r1;
+    return objj_msgSend(objj_msgSend(self, "alloc"), "init");
 }
 ,["id"]), new objj_method(sel_getUid("setWithArray:"), function $CPSet__setWithArray_(self, _cmd, anArray)
 {
-    return ((___r1 = self.isa.objj_msgSend0(self, "alloc")), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "initWithArray:", anArray));
-    var ___r1;
+    return objj_msgSend(objj_msgSend(self, "alloc"), "initWithArray:", anArray);
 }
 ,["id","CPArray"]), new objj_method(sel_getUid("setWithObject:"), function $CPSet__setWithObject_(self, _cmd, anObject)
 {
-    return ((___r1 = self.isa.objj_msgSend0(self, "alloc")), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "initWithObjects:", anObject));
-    var ___r1;
+    return objj_msgSend(objj_msgSend(self, "alloc"), "initWithObjects:", anObject);
 }
 ,["id","id"]), new objj_method(sel_getUid("setWithObjects:count:"), function $CPSet__setWithObjects_count_(self, _cmd, objects, count)
 {
-    return ((___r1 = self.isa.objj_msgSend0(self, "alloc")), ___r1 == null ? null : ___r1.isa.objj_msgSend2(___r1, "initWithObjects:count:", objects, count));
-    var ___r1;
+    return objj_msgSend(objj_msgSend(self, "alloc"), "initWithObjects:count:", objects, count);
 }
 ,["id","id","CPUInteger"]), new objj_method(sel_getUid("setWithObjects:"), function $CPSet__setWithObjects_(self, _cmd, anObject)
 {
     var argumentsArray = Array.prototype.slice.apply(arguments);
-    argumentsArray[0] = self.isa.objj_msgSend0(self, "alloc");
+
+    argumentsArray[0] = objj_msgSend(self, "alloc");
     argumentsArray[1] = sel_getUid("initWithObjects:");
+
     return objj_msgSend.apply(this, argumentsArray);
 }
 ,["id","id"]), new objj_method(sel_getUid("setWithSet:"), function $CPSet__setWithSet_(self, _cmd, set)
 {
-    return ((___r1 = self.isa.objj_msgSend0(self, "alloc")), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "initWithSet:", set));
-    var ___r1;
+    return objj_msgSend(objj_msgSend(self, "alloc"), "initWithSet:", set);
 }
 ,["id","CPSet"])]);
-}{
+}
+
+{
 var the_class = objj_getClass("CPSet")
 if(!the_class) throw new SyntaxError("*** Could not find definition for class \"CPSet\"");
-var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_getUid("copy"), function $CPSet__copy(self, _cmd)
+var meta_class = the_class.isa;
+
+class_addMethods(the_class, [new objj_method(sel_getUid("copy"), function $CPSet__copy(self, _cmd)
 {
-    return ((___r1 = self.isa.objj_msgSend0(self, "class")), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "setWithSet:", self));
-    var ___r1;
+    return objj_msgSend(objj_msgSend(self, "class"), "setWithSet:", self);
 }
 ,["id"]), new objj_method(sel_getUid("mutableCopy"), function $CPSet__mutableCopy(self, _cmd)
 {
-    return self.isa.objj_msgSend0(self, "copy");
+    return objj_msgSend(self, "copy");
 }
 ,["id"])]);
-}var CPSetObjectsKey = "CPSetObjectsKey";
+}
+
+var CPSetObjectsKey = "CPSetObjectsKey";
+
 {
 var the_class = objj_getClass("CPSet")
 if(!the_class) throw new SyntaxError("*** Could not find definition for class \"CPSet\"");
-var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_getUid("initWithCoder:"), function $CPSet__initWithCoder_(self, _cmd, aCoder)
+var meta_class = the_class.isa;
+
+class_addMethods(the_class, [new objj_method(sel_getUid("initWithCoder:"), function $CPSet__initWithCoder_(self, _cmd, aCoder)
 {
-    return self.isa.objj_msgSend1(self, "initWithArray:", (aCoder == null ? null : aCoder.isa.objj_msgSend1(aCoder, "decodeObjectForKey:", CPSetObjectsKey)));
+    return objj_msgSend(self, "initWithArray:", objj_msgSend(aCoder, "decodeObjectForKey:", CPSetObjectsKey));
 }
 ,["id","CPCoder"]), new objj_method(sel_getUid("encodeWithCoder:"), function $CPSet__encodeWithCoder_(self, _cmd, aCoder)
 {
-    (aCoder == null ? null : aCoder.isa.objj_msgSend2(aCoder, "encodeObject:forKey:", self.isa.objj_msgSend0(self, "allObjects"), CPSetObjectsKey));
+    objj_msgSend(aCoder, "encodeObject:forKey:", objj_msgSend(self, "allObjects"), CPSetObjectsKey);
 }
 ,["void","CPCoder"])]);
-}{
+}
+
+{
 var the_class = objj_getClass("CPSet")
 if(!the_class) throw new SyntaxError("*** Could not find definition for class \"CPSet\"");
-var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_getUid("valueForKey:"), function $CPSet__valueForKey_(self, _cmd, aKey)
+var meta_class = the_class.isa;
+
+class_addMethods(the_class, [new objj_method(sel_getUid("valueForKey:"), function $CPSet__valueForKey_(self, _cmd, aKey)
 {
     if (aKey === "@count")
-        return self.isa.objj_msgSend0(self, "count");
-    var valueSet = CPSet.isa.objj_msgSend0(CPSet, "set"),
+        return objj_msgSend(self, "count");
+
+    var valueSet = objj_msgSend(CPSet, "set"),
         object,
-        objectEnumerator = self.isa.objj_msgSend0(self, "objectEnumerator");
-    while ((object = (objectEnumerator == null ? null : objectEnumerator.isa.objj_msgSend0(objectEnumerator, "nextObject"))) !== nil)
+        objectEnumerator = objj_msgSend(self, "objectEnumerator");
+
+    while ((object = objj_msgSend(objectEnumerator, "nextObject")) !== nil)
     {
-        var value = (object == null ? null : object.isa.objj_msgSend1(object, "valueForKey:", aKey));
-        (valueSet == null ? null : valueSet.isa.objj_msgSend1(valueSet, "addObject:", value));
+        var value = objj_msgSend(object, "valueForKey:", aKey);
+
+        objj_msgSend(valueSet, "addObject:", value);
     }
+
     return valueSet;
 }
 ,["id","CPString"]), new objj_method(sel_getUid("setValue:forKey:"), function $CPSet__setValue_forKey_(self, _cmd, aValue, aKey)
 {
     var object,
-        objectEnumerator = self.isa.objj_msgSend0(self, "objectEnumerator");
-    while ((object = (objectEnumerator == null ? null : objectEnumerator.isa.objj_msgSend0(objectEnumerator, "nextObject"))) !== nil)
-        (object == null ? null : object.isa.objj_msgSend2(object, "setValue:forKey:", aValue, aKey));
+        objectEnumerator = objj_msgSend(self, "objectEnumerator");
+
+    while ((object = objj_msgSend(objectEnumerator, "nextObject")) !== nil)
+        objj_msgSend(object, "setValue:forKey:", aValue, aKey);
 }
 ,["void","id","CPString"])]);
-}var _CPSharedPlaceholderSet = nil;
+}
+
+var _CPSharedPlaceholderSet = nil;
+
 {var the_class = objj_allocateClassPair(CPSet, "_CPPlaceholderSet"),
 meta_class = the_class.isa;objj_registerClassPair(the_class);
 class_addMethods(meta_class, [new objj_method(sel_getUid("alloc"), function $_CPPlaceholderSet__alloc(self, _cmd)
 {
     if (!_CPSharedPlaceholderSet)
         _CPSharedPlaceholderSet = objj_msgSendSuper({ receiver:self, super_class:objj_getMetaClass("_CPPlaceholderSet").super_class }, "alloc");
+
     return _CPSharedPlaceholderSet;
 }
 ,["id"])]);
-}p;14;CPMutableSet.jt;4452;@STATIC;1.0;i;8;_CPSet.jt;4421;objj_executeFile("_CPSet.j", YES);{var the_class = objj_allocateClassPair(CPSet, "CPMutableSet"),
-meta_class = the_class.isa;objj_registerClassPair(the_class);
+}p;14;CPMutableSet.jt;3702;@STATIC;1.0;i;8;_CPSet.jt;3671;
+objj_executeFile("_CPSet.j", YES);
+
+{var the_class = objj_allocateClassPair(CPSet, "CPMutableSet"),
+meta_class = the_class.isa;
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+objj_registerClassPair(the_class);
 class_addMethods(the_class, [new objj_method(sel_getUid("initWithCapacity:"), function $CPMutableSet__initWithCapacity_(self, _cmd, aCapacity)
 {
-    return self.isa.objj_msgSend0(self, "init");
+    return objj_msgSend(self, "init");
 }
 ,["id","unsigned"]), new objj_method(sel_getUid("filterUsingPredicate:"), function $CPMutableSet__filterUsingPredicate_(self, _cmd, aPredicate)
 {
     var object,
-        objectEnumerator = self.isa.objj_msgSend0(self, "objectEnumerator");
-    while ((object = (objectEnumerator == null ? null : objectEnumerator.isa.objj_msgSend0(objectEnumerator, "nextObject"))) !== nil)
-        if (!(aPredicate == null ? null : aPredicate.isa.objj_msgSend1(aPredicate, "evaluateWithObject:", object)))
-            self.isa.objj_msgSend1(self, "removeObject:", object);
+        objectEnumerator = objj_msgSend(self, "objectEnumerator");
+
+    while ((object = objj_msgSend(objectEnumerator, "nextObject")) !== nil)
+        if (!objj_msgSend(aPredicate, "evaluateWithObject:", object))
+            objj_msgSend(self, "removeObject:", object);
 }
 ,["void","CPPredicate"]), new objj_method(sel_getUid("removeObject:"), function $CPMutableSet__removeObject_(self, _cmd, anObject)
 {
@@ -17971,59 +22800,67 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithCapacity:"), fu
 ,["void","id"]), new objj_method(sel_getUid("removeObjectsInArray:"), function $CPMutableSet__removeObjectsInArray_(self, _cmd, anArray)
 {
     var index = 0,
-        count = (anArray == null ? null : anArray.isa.objj_msgSend0(anArray, "count"));
+        count = objj_msgSend(anArray, "count");
+
     for (; index < count; ++index)
-        self.isa.objj_msgSend1(self, "removeObject:", (anArray == null ? null : anArray.isa.objj_msgSend1(anArray, "objectAtIndex:", index)));
+        objj_msgSend(self, "removeObject:", objj_msgSend(anArray, "objectAtIndex:", index));
 }
 ,["void","CPArray"]), new objj_method(sel_getUid("removeAllObjects"), function $CPMutableSet__removeAllObjects(self, _cmd)
 {
     var object,
-        objectEnumerator = self.isa.objj_msgSend0(self, "objectEnumerator");
-    while ((object = (objectEnumerator == null ? null : objectEnumerator.isa.objj_msgSend0(objectEnumerator, "nextObject"))) !== nil)
-        self.isa.objj_msgSend1(self, "removeObject:", object);
+        objectEnumerator = objj_msgSend(self, "objectEnumerator");
+
+    while ((object = objj_msgSend(objectEnumerator, "nextObject")) !== nil)
+        objj_msgSend(self, "removeObject:", object);
 }
 ,["void"]), new objj_method(sel_getUid("addObjectsFromArray:"), function $CPMutableSet__addObjectsFromArray_(self, _cmd, objects)
 {
-    var count = (objects == null ? null : objects.isa.objj_msgSend0(objects, "count"));
+    var count = objj_msgSend(objects, "count");
+
     while (count--)
-        self.isa.objj_msgSend1(self, "addObject:", objects[count]);
+        objj_msgSend(self, "addObject:", objects[count]);
 }
 ,["void","CPArray"]), new objj_method(sel_getUid("unionSet:"), function $CPMutableSet__unionSet_(self, _cmd, aSet)
 {
     var object,
-        objectEnumerator = (aSet == null ? null : aSet.isa.objj_msgSend0(aSet, "objectEnumerator"));
-    while ((object = (objectEnumerator == null ? null : objectEnumerator.isa.objj_msgSend0(objectEnumerator, "nextObject"))) !== nil)
-        self.isa.objj_msgSend1(self, "addObject:", object);
+        objectEnumerator = objj_msgSend(aSet, "objectEnumerator");
+
+    while ((object = objj_msgSend(objectEnumerator, "nextObject")) !== nil)
+        objj_msgSend(self, "addObject:", object);
 }
 ,["void","CPSet"]), new objj_method(sel_getUid("minusSet:"), function $CPMutableSet__minusSet_(self, _cmd, aSet)
 {
     var object,
-        objectEnumerator = (aSet == null ? null : aSet.isa.objj_msgSend0(aSet, "objectEnumerator"));
-    while ((object = (objectEnumerator == null ? null : objectEnumerator.isa.objj_msgSend0(objectEnumerator, "nextObject"))) !== nil)
-        self.isa.objj_msgSend1(self, "removeObject:", object);
+        objectEnumerator = objj_msgSend(aSet, "objectEnumerator");
+
+    while ((object = objj_msgSend(objectEnumerator, "nextObject")) !== nil)
+        objj_msgSend(self, "removeObject:", object);
 }
 ,["void","CPSet"]), new objj_method(sel_getUid("intersectSet:"), function $CPMutableSet__intersectSet_(self, _cmd, aSet)
 {
     var object,
-        objectEnumerator = self.isa.objj_msgSend0(self, "objectEnumerator"),
+        objectEnumerator = objj_msgSend(self, "objectEnumerator"),
         objectsToRemove = [];
-    while ((object = (objectEnumerator == null ? null : objectEnumerator.isa.objj_msgSend0(objectEnumerator, "nextObject"))) !== nil)
-        if (!(aSet == null ? null : aSet.isa.objj_msgSend1(aSet, "containsObject:", object)))
+
+    while ((object = objj_msgSend(objectEnumerator, "nextObject")) !== nil)
+        if (!objj_msgSend(aSet, "containsObject:", object))
             objectsToRemove.push(object);
-    var count = (objectsToRemove == null ? null : objectsToRemove.isa.objj_msgSend0(objectsToRemove, "count"));
+
+    var count = objj_msgSend(objectsToRemove, "count");
+
     while (count--)
-        self.isa.objj_msgSend1(self, "removeObject:", objectsToRemove[count]);
+        objj_msgSend(self, "removeObject:", objectsToRemove[count]);
 }
 ,["void","CPSet"]), new objj_method(sel_getUid("setSet:"), function $CPMutableSet__setSet_(self, _cmd, aSet)
 {
-    self.isa.objj_msgSend0(self, "removeAllObjects");
-    self.isa.objj_msgSend1(self, "unionSet:", aSet);
+    objj_msgSend(self, "removeAllObjects");
+    objj_msgSend(self, "unionSet:", aSet);
 }
 ,["void","CPSet"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("setWithCapacity:"), function $CPMutableSet__setWithCapacity_(self, _cmd, aCapacity)
 {
-    return ((___r1 = self.isa.objj_msgSend0(self, "alloc")), ___r1 == null ? null : ___r1.isa.objj_msgSend1(___r1, "initWithCapacity:", aCapacity));
-    var ___r1;
+    return objj_msgSend(objj_msgSend(self, "alloc"), "initWithCapacity:", aCapacity);
 }
 ,["id","CPUInteger"])]);
-}p;7;CPSet.jt;94;@STATIC;1.0;i;23;_CPConcreteMutableSet.jt;49;objj_executeFile("_CPConcreteMutableSet.j", YES);e;
+}p;7;CPSet.jt;96;@STATIC;1.0;i;23;_CPConcreteMutableSet.jt;51;
+ objj_executeFile("_CPConcreteMutableSet.j", YES);e;

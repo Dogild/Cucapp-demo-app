@@ -22,6 +22,10 @@ var TableTestDragAndDropTableViewDataType = @"TableTestDragAndDropTableViewDataT
     @outlet CPButtonBar buttonBar;
     @outlet CPTextField nameField;
 
+    @outlet CPWindow    externalWindow;
+    @outlet CPButton    externalWindowButton;
+    @outlet CPTextField externalWindowTextField;
+
     CPMutableArray      persons;
 }
 
@@ -29,6 +33,8 @@ var TableTestDragAndDropTableViewDataType = @"TableTestDragAndDropTableViewDataT
 {
     persons = [];
     // This is called when the application is done loading.
+
+    [[CPPlatformWindow alloc] initWithWindow:externalWindow];
 }
 
 - (void)awakeFromCib
@@ -62,6 +68,10 @@ var TableTestDragAndDropTableViewDataType = @"TableTestDragAndDropTableViewDataT
     [cancelButton setCucappIdentifier:@"cucappIdentifier-button-cancel"];
     [addButton setCucappIdentifier:@"cucappIdentifier-button-add"];
     [tableView setCucappIdentifier:@"cucappIdentifier-tableView"];
+
+    [externalWindowButton setCucappIdentifier:@"cucappIdentifier-button-external"];
+    [externalWindowTextField setCucappIdentifier:@"cucappIdentifier-field-external"];
+    [externalWindow setCucappIdentifier:@"cucappIdentifier-window-external"];
 }
 
 
@@ -101,6 +111,10 @@ var TableTestDragAndDropTableViewDataType = @"TableTestDragAndDropTableViewDataT
     [popover close];
 }
 
+- (IBAction)openPlatformWindow:(id)sender
+{
+    [externalWindow orderFront:sender];
+}
 
 #pragma mark -
 #pragma mark TableView Datasource
