@@ -72,6 +72,8 @@ var TableTestDragAndDropTableViewDataType = @"TableTestDragAndDropTableViewDataT
     [externalWindowButton setCucappIdentifier:@"cucappIdentifier-button-external"];
     [externalWindowTextField setCucappIdentifier:@"cucappIdentifier-field-external"];
     [externalWindow setCucappIdentifier:@"cucappIdentifier-window-external"];
+
+    [theWindow setCucappIdentifier:@"cucappIdentifier-window-main"];
 }
 
 
@@ -113,7 +115,7 @@ var TableTestDragAndDropTableViewDataType = @"TableTestDragAndDropTableViewDataT
 
 - (IBAction)openPlatformWindow:(id)sender
 {
-    [externalWindow orderFront:sender];
+    [externalWindow makeKeyAndOrderFront:sender];
 }
 
 #pragma mark -
