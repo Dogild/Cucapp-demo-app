@@ -63,6 +63,8 @@ var TableTestDragAndDropTableViewDataType = @"TableTestDragAndDropTableViewDataT
     [buttonBar setButtons:[buttonAddObject, buttonDeleteObject]];
 
     [tableView registerForDraggedTypes:[CPArray arrayWithObjects:TableTestDragAndDropTableViewDataType]];
+    [tableView setTarget:self];
+    [tableView setDoubleAction:@selector(doubleClick:)];
 
     [nameField setCucappIdentifier:@"cucappIdentifier-field-name"];
     [cancelButton setCucappIdentifier:@"cucappIdentifier-button-cancel"];
@@ -79,6 +81,11 @@ var TableTestDragAndDropTableViewDataType = @"TableTestDragAndDropTableViewDataT
 
 #pragma mark -
 #pragma mark ButtonBar action
+
+- (void)doubleClick:(id)sender
+{
+    [popover showRelativeToRect:CGRectMakeZero() ofView:buttonBar preferredEdge:CPMinYEdge];
+}
 
 - (void)clickAddButtonBar:(id)sender
 {
